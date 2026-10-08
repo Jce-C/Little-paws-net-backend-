@@ -100,6 +100,7 @@ class CasoRescate(models.Model):
     fecha_cierre = models.DateTimeField(null=True, blank=True)
     observaciones = models.TextField(blank=True)
     justificacion_sin_cupo = models.TextField(blank=True)
+    ocupa_cupo = models.BooleanField(default=True)
     usuario_ultimo_cambio = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.PROTECT, db_column="id_usuario_ultimo_cambio",
     )
