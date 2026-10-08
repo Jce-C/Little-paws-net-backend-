@@ -19,9 +19,11 @@ python manage.py check --database default
 python manage.py migrate
 python manage.py test --settings=config.test_settings
 python manage.py smoke_rescue
+python manage.py seed_demo_rescue
 ```
 
 Las pruebas automatizadas usan SQLite temporal y no alteran MySQL. `smoke_rescue` verifica en MySQL cobertura espacial, aceptación, cupos, apadrinamiento y expediente; sus filas de prueba se revierten.
+`seed_demo_rescue` carga 25 reportes ficticios y sus relaciones (más de 100 registros del proceso); se puede repetir sin duplicarlos. Solo admite el esquema local `little_paws_net_equipo` y usa correos `.invalid`, nunca datos personales reales.
 
 ## Rutas principales
 
