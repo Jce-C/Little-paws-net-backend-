@@ -7,8 +7,8 @@ from datetime import timedelta
 from django.db import transaction
 from django.utils import timezone
 
-from core.models import Veterinario
-from rescue.models import CasoRescate
+from core.models import ValorMaestro, Veterinario
+from rescue.models import CasoRescate, Reporte
 from rescue.services import miembro_puede
 
 from .models import (
@@ -19,6 +19,31 @@ from .models import (
 
 class ExpedienteError(ValueError):
     pass
+
+
+@transaction.atomic
+def registrar_mascota_caso(*, caso_id, usuario_id, datos):
+    try:
+        caso = CasoRescate.objects.select_for_update().select_related("estado_caso").get(pk=caso_id)
+    except CasoRescate.DoesNotExist as exc:
+        raise ExpedienteError("Caso inexistente") from exc
+    if caso.estado_caso.nombre != "En atención":
+        raise ExpedienteError("El caso no está activo")
+    if not miembro_puede(caso.fundacion_id, usuario_id, "expediente.autorizar"):
+        raise ExpedienteError("Sin autorización para esta fundación")
+    reporte = Reporte.objects.select_for_update().get(pk=caso.reporte_id)
+    if reporte.mascota_id is not None:
+        raise ExpedienteError("El caso ya tiene una mascota identificada")
+    mascota = Mascota.objects.create(
+        raza=datos["raza"], nombre=datos.get("nombre", ""),
+        estado_mascota=ValorMaestro.objects.get(tipo__nombre="estado_mascota", nombre="En rescate"),
+        fecha_nacimiento=datos.get("fecha_nacimiento"),
+        es_estimada=datos.get("es_estimada", False),
+        sexo=datos.get("sexo"), tamano=datos.get("tamano"),
+    )
+    reporte.mascota = mascota
+    reporte.save(update_fields=["mascota", "fecha_actualizacion"])
+    return mascota
 
 
 def _custodia_autorizada(mascota_id, usuario_id):

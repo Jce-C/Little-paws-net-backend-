@@ -7,12 +7,28 @@ from rest_framework.views import APIView
 from .models import HistorialMedico
 from .serializers import (
     AccesoQRSerializer, AtencionExternaSerializer, AtencionSerializer,
-    AutorizarVeterinarioSerializer, RegenerarQRSerializer,
+    AutorizarVeterinarioSerializer, MascotaCasoSerializer, RegenerarQRSerializer,
 )
 from .services import (
     ExpedienteError, autorizar_veterinario, regenerar_qr, registrar_atencion,
-    registrar_atencion_externa, registrar_custodia, veterinario_con_acceso,
+    registrar_atencion_externa, registrar_custodia, registrar_mascota_caso,
+    veterinario_con_acceso,
 )
+
+
+class MascotaCasoView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, caso_id):
+        serializer = MascotaCasoSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        try:
+            mascota = registrar_mascota_caso(
+                caso_id=caso_id, usuario_id=request.user.pk, datos=serializer.validated_data,
+            )
+        except ExpedienteError as exc:
+            return Response({"detalle": str(exc)}, status=400)
+        return Response({"id_mascota": mascota.pk, "id_caso": caso_id}, status=201)
 
 
 class CustodiaView(APIView):
