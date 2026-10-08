@@ -1,0 +1,9 @@
+# Configuración privada y entornos locales
+**/.env
+**/.venv/
+**/__pycache__/
+**/*.py[cod]
+**/.pytest_cache/
+**/.coverage
+**/media/
+**/staticfiles/
