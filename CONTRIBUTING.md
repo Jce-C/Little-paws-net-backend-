@@ -12,13 +12,13 @@ Las apps nuevas se integran en orden de dependencias. Antes de cada commit: revi
 
 ## Secuencia de trabajo
 
-1. María José incorpora primero las entidades compartidas de mascotas (`animals`) y solicita revisión. José Carlos integra ese PR sin squash antes de construir `rescue`, que depende de `Mascota`.
-2. José Carlos incorpora reporte, caso y trazabilidad en varios commits. Después, María José continúa adopción y fondo externo en commits separados.
+1. José Carlos incorpora el modelo mínimo compartido de `Mascota` para que rescate pueda avanzar. María José conserva la ampliación de adopción y fondo externo en sus propios commits.
+2. José Carlos incorpora reporte, caso y trazabilidad en varios commits. María José desarrolla adopción y fondo externo sobre la base compartida.
 3. Sally Andrea puede desarrollar comercio en paralelo, pues depende únicamente de `accounts` y `core`.
 
 Ejemplos de commits pequeños por responsabilidad:
 
-- María José: `feat(animals): modelar mascotas`, `feat(adoption): modelar solicitudes`, `feat(adoption): resolver solicitudes`, `feat(funds): registrar distribuciones`, `test(adoption): cubrir decisiones`.
+- María José: `feat(adoption): modelar solicitudes`, `feat(adoption): resolver solicitudes`, `feat(funds): registrar distribuciones`, `test(adoption): cubrir decisiones`.
 - Sally Andrea: `feat(commerce): modelar productos`, `feat(commerce): consultar catálogo`, `feat(orders): iniciar pedidos`, `feat(ads): gestionar anuncios`, `test(orders): validar tienda`.
 - José Carlos: `feat(rescue): modelar reportes`, `feat(rescue): aceptar casos`, `feat(rescue): consultar seguimiento`, `test(rescue): cubrir autorizaciones`.
 

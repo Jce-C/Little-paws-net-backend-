@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt.token_blacklist",
     "accounts",
     "core",
+    "animals",
 ]
 
 MIDDLEWARE = [
