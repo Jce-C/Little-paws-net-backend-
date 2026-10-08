@@ -1,6 +1,7 @@
 """Configuración inicial; cada equipo conserva sus secretos fuera de Git."""
 
 import os
+from datetime import timedelta
 from pathlib import Path
 
 from django.core.exceptions import ImproperlyConfigured
@@ -28,6 +29,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
+    "rest_framework_simplejwt.token_blacklist",
+    "accounts",
 ]
 
 MIDDLEWARE = [
@@ -67,7 +70,28 @@ DATABASES = {"default": {
 }}
 
 REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ],
     "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.IsAuthenticated"],
+    "DEFAULT_THROTTLE_RATES": {"anon": "20/hour", "auth": "10/minute"},
+}
+
+AUTH_USER_MODEL = "accounts.Usuario"
+AUTH_PASSWORD_VALIDATORS = [
+    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
+    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
+    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
+    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
+]
+
+SIMPLE_JWT = {
+    "USER_ID_FIELD": "id_usuario",
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=15),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
+    "ROTATE_REFRESH_TOKENS": True,
+    "BLACKLIST_AFTER_ROTATION": True,
+    "AUTH_HEADER_TYPES": ("Bearer",),
 }
 
 LANGUAGE_CODE = "es-co"

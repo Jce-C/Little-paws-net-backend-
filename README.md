@@ -4,7 +4,7 @@ Backend Django REST Framework sobre una **base MySQL nueva**. Este repositorio s
 
 ## Estado
 
-Primera etapa: estructura Django, configuración local segura y endpoint `GET /api/health/`. Los modelos de negocio, migraciones y demás APIs se incorporarán en commits posteriores. **No ejecutar `migrate` hasta que se incorpore el modelo de usuario propio.**
+Incluye la estructura Django, configuración local segura, endpoint `GET /api/health/` e identidad por correo/contraseña con JWT. Los demás modelos de negocio y APIs se incorporan en commits posteriores. No aplicar las migraciones hasta configurar una base MySQL nueva y vacía.
 
 ## Desarrollo local
 
