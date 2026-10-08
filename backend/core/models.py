@@ -1,4 +1,4 @@
-"""Catálogos, autorización de negocio y entidades compartidas de V2."""
+"""Catálogos, autorización de negocio y entidades compartidas."""
 
 from django.conf import settings
 from django.db import models
@@ -328,4 +328,3 @@ class Notificacion(models.Model):
     class Meta:
         db_table = "Notificacion"
         indexes = [models.Index(fields=["usuario", "fecha_creacion"], name="ix_notif_usuario_fecha")]
-
