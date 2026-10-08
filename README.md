@@ -21,7 +21,7 @@ python manage.py test --settings=config.test_settings
 python manage.py smoke_rescue
 ```
 
-Las pruebas automatizadas usan SQLite temporal y no alteran MySQL. `smoke_rescue` verifica en MySQL la cobertura espacial, aceptación, cupos e historial; sus filas de prueba se revierten.
+Las pruebas automatizadas usan SQLite temporal y no alteran MySQL. `smoke_rescue` verifica en MySQL cobertura espacial, aceptación, cupos, apadrinamiento y expediente; sus filas de prueba se revierten.
 
 ## Rutas principales
 

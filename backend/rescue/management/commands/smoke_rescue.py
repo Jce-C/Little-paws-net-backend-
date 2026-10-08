@@ -1,17 +1,27 @@
 """Prueba real de cobertura y transición; revierte las filas creadas."""
 
 from uuid import uuid4
+from decimal import Decimal
 
 from django.core.management.base import BaseCommand, CommandError
 from django.db import connection, transaction
+from django.utils import timezone
 
 from accounts.models import Usuario
+from animals.models import HistorialMedico, Raza
+from animals.services import (
+    autorizar_veterinario, regenerar_qr, registrar_atencion,
+    registrar_custodia, registrar_mascota_caso,
+)
 from core.models import (
     CapacidadFundacion, Ciudad, EntidadMiembro, EntidadMiembroRol,
-    EntidadVerificable, Fundacion, FundacionZona, Rol, ValorMaestro, Zona,
+    EntidadVerificable, Fundacion, FundacionZona, Rol, ValorMaestro, Veterinario, Zona,
 )
-from rescue.models import HistorialEstadoCaso, Reporte, ReporteUbicacion, ZonaGeografica
+from rescue.models import (
+    ConfirmacionAporte, HistorialEstadoCaso, Reporte, ReporteUbicacion, ZonaGeografica,
+)
 from rescue.services import aceptar_reporte, cerrar_caso, fundacion_cubre_reporte
+from rescue.sponsorship import confirmar_aporte, crear_compromiso
 
 
 class _FinPrueba(Exception):
@@ -19,7 +29,7 @@ class _FinPrueba(Exception):
 
 
 class Command(BaseCommand):
-    help = "Verifica cobertura espacial, aceptación, historial y cupos sin conservar registros"
+    help = "Verifica rescate, apadrinamiento y expediente en MySQL sin conservar filas"
 
     def handle(self, *args, **options):
         if connection.vendor != "mysql":
@@ -32,6 +42,14 @@ class Command(BaseCommand):
                 gestor = Usuario.objects.create_user(
                     email=f"smoke-{sufijo}@example.invalid", password=uuid4().hex,
                     nombre="Prueba de rescate",
+                )
+                padrino = Usuario.objects.create_user(
+                    email=f"padrino-{sufijo}@example.invalid", password=uuid4().hex,
+                    nombre="Padrino de prueba",
+                )
+                usuario_vet = Usuario.objects.create_user(
+                    email=f"vet-{sufijo}@example.invalid", password=uuid4().hex,
+                    nombre="Veterinario de prueba",
                 )
                 ciudad = Ciudad.objects.create(nombre=f"Ciudad-{sufijo}", departamento="Prueba")
                 zona = Zona.objects.create(ciudad=ciudad, nombre="Centro")
@@ -73,6 +91,40 @@ class Command(BaseCommand):
                 capacidad.refresh_from_db()
                 if capacidad.cupos_ocupados != 1:
                     raise CommandError("La aceptación no ocupó un cupo")
+                mascota = registrar_mascota_caso(
+                    caso_id=caso.pk, usuario_id=gestor.pk,
+                    datos={"raza": Raza.objects.get(especie__nombre="Canino", nombre="Mestizo"),
+                           "nombre": "Mascota temporal"},
+                )
+                registrar_custodia(caso_id=caso.pk, usuario_id=gestor.pk)
+                entidad_vet = EntidadVerificable.objects.create(
+                    nombre=f"Veterinario-{sufijo}", estado_verificacion=verificada,
+                )
+                veterinario = Veterinario.objects.create(
+                    entidad=entidad_vet, usuario_profesional=usuario_vet,
+                    registro_profesional=f"MAT-{sufijo}",
+                )
+                autorizar_veterinario(
+                    mascota_id=mascota.pk, veterinario_id=veterinario.pk, usuario_id=gestor.pk,
+                )
+                _, codigo_qr = regenerar_qr(mascota_id=mascota.pk, usuario_id=gestor.pk)
+                registrar_atencion(
+                    mascota_id=mascota.pk, usuario_id=usuario_vet.pk,
+                    token=codigo_qr, detalle="Control médico de prueba",
+                    fecha_atencion=timezone.now(),
+                )
+                if HistorialMedico.objects.filter(mascota=mascota).count() != 1:
+                    raise CommandError("No se creó la anotación médica")
+                compromiso = crear_compromiso(
+                    reporte_id=reporte.pk, usuario_padrino_id=padrino.pk,
+                    monto=Decimal("100.00"),
+                )
+                confirmar_aporte(
+                    apadrinamiento_id=compromiso.pk, usuario_confirmador_id=gestor.pk,
+                    monto=Decimal("40.00"),
+                )
+                if ConfirmacionAporte.objects.filter(apadrinamiento=compromiso).count() != 1:
+                    raise CommandError("No se confirmó el aporte")
                 cerrar_caso(caso_id=caso.pk, usuario_actor_id=gestor.pk, nuevo_estado="Cerrado")
                 capacidad.refresh_from_db()
                 if capacidad.cupos_ocupados != 0:
@@ -81,4 +133,6 @@ class Command(BaseCommand):
                     raise CommandError("Falta la trazabilidad del caso")
                 raise _FinPrueba
         except _FinPrueba:
-            self.stdout.write(self.style.SUCCESS("Rescate MySQL: cobertura, autorización, cupos e historial OK; filas revertidas"))
+            self.stdout.write(self.style.SUCCESS(
+                "MySQL: rescate, apadrinamiento y expediente OK; filas de prueba revertidas"
+            ))
