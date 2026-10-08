@@ -36,8 +36,8 @@ class ExpedienteTests(TestCase):
             entidad=entidad_vet, usuario_profesional=cls.profesional,
             registro_profesional="MAT-001",
         )
-        especie = Especie.objects.create(nombre="Canino")
-        raza = Raza.objects.create(especie=especie, nombre="Mestizo")
+        especie = Especie.objects.get(nombre="Canino")
+        raza = Raza.objects.get(especie=especie, nombre="Mestizo")
         cls.mascota = Mascota.objects.create(
             raza=raza, nombre="Luna",
             estado_mascota=ValorMaestro.objects.get(tipo__nombre="estado_mascota", nombre="En rescate"),
@@ -56,6 +56,30 @@ class ExpedienteTests(TestCase):
 
     def setUp(self):
         self.api = APIClient()
+
+    def test_fundacion_identifica_mascota_del_caso(self):
+        reporte = Reporte.objects.create(
+            usuario_reportante=self.ajeno,
+            tipo_reporte=ValorMaestro.objects.get(tipo__nombre="tipo_reporte", nombre="Rescate"),
+            estado_reporte=ValorMaestro.objects.get(tipo__nombre="estado_reporte", nombre="En atención"),
+            descripcion="Animal sin identificar",
+        )
+        caso = CasoRescate.objects.create(
+            reporte=reporte, fundacion=self.fundacion,
+            estado_caso=ValorMaestro.objects.get(tipo__nombre="estado_caso", nombre="En atención"),
+            usuario_ultimo_cambio=self.gestor,
+        )
+        url = reverse("caso_mascota_crear", args=[caso.pk])
+        datos = {"raza": Raza.objects.get(nombre="Mestizo", especie__nombre="Canino").pk, "nombre": "Sol"}
+        self.api.force_authenticate(user=self.ajeno)
+        self.assertEqual(self.api.post(url, datos).status_code, 400)
+        self.api.force_authenticate(user=self.gestor)
+        respuesta = self.api.post(url, datos)
+        self.assertEqual(respuesta.status_code, 201, respuesta.data)
+        reporte.refresh_from_db()
+        self.assertEqual(reporte.mascota_id, respuesta.data["id_mascota"])
+        self.assertEqual(self.api.post(url, datos).status_code, 400)
+        self.assertEqual(self.api.post(reverse("custodia_registrar", args=[caso.pk])).status_code, 201)
 
     def test_qr_no_da_acceso_sin_autorizacion_y_regeneracion_revoca_anterior(self):
         self.api.force_authenticate(user=self.gestor)
