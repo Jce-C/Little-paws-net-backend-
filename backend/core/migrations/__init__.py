@@ -1,0 +1,1 @@
+"""Migraciones del dominio compartido."""
