@@ -40,5 +40,6 @@ def eliminar_indices(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
+    atomic = False
     dependencies = [("rescue", "0001_initial")]
     operations = [migrations.RunPython(crear_indices, eliminar_indices)]
