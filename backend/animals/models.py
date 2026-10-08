@@ -89,6 +89,7 @@ class CustodiaMascota(models.Model):
 class AutorizacionExpediente(models.Model):
     id_autorizacion = models.AutoField(primary_key=True)
     mascota = models.ForeignKey(Mascota, on_delete=models.PROTECT, db_column="id_mascota")
+    custodia = models.ForeignKey(CustodiaMascota, on_delete=models.PROTECT, db_column="id_custodia")
     veterinario = models.ForeignKey(Veterinario, on_delete=models.PROTECT, db_column="id_veterinario")
     usuario_otorgante = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.PROTECT, db_column="id_usuario_otorgante",

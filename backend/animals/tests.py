@@ -10,7 +10,7 @@ from core.models import (
 )
 from rescue.models import CasoRescate, Reporte
 
-from .models import Especie, HistorialMedico, Mascota, Raza
+from .models import CustodiaMascota, Especie, HistorialMedico, Mascota, Raza
 
 
 class ExpedienteTests(TestCase):
@@ -119,3 +119,8 @@ class ExpedienteTests(TestCase):
         })
         self.assertEqual(externa.status_code, 201, externa.data)
         self.assertEqual(HistorialMedico.objects.filter(mascota=self.mascota).count(), 2)
+        CustodiaMascota.objects.filter(mascota=self.mascota, fecha_fin__isnull=True).update(
+            fecha_fin=timezone.now(),
+        )
+        self.api.force_authenticate(user=self.profesional)
+        self.assertEqual(self.api.post(consultar, {"codigo_qr": actual}).status_code, 403)

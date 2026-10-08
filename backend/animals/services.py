@@ -78,7 +78,7 @@ def registrar_custodia(*, caso_id, usuario_id):
 
 @transaction.atomic
 def autorizar_veterinario(*, mascota_id, veterinario_id, usuario_id, dias=7):
-    _custodia_autorizada(mascota_id, usuario_id)
+    custodia = _custodia_autorizada(mascota_id, usuario_id)
     try:
         veterinario = Veterinario.objects.select_related("entidad__estado_verificacion__tipo", "usuario_profesional").get(
             pk=veterinario_id
@@ -91,7 +91,7 @@ def autorizar_veterinario(*, mascota_id, veterinario_id, usuario_id, dias=7):
     if not veterinario.usuario_profesional.is_active:
         raise ExpedienteError("La cuenta profesional está inactiva")
     return AutorizacionExpediente.objects.create(
-        mascota_id=mascota_id, veterinario=veterinario,
+        mascota_id=mascota_id, custodia=custodia, veterinario=veterinario,
         usuario_otorgante_id=usuario_id,
         fecha_expiracion=timezone.now() + timedelta(days=dias),
     )
@@ -126,9 +126,13 @@ def veterinario_con_acceso(*, mascota_id, usuario_id, token):
     estado = veterinario.entidad.estado_verificacion
     if estado.tipo.nombre != "estado_verificacion" or estado.nombre != "Verificada":
         raise ExpedienteError("El veterinario no está verificado")
+    custodias = list(CustodiaMascota.objects.filter(mascota=mascota, fecha_fin__isnull=True)[:2])
+    if len(custodias) != 1:
+        raise ExpedienteError("La mascota no tiene custodia única activa")
+    custodia = custodias[0]
     ahora = timezone.now()
     if not AutorizacionExpediente.objects.filter(
-        mascota=mascota, veterinario=veterinario,
+        mascota=mascota, custodia=custodia, veterinario=veterinario,
         fecha_revocacion__isnull=True, fecha_expiracion__gt=ahora,
     ).exists():
         raise ExpedienteError("No hay autorización vigente para esta mascota")
@@ -136,6 +140,7 @@ def veterinario_con_acceso(*, mascota_id, usuario_id, token):
         mascota=mascota,
         codigo_hash=hashlib.sha256(token.encode("utf-8")).hexdigest(),
         fecha_revocacion__isnull=True, fecha_expiracion__gt=ahora,
+        fecha_creacion__gte=custodia.fecha_inicio,
     ).exists():
         raise ExpedienteError("Código QR inválido o vencido")
     return veterinario
