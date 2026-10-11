@@ -2,11 +2,16 @@ from datetime import timedelta
 
 from django.db import IntegrityError, transaction
 from django.test import TestCase
+from django.urls import reverse
 from django.utils import timezone
+from rest_framework.test import APIClient
 
 from accounts.models import Usuario
-from animals.models import Especie, Mascota, Raza
-from core.models import Ciudad, EntidadVerificable, Fundacion, Permiso, ValorMaestro
+from animals.models import CustodiaMascota, Especie, Mascota, Raza
+from core.models import (
+    Ciudad, EntidadMiembro, EntidadMiembroRol, EntidadVerificable,
+    Fundacion, Permiso, Rol, ValorMaestro,
+)
 
 from .models import HistorialEstadoAdopcion, SolicitudAdopcion
 
@@ -76,3 +81,80 @@ class ModelosAdopcionTests(TestCase):
                     fecha_resolucion=timezone.now() - timedelta(days=1),
                     usuario_resolutor=self.gestor,
                 )
+
+
+class SolicitudAdopcionAPITests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.solicitante = Usuario.objects.create_user(
+            email="api-adoptante@example.invalid",
+            password="Clave-Segura-2026",
+            nombre="API Adoptante",
+        )
+        cls.gestor = Usuario.objects.create_user(
+            email="api-gestor@example.invalid",
+            password="Clave-Segura-2026",
+            nombre="API Gestor",
+        )
+        cls.ajeno = Usuario.objects.create_user(
+            email="api-ajeno@example.invalid",
+            password="Clave-Segura-2026",
+            nombre="API Ajeno",
+        )
+        verificada = ValorMaestro.objects.get(tipo__nombre="estado_verificacion", nombre="Verificada")
+        ciudad = Ciudad.objects.create(nombre="Ciudad API Adopcion", departamento="Pruebas")
+        entidad = EntidadVerificable.objects.create(nombre="Fundacion API Adopcion", estado_verificacion=verificada)
+        cls.fundacion = Fundacion.objects.create(entidad=entidad, nit="NIT-API-ADOPCION", ciudad=ciudad)
+        miembro = EntidadMiembro.objects.create(entidad=entidad, usuario=cls.gestor)
+        EntidadMiembroRol.objects.create(miembro=miembro, rol=Rol.objects.get(codigo="GESTOR_FUNDACION"))
+        especie = Especie.objects.get(nombre="Canino")
+        raza = Raza.objects.get(especie=especie, nombre="Mestizo")
+        cls.mascota = Mascota.objects.create(
+            raza=raza,
+            nombre="Mora",
+            estado_mascota=ValorMaestro.objects.get(tipo__nombre="estado_mascota", nombre="En adopción"),
+        )
+        CustodiaMascota.objects.create(
+            mascota=cls.mascota,
+            fundacion=cls.fundacion,
+            fecha_inicio=timezone.now(),
+            usuario_registrador=cls.gestor,
+        )
+
+    def setUp(self):
+        self.api = APIClient()
+
+    def test_crear_solicitud_deriva_fundacion_y_crea_historial(self):
+        self.api.force_authenticate(user=self.solicitante)
+        respuesta = self.api.post(reverse("adopcion_listar_crear"), {
+            "id_mascota": self.mascota.pk,
+            "observacion_solicitante": "Tengo espacio y experiencia",
+        }, format="json")
+        self.assertEqual(respuesta.status_code, 201, respuesta.data)
+        solicitud = SolicitudAdopcion.objects.get(pk=respuesta.data["id_solicitud_adopcion"])
+        self.assertEqual(solicitud.fundacion, self.fundacion)
+        self.assertEqual(solicitud.estado_solicitud.nombre, "Pendiente")
+        self.assertEqual(HistorialEstadoAdopcion.objects.filter(solicitud=solicitud).count(), 1)
+
+    def test_solicitante_y_fundacion_consultan_la_solicitud(self):
+        self.api.force_authenticate(user=self.solicitante)
+        creada = self.api.post(reverse("adopcion_listar_crear"), {
+            "id_mascota": self.mascota.pk,
+        }, format="json")
+        self.assertEqual(creada.status_code, 201, creada.data)
+        detalle = reverse("adopcion_detalle", args=[creada.data["id_solicitud_adopcion"]])
+        self.assertEqual(self.api.get(detalle).status_code, 200)
+        self.api.force_authenticate(user=self.gestor)
+        como_fundacion = self.api.get(detalle)
+        self.assertEqual(como_fundacion.status_code, 200, como_fundacion.data)
+        self.assertEqual(len(como_fundacion.data["historial"]), 1)
+        self.api.force_authenticate(user=self.ajeno)
+        self.assertEqual(self.api.get(detalle).status_code, 404)
+
+    def test_no_permite_duplicar_solicitud_pendiente(self):
+        self.api.force_authenticate(user=self.solicitante)
+        datos = {"id_mascota": self.mascota.pk}
+        self.assertEqual(self.api.post(reverse("adopcion_listar_crear"), datos).status_code, 201)
+        duplicada = self.api.post(reverse("adopcion_listar_crear"), datos)
+        self.assertEqual(duplicada.status_code, 400)
+        self.assertEqual(SolicitudAdopcion.objects.filter(mascota=self.mascota).count(), 1)

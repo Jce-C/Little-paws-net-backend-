@@ -14,4 +14,5 @@ urlpatterns = [
     path("api/", include("core.urls")),
     path("api/", include("rescue.urls")),
     path("api/", include("animals.urls")),
+    path("api/", include("adoptions.urls")),
 ]
