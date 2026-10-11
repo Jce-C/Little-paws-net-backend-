@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     "core",
     "animals",
     "rescue",
+    "adoptions",
 ]
 
 MIDDLEWARE = [
