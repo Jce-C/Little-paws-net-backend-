@@ -1,0 +1,141 @@
+"""Registro informativo del fondo externo; no procesa pagos ni transferencias."""
+
+from django.conf import settings
+from django.db import models
+from django.db.models import F, Q
+
+from core.models import ArchivoDigital, Fundacion, ValorMaestro
+
+
+class FondoExterno(models.Model):
+    id_fondo_externo = models.AutoField(primary_key=True)
+    nombre = models.CharField(max_length=150, unique=True)
+    datos_transferencia_cifrados = models.BinaryField()
+
+    class Meta:
+        db_table = "FondoExterno"
+
+
+class DonacionGeneral(models.Model):
+    id_donacion = models.AutoField(primary_key=True)
+    fondo_externo = models.ForeignKey(
+        FondoExterno, on_delete=models.PROTECT, db_column="id_fondo_externo",
+    )
+    usuario_donante = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.PROTECT, db_column="id_usuario_donante",
+    )
+    estado_donacion = models.ForeignKey(
+        ValorMaestro, on_delete=models.PROTECT, db_column="id_estado_donacion",
+        related_name="donaciones_estado",
+    )
+    monto_comprometido = models.DecimalField(max_digits=12, decimal_places=2)
+    fecha_compromiso = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = "DonacionGeneral"
+        constraints = [
+            models.CheckConstraint(condition=Q(monto_comprometido__gt=0), name="ck_donacion_monto_pos"),
+        ]
+        indexes = [
+            models.Index(fields=["fondo_externo", "estado_donacion"], name="ix_donacion_fondo_estado"),
+            models.Index(fields=["usuario_donante", "fecha_compromiso"], name="ix_donacion_donante_fecha"),
+        ]
+
+
+class HistorialEstadoDonacion(models.Model):
+    id_historial_donacion = models.AutoField(primary_key=True)
+    donacion = models.ForeignKey(DonacionGeneral, on_delete=models.PROTECT, db_column="id_donacion")
+    estado_anterior = models.ForeignKey(
+        ValorMaestro, on_delete=models.PROTECT, null=True, blank=True,
+        db_column="id_estado_anterior", related_name="donaciones_historial_anterior",
+    )
+    estado_nuevo = models.ForeignKey(
+        ValorMaestro, on_delete=models.PROTECT, db_column="id_estado_nuevo",
+        related_name="donaciones_historial_nuevo",
+    )
+    usuario_actor = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.PROTECT, db_column="id_usuario_actor",
+    )
+    fecha_cambio = models.DateTimeField(auto_now_add=True)
+    observacion = models.TextField(blank=True)
+
+    class Meta:
+        db_table = "HistorialEstadoDonacion"
+        indexes = [models.Index(fields=["donacion", "fecha_cambio"], name="ix_hist_donacion_fecha")]
+
+
+class DistribucionReportadaFondo(models.Model):
+    id_distribucion = models.AutoField(primary_key=True)
+    fondo_externo = models.ForeignKey(
+        FondoExterno, on_delete=models.PROTECT, db_column="id_fondo_externo",
+    )
+    monto_reportado = models.DecimalField(max_digits=12, decimal_places=2)
+    estado_distribucion = models.ForeignKey(
+        ValorMaestro, on_delete=models.PROTECT, db_column="id_estado_distribucion",
+    )
+    fundacion = models.ForeignKey(Fundacion, on_delete=models.PROTECT, db_column="id_fundacion")
+    fecha_distribucion = models.DateTimeField()
+    usuario_reportador = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.PROTECT,
+        db_column="id_usuario_reportador", related_name="distribuciones_reportadas",
+    )
+    fecha_reporte = models.DateTimeField(auto_now_add=True)
+    criterio = models.TextField(blank=True)
+    usuario_confirmador = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.PROTECT, null=True, blank=True,
+        db_column="id_usuario_confirmador", related_name="distribuciones_confirmadas",
+    )
+    fecha_confirmacion = models.DateTimeField(null=True, blank=True)
+    observacion_confirmacion = models.TextField(blank=True)
+    archivo_evidencia = models.ForeignKey(
+        ArchivoDigital, on_delete=models.PROTECT, null=True, blank=True,
+        db_column="id_archivo_evidencia",
+    )
+
+    class Meta:
+        db_table = "DistribucionReportadaFondo"
+        constraints = [
+            models.CheckConstraint(condition=Q(monto_reportado__gt=0), name="ck_distribucion_monto_pos"),
+            models.CheckConstraint(
+                condition=Q(fecha_distribucion__lte=F("fecha_reporte")),
+                name="ck_dist_fecha_reporte",
+            ),
+            models.CheckConstraint(
+                condition=(
+                    Q(usuario_confirmador__isnull=True, fecha_confirmacion__isnull=True, observacion_confirmacion="")
+                    | (
+                        Q(usuario_confirmador__isnull=False, fecha_confirmacion__isnull=False)
+                        & ~Q(observacion_confirmacion="")
+                    )
+                ),
+                name="ck_dist_confirmacion_datos",
+            ),
+        ]
+        indexes = [
+            models.Index(fields=["fondo_externo", "estado_distribucion"], name="ix_dist_fondo_estado"),
+            models.Index(fields=["fundacion", "fecha_distribucion"], name="ix_dist_fundacion_fecha"),
+        ]
+
+
+class SolicitudEmergencia(models.Model):
+    id_solicitud_emergencia = models.AutoField(primary_key=True)
+    fundacion = models.ForeignKey(Fundacion, on_delete=models.PROTECT, db_column="id_fundacion")
+    fondo_externo = models.ForeignKey(
+        FondoExterno, on_delete=models.PROTECT, db_column="id_fondo_externo",
+    )
+    estado_emergencia = models.ForeignKey(
+        ValorMaestro, on_delete=models.PROTECT, db_column="id_estado_emergencia",
+    )
+    motivo = models.TextField()
+    monto_solicitado = models.DecimalField(max_digits=12, decimal_places=2)
+    fecha_solicitud = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = "SolicitudEmergencia"
+        constraints = [
+            models.CheckConstraint(condition=Q(monto_solicitado__gt=0), name="ck_emergencia_monto_pos"),
+            models.CheckConstraint(condition=~Q(motivo=""), name="ck_emergencia_motivo"),
+        ]
+        indexes = [
+            models.Index(fields=["fundacion", "fecha_solicitud"], name="ix_emerg_fundacion_fecha"),
+        ]
