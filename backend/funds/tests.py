@@ -17,7 +17,7 @@ from core.models import (
     TipoMaestro, UsuarioRol, ValorMaestro,
 )
 
-from .models import DonacionGeneral, FondoExterno, SolicitudEmergencia
+from .models import DonacionGeneral, FondoExterno, HistorialEstadoDonacion, SolicitudEmergencia
 
 
 class ModelosFondoTests(TestCase):
@@ -159,3 +159,67 @@ class FondoExternoAPITests(TestCase):
         self.assertEqual(primera.status_code, 201, primera.data)
         self.assertEqual(segunda.status_code, 400, segunda.data)
         self.assertEqual(FondoExterno.objects.filter(nombre__iexact="Fondo Unico").count(), 1)
+
+
+class CompromisoDonacionAPITests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.donante = Usuario.objects.create_user(
+            email="donante-api@example.invalid", password="Clave-Segura-2026", nombre="Donante API",
+        )
+        cls.otro = Usuario.objects.create_user(
+            email="otro-donante-api@example.invalid", password="Clave-Segura-2026", nombre="Otro Donante",
+        )
+        cls.admin = Usuario.objects.create_user(
+            email="admin-donacion@example.invalid", password="Clave-Segura-2026", nombre="Admin Donacion",
+        )
+        UsuarioRol.objects.create(usuario=cls.admin, rol=Rol.objects.get(codigo="ADMIN_PLATAFORMA"))
+        cls.fondo = FondoExterno.objects.create(
+            nombre="Fondo de donaciones API",
+            datos_transferencia_cifrados=Fernet(Fernet.generate_key()).encrypt(b"cuenta-prueba"),
+        )
+
+    def setUp(self):
+        self.api = APIClient()
+
+    def test_crear_compromiso_no_confirma_pago_y_crea_historial(self):
+        self.api.force_authenticate(user=self.donante)
+        respuesta = self.api.post(reverse("donacion_listar_crear"), {
+            "id_fondo_externo": self.fondo.pk,
+            "monto_comprometido": "12500.00",
+        }, format="json")
+        self.assertEqual(respuesta.status_code, 201, respuesta.data)
+        self.assertEqual(respuesta.data["estado"], "Comprometida")
+        self.assertNotIn("instrucciones_transferencia", respuesta.data)
+        donacion = DonacionGeneral.objects.get(pk=respuesta.data["id_donacion"])
+        self.assertEqual(donacion.usuario_donante, self.donante)
+        self.assertEqual(donacion.monto_comprometido, Decimal("12500.00"))
+        historial = HistorialEstadoDonacion.objects.get(donacion=donacion)
+        self.assertIsNone(historial.estado_anterior)
+        self.assertEqual(historial.estado_nuevo.nombre, "Comprometida")
+        self.assertEqual(historial.usuario_actor, self.donante)
+
+    def test_importe_invalido_no_crea_donacion(self):
+        self.api.force_authenticate(user=self.donante)
+        respuesta = self.api.post(reverse("donacion_listar_crear"), {
+            "id_fondo_externo": self.fondo.pk,
+            "monto_comprometido": "0.00",
+        }, format="json")
+        self.assertEqual(respuesta.status_code, 400)
+        self.assertFalse(DonacionGeneral.objects.exists())
+
+    def test_donante_ajeno_no_ve_detalle_y_admin_si(self):
+        self.api.force_authenticate(user=self.donante)
+        creada = self.api.post(reverse("donacion_listar_crear"), {
+            "id_fondo_externo": self.fondo.pk,
+            "monto_comprometido": "12500.00",
+        }, format="json")
+        self.assertEqual(creada.status_code, 201, creada.data)
+        ruta = reverse("donacion_detalle", args=[creada.data["id_donacion"]])
+        self.api.force_authenticate(user=self.otro)
+        self.assertEqual(self.api.get(ruta).status_code, 404)
+        self.assertEqual(self.api.get(reverse("donacion_listar_crear")).data, [])
+        self.api.force_authenticate(user=self.admin)
+        detalle = self.api.get(ruta)
+        self.assertEqual(detalle.status_code, 200, detalle.data)
+        self.assertEqual(len(detalle.data["historial"]), 1)

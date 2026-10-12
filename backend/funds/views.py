@@ -6,9 +6,15 @@ from rest_framework.views import APIView
 
 from core.crypto import descifrar
 
-from .models import FondoExterno
-from .serializers import FondoExternoCrearSerializer, representar_fondo
-from .services import FondoError, FondoPermisoError, crear_fondo_externo
+from .models import DonacionGeneral, FondoExterno
+from .permissions import administrador_puede
+from .serializers import (
+    CompromisoDonacionCrearSerializer, FondoExternoCrearSerializer,
+    representar_donacion, representar_fondo,
+)
+from .services import (
+    FondoError, FondoPermisoError, crear_compromiso_donacion, crear_fondo_externo,
+)
 
 
 class FondoExternoListCreateView(APIView):
@@ -45,3 +51,43 @@ class FondoExternoInstruccionesView(APIView):
             "instrucciones_transferencia": descifrar(fondo.datos_transferencia_cifrados),
             "aviso": "Transferencia externa; Little Paws Net no procesa el pago",
         })
+
+
+def donaciones_visibles(usuario):
+    donaciones = DonacionGeneral.objects.select_related("fondo_externo", "estado_donacion")
+    if administrador_puede(usuario, "donacion.confirmar"):
+        return donaciones
+    return donaciones.filter(usuario_donante=usuario)
+
+
+class DonacionGeneralListCreateView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        donaciones = donaciones_visibles(request.user).order_by("-fecha_compromiso", "-pk")
+        return Response([representar_donacion(donacion) for donacion in donaciones])
+
+    def post(self, request):
+        serializer = CompromisoDonacionCrearSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        try:
+            donacion = crear_compromiso_donacion(
+                usuario_donante=request.user,
+                **serializer.validated_data,
+            )
+        except FondoPermisoError as exc:
+            return Response({"detalle": str(exc)}, status=403)
+        except FondoError as exc:
+            return Response({"detalle": str(exc)}, status=400)
+        donacion = DonacionGeneral.objects.select_related("fondo_externo", "estado_donacion").get(pk=donacion.pk)
+        return Response(representar_donacion(donacion), status=201)
+
+
+class DonacionGeneralDetalleView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, donacion_id):
+        donacion = donaciones_visibles(request.user).filter(pk=donacion_id).first()
+        if donacion is None:
+            return Response({"detalle": "Donación inexistente o sin acceso"}, status=404)
+        return Response(representar_donacion(donacion, incluir_historial=True))
