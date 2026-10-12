@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     "rescue",
     "adoptions",
     "funds",
+    "commerce",
 ]
 
 MIDDLEWARE = [
