@@ -8,7 +8,10 @@ from django.test import TestCase
 from django.utils import timezone
 
 from accounts.models import Usuario
-from core.models import Ciudad, EntidadVerificable, Fundacion, TipoMaestro, ValorMaestro
+from core.models import (
+    Ciudad, EntidadVerificable, Fundacion, Permiso, Rol, RolPermiso,
+    TipoMaestro, ValorMaestro,
+)
 
 from .models import DonacionGeneral, FondoExterno, SolicitudEmergencia
 
@@ -41,6 +44,23 @@ class ModelosFondoTests(TestCase):
         )
         self.assertEqual(donacion.monto_comprometido, Decimal("15000.00"))
         self.assertIsNotNone(donacion.fecha_compromiso)
+
+    def test_catalogos_y_permisos_no_son_globales_por_defecto(self):
+        self.assertEqual(
+            set(ValorMaestro.objects.filter(tipo__nombre="estado_donacion").values_list("nombre", flat=True)),
+            {"Comprometida", "Confirmada", "Rechazada", "Cancelada"},
+        )
+        self.assertEqual(
+            set(ValorMaestro.objects.filter(tipo__nombre="estado_distribucion").values_list("nombre", flat=True)),
+            {"Reportada", "Confirmada", "Rechazada"},
+        )
+        self.assertEqual(Permiso.objects.filter(codigo__startswith="distribucion.").count(), 2)
+        admin = Rol.objects.get(codigo="ADMIN_PLATAFORMA")
+        gestor = Rol.objects.get(codigo="GESTOR_FUNDACION")
+        self.assertTrue(RolPermiso.objects.filter(rol=admin, permiso__codigo="donacion.confirmar").exists())
+        self.assertFalse(RolPermiso.objects.filter(rol=admin, permiso__codigo="distribucion.confirmar").exists())
+        self.assertTrue(RolPermiso.objects.filter(rol=gestor, permiso__codigo="distribucion.confirmar").exists())
+        self.assertFalse(RolPermiso.objects.filter(rol=gestor, permiso__codigo="donacion.confirmar").exists())
 
     def test_no_acepta_donacion_de_importe_no_positivo(self):
         with self.assertRaises(IntegrityError):
