@@ -5,16 +5,19 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from core.crypto import descifrar
+from core.models import EntidadMiembroRol
 
-from .models import DonacionGeneral, FondoExterno
+from .models import DistribucionReportadaFondo, DonacionGeneral, FondoExterno
 from .permissions import administrador_puede
 from .serializers import (
     CompromisoDonacionCrearSerializer, FondoExternoCrearSerializer,
-    ResolverDonacionSerializer, representar_donacion, representar_fondo,
+    ConfirmarDistribucionSerializer, DistribucionCrearSerializer,
+    ResolverDonacionSerializer, representar_distribucion, representar_donacion, representar_fondo,
 )
 from .services import (
     FondoError, FondoNoEncontradoError, FondoPermisoError, FondoTransicionError,
-    crear_compromiso_donacion, crear_fondo_externo, resolver_compromiso_donacion,
+    confirmar_distribucion, crear_compromiso_donacion, crear_fondo_externo,
+    reportar_distribucion, resolver_compromiso_donacion,
 )
 
 
@@ -119,3 +122,69 @@ class ResolverDonacionView(APIView):
             "estado": donacion.estado_donacion.nombre,
             "aviso": representar_donacion(donacion)["aviso"],
         })
+
+
+def distribuciones_visibles(usuario):
+    distribuciones = DistribucionReportadaFondo.objects.select_related("estado_distribucion")
+    if not usuario.is_active:
+        return distribuciones.none()
+    if administrador_puede(usuario, "distribucion.reportar"):
+        return distribuciones
+    entidades = EntidadMiembroRol.objects.filter(
+        miembro__usuario=usuario, miembro__fecha_salida__isnull=True,
+        rol__codigo="GESTOR_FUNDACION", rol__ambito="ENTIDAD",
+        rol__rolpermiso__permiso__codigo="distribucion.confirmar",
+    ).values("miembro__entidad_id")
+    return distribuciones.filter(fundacion_id__in=entidades)
+
+
+class DistribucionListCreateView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        registros = distribuciones_visibles(request.user).order_by("-fecha_reporte", "-pk")
+        return Response([representar_distribucion(registro) for registro in registros])
+
+    def post(self, request):
+        serializer = DistribucionCrearSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        try:
+            registro = reportar_distribucion(usuario_actor=request.user, **serializer.validated_data)
+        except FondoPermisoError as exc:
+            return Response({"detalle": str(exc)}, status=403)
+        except FondoError as exc:
+            return Response({"detalle": str(exc)}, status=400)
+        return Response(representar_distribucion(registro), status=201)
+
+
+class DistribucionDetalleView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, distribucion_id):
+        registro = distribuciones_visibles(request.user).filter(pk=distribucion_id).first()
+        if registro is None:
+            return Response({"detalle": "Distribución inexistente o sin acceso"}, status=404)
+        return Response(representar_distribucion(registro))
+
+
+class ConfirmarDistribucionView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, distribucion_id):
+        serializer = ConfirmarDistribucionSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        try:
+            registro = confirmar_distribucion(
+                distribucion_id=distribucion_id,
+                usuario_actor=request.user,
+                **serializer.validated_data,
+            )
+        except FondoPermisoError as exc:
+            return Response({"detalle": str(exc)}, status=403)
+        except FondoNoEncontradoError as exc:
+            return Response({"detalle": str(exc)}, status=404)
+        except FondoTransicionError as exc:
+            return Response({"detalle": str(exc)}, status=409)
+        except FondoError as exc:
+            return Response({"detalle": str(exc)}, status=400)
+        return Response(representar_distribucion(registro))

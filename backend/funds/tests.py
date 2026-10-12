@@ -13,11 +13,15 @@ from rest_framework.test import APIClient
 
 from accounts.models import Usuario
 from core.models import (
-    Ciudad, EntidadVerificable, Fundacion, Permiso, Rol, RolPermiso,
+    ArchivoDigital, Ciudad, EntidadMiembro, EntidadMiembroRol, EntidadVerificable,
+    Fundacion, Permiso, Rol, RolPermiso,
     TipoMaestro, UsuarioRol, ValorMaestro,
 )
 
-from .models import DonacionGeneral, FondoExterno, HistorialEstadoDonacion, SolicitudEmergencia
+from .models import (
+    DistribucionReportadaFondo, DonacionGeneral, FondoExterno,
+    HistorialEstadoDonacion, SolicitudEmergencia,
+)
 
 
 class ModelosFondoTests(TestCase):
@@ -290,3 +294,103 @@ class CompromisoDonacionAPITests(TestCase):
         }, format="json")
         self.assertEqual(respuesta.status_code, 403)
         self.assertEqual(DonacionGeneral.objects.get(pk=donacion_id).estado_donacion.nombre, "Comprometida")
+
+
+class DistribucionAPITests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.admin = Usuario.objects.create_user(email="admin-dist@example.invalid", password="clave", nombre="Admin")
+        cls.gestor = Usuario.objects.create_user(email="gestor-dist@example.invalid", password="clave", nombre="Gestor")
+        cls.ajeno = Usuario.objects.create_user(email="ajeno-dist@example.invalid", password="clave", nombre="Ajeno")
+        UsuarioRol.objects.create(usuario=cls.admin, rol=Rol.objects.get(codigo="ADMIN_PLATAFORMA"))
+        verificada = ValorMaestro.objects.get(tipo__nombre="estado_verificacion", nombre="Verificada")
+        ciudad = Ciudad.objects.create(nombre="Ciudad Distribución", departamento="Pruebas")
+        entidad = EntidadVerificable.objects.create(nombre="Fundación Destino", estado_verificacion=verificada)
+        cls.fundacion = Fundacion.objects.create(entidad=entidad, nit="NIT-DIST-1", ciudad=ciudad)
+        entidad_ajena = EntidadVerificable.objects.create(nombre="Otra Fundación", estado_verificacion=verificada)
+        cls.otra_fundacion = Fundacion.objects.create(entidad=entidad_ajena, nit="NIT-DIST-2", ciudad=ciudad)
+        miembro = EntidadMiembro.objects.create(entidad=entidad, usuario=cls.gestor)
+        EntidadMiembroRol.objects.create(miembro=miembro, rol=Rol.objects.get(codigo="GESTOR_FUNDACION"))
+        miembro_ajeno = EntidadMiembro.objects.create(entidad=entidad_ajena, usuario=cls.ajeno)
+        EntidadMiembroRol.objects.create(miembro=miembro_ajeno, rol=Rol.objects.get(codigo="GESTOR_FUNDACION"))
+        cls.fondo = FondoExterno.objects.create(
+            nombre="Fondo distribuciones", datos_transferencia_cifrados=b"dato-de-prueba",
+        )
+        cls.evidencia = ArchivoDigital.objects.create(
+            storage_key="pruebas/distribucion.pdf", mime_type="application/pdf", tamano_bytes=100,
+            visibilidad="PRIVADO", usuario_cargador=cls.admin,
+        )
+
+    def setUp(self):
+        self.api = APIClient()
+
+    def _datos(self):
+        return {
+            "id_fondo_externo": self.fondo.pk,
+            "id_fundacion": self.fundacion.pk,
+            "monto_reportado": "25000.00",
+            "fecha_distribucion": (timezone.now() - timezone.timedelta(days=1)).isoformat(),
+            "criterio": "Atención de animales rescatados",
+            "id_archivo_evidencia": self.evidencia.pk,
+        }
+
+    def _reportar(self):
+        self.api.force_authenticate(user=self.admin)
+        respuesta = self.api.post(reverse("distribucion_listar_crear"), self._datos(), format="json")
+        self.assertEqual(respuesta.status_code, 201, respuesta.data)
+        return respuesta.data["id_distribucion"]
+
+    def test_reporte_y_confirmacion_con_actores_y_fechas(self):
+        distribucion_id = self._reportar()
+        registro = DistribucionReportadaFondo.objects.get(pk=distribucion_id)
+        self.assertEqual(registro.usuario_reportador, self.admin)
+        self.assertEqual(registro.estado_distribucion.nombre, "Reportada")
+        self.assertIsNone(registro.fecha_confirmacion)
+        self.api.force_authenticate(user=self.gestor)
+        respuesta = self.api.post(reverse("distribucion_confirmar", args=[distribucion_id]), {
+            "observacion_confirmacion": "Recepción verificada por la fundación",
+        }, format="json")
+        self.assertEqual(respuesta.status_code, 200, respuesta.data)
+        registro.refresh_from_db()
+        self.assertEqual(registro.estado_distribucion.nombre, "Confirmada")
+        self.assertEqual(registro.usuario_confirmador, self.gestor)
+        self.assertIsNotNone(registro.fecha_confirmacion)
+        self.assertLessEqual(registro.fecha_distribucion, registro.fecha_reporte)
+        self.assertIn("no transfiere fondos", respuesta.data["aviso"])
+        self.assertEqual(self.api.get(reverse("distribucion_detalle", args=[distribucion_id])).status_code, 200)
+        repetida = self.api.post(reverse("distribucion_confirmar", args=[distribucion_id]), {
+            "observacion_confirmacion": "Repetida",
+        }, format="json")
+        self.assertEqual(repetida.status_code, 409)
+
+    def test_permisos_por_fundacion_y_evidencia(self):
+        self.api.force_authenticate(user=self.gestor)
+        self.assertEqual(self.api.post(reverse("distribucion_listar_crear"), self._datos(), format="json").status_code, 403)
+        distribucion_id = self._reportar()
+        self.api.force_authenticate(user=self.ajeno)
+        self.assertEqual(self.api.get(reverse("distribucion_detalle", args=[distribucion_id])).status_code, 404)
+        self.assertEqual(self.api.get(reverse("distribucion_listar_crear")).data, [])
+        self.assertEqual(self.api.post(reverse("distribucion_confirmar", args=[distribucion_id]), {
+            "observacion_confirmacion": "Sin autorización",
+        }, format="json").status_code, 403)
+        self.api.force_authenticate(user=self.admin)
+        datos = self._datos()
+        datos["fecha_distribucion"] = (timezone.now() + timezone.timedelta(days=1)).isoformat()
+        self.assertEqual(self.api.post(reverse("distribucion_listar_crear"), datos, format="json").status_code, 400)
+        datos = self._datos()
+        datos["id_archivo_evidencia"] = ArchivoDigital.objects.create(
+            storage_key="pruebas/publico.pdf", mime_type="application/pdf", tamano_bytes=100,
+            visibilidad="PUBLICO", usuario_cargador=self.admin,
+        ).pk
+        self.assertEqual(self.api.post(reverse("distribucion_listar_crear"), datos, format="json").status_code, 400)
+        self.assertEqual(DistribucionReportadaFondo.objects.count(), 1)
+
+    def test_reportador_no_confirma_aunque_tenga_rol_de_gestor(self):
+        distribucion_id = self._reportar()
+        miembro = EntidadMiembro.objects.create(entidad=self.fundacion.entidad, usuario=self.admin)
+        EntidadMiembroRol.objects.create(miembro=miembro, rol=Rol.objects.get(codigo="GESTOR_FUNDACION"))
+        respuesta = self.api.post(reverse("distribucion_confirmar", args=[distribucion_id]), {
+            "observacion_confirmacion": "Autoconfirmación",
+        }, format="json")
+        self.assertEqual(respuesta.status_code, 403)
+        self.assertEqual(DistribucionReportadaFondo.objects.get(pk=distribucion_id).estado_distribucion.nombre, "Reportada")

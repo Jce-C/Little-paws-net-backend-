@@ -1,12 +1,13 @@
 """Reglas de negocio del fondo externo, sin procesamiento de pagos."""
 
 from django.db import IntegrityError, transaction
+from django.utils import timezone
 
 from core.crypto import cifrar
 from core.models import ValorMaestro
 
-from .models import DonacionGeneral, FondoExterno, HistorialEstadoDonacion
-from .permissions import administrador_puede
+from .models import DistribucionReportadaFondo, DonacionGeneral, FondoExterno, HistorialEstadoDonacion
+from .permissions import administrador_puede, gestor_fundacion_puede
 
 
 class FondoError(ValueError):
@@ -103,3 +104,58 @@ def resolver_compromiso_donacion(*, donacion_id, usuario_actor, estado, observac
         observacion=detalle,
     )
     return donacion
+
+
+@transaction.atomic
+def reportar_distribucion(*, usuario_actor, fondo_externo, fundacion, monto_reportado,
+                         fecha_distribucion, criterio, archivo_evidencia):
+    if not administrador_puede(usuario_actor, "distribucion.reportar"):
+        raise FondoPermisoError("No tiene permiso para reportar distribuciones")
+    if fundacion.entidad.estado_verificacion.tipo.nombre != "estado_verificacion" or (
+        fundacion.entidad.estado_verificacion.nombre != "Verificada"
+    ):
+        raise FondoError("La fundación destinataria debe estar verificada")
+    if monto_reportado <= 0 or fecha_distribucion > timezone.now():
+        raise FondoError("El monto debe ser positivo y la fecha no puede ser futura")
+    if not criterio.strip():
+        raise FondoError("El criterio es obligatorio")
+    if archivo_evidencia.visibilidad != "PRIVADO" or archivo_evidencia.usuario_cargador_id != usuario_actor.pk:
+        raise FondoError("La evidencia debe ser privada y pertenecer al usuario reportador")
+    estado = ValorMaestro.objects.get(tipo__nombre="estado_distribucion", nombre="Reportada")
+    return DistribucionReportadaFondo.objects.create(
+        fondo_externo=fondo_externo, fundacion=fundacion, monto_reportado=monto_reportado,
+        fecha_distribucion=fecha_distribucion, criterio=criterio.strip(),
+        archivo_evidencia=archivo_evidencia, usuario_reportador=usuario_actor,
+        estado_distribucion=estado,
+    )
+
+
+@transaction.atomic
+def confirmar_distribucion(*, distribucion_id, usuario_actor, observacion_confirmacion):
+    try:
+        distribucion = DistribucionReportadaFondo.objects.select_for_update().select_related(
+            "estado_distribucion__tipo",
+        ).get(pk=distribucion_id)
+    except DistribucionReportadaFondo.DoesNotExist as exc:
+        raise FondoNoEncontradoError("Distribución inexistente") from exc
+    if not gestor_fundacion_puede(usuario_actor, distribucion.fundacion_id, "distribucion.confirmar"):
+        raise FondoPermisoError("No es gestor autorizado de la fundación destinataria")
+    if distribucion.usuario_reportador_id == usuario_actor.pk:
+        raise FondoPermisoError("El reportador no puede confirmar su propio registro")
+    if distribucion.estado_distribucion.tipo.nombre != "estado_distribucion" or (
+        distribucion.estado_distribucion.nombre != "Reportada"
+    ):
+        raise FondoTransicionError("Solo se puede confirmar una distribución reportada")
+    observacion_confirmacion = observacion_confirmacion.strip()
+    if not observacion_confirmacion:
+        raise FondoError("La confirmación requiere una observación")
+    distribucion.estado_distribucion = ValorMaestro.objects.get(
+        tipo__nombre="estado_distribucion", nombre="Confirmada",
+    )
+    distribucion.usuario_confirmador = usuario_actor
+    distribucion.fecha_confirmacion = timezone.now()
+    distribucion.observacion_confirmacion = observacion_confirmacion
+    distribucion.save(update_fields=[
+        "estado_distribucion", "usuario_confirmador", "fecha_confirmacion", "observacion_confirmacion",
+    ])
+    return distribucion

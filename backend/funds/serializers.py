@@ -4,6 +4,8 @@ from decimal import Decimal
 
 from rest_framework import serializers
 
+from core.models import ArchivoDigital, Fundacion
+
 from .models import FondoExterno
 
 
@@ -75,3 +77,43 @@ def representar_donacion(donacion, *, incluir_historial=False):
             ).order_by("fecha_cambio", "pk")
         ]
     return datos
+
+
+class DistribucionCrearSerializer(serializers.Serializer):
+    id_fondo_externo = serializers.PrimaryKeyRelatedField(
+        queryset=FondoExterno.objects.all(), source="fondo_externo",
+    )
+    id_fundacion = serializers.PrimaryKeyRelatedField(
+        queryset=Fundacion.objects.all(), source="fundacion",
+    )
+    monto_reportado = serializers.DecimalField(max_digits=12, decimal_places=2, min_value=Decimal("0.01"))
+    fecha_distribucion = serializers.DateTimeField()
+    criterio = serializers.CharField(max_length=2000, allow_blank=False, trim_whitespace=True)
+    id_archivo_evidencia = serializers.PrimaryKeyRelatedField(
+        queryset=ArchivoDigital.objects.all(), source="archivo_evidencia",
+    )
+
+
+class ConfirmarDistribucionSerializer(serializers.Serializer):
+    observacion_confirmacion = serializers.CharField(
+        max_length=2000, allow_blank=False, trim_whitespace=True,
+    )
+
+
+def representar_distribucion(distribucion):
+    return {
+        "id_distribucion": distribucion.pk,
+        "id_fondo_externo": distribucion.fondo_externo_id,
+        "id_fundacion": distribucion.fundacion_id,
+        "monto_reportado": str(distribucion.monto_reportado),
+        "estado": distribucion.estado_distribucion.nombre,
+        "fecha_distribucion": distribucion.fecha_distribucion,
+        "fecha_reporte": distribucion.fecha_reporte,
+        "id_usuario_reportador": distribucion.usuario_reportador_id,
+        "criterio": distribucion.criterio,
+        "id_archivo_evidencia": distribucion.archivo_evidencia_id,
+        "id_usuario_confirmador": distribucion.usuario_confirmador_id,
+        "fecha_confirmacion": distribucion.fecha_confirmacion,
+        "observacion_confirmacion": distribucion.observacion_confirmacion,
+        "aviso": "Registro informativo de una distribución externa; Little Paws Net no transfiere fondos",
+    }
