@@ -10,10 +10,11 @@ from .models import DonacionGeneral, FondoExterno
 from .permissions import administrador_puede
 from .serializers import (
     CompromisoDonacionCrearSerializer, FondoExternoCrearSerializer,
-    representar_donacion, representar_fondo,
+    ResolverDonacionSerializer, representar_donacion, representar_fondo,
 )
 from .services import (
-    FondoError, FondoPermisoError, crear_compromiso_donacion, crear_fondo_externo,
+    FondoError, FondoNoEncontradoError, FondoPermisoError, FondoTransicionError,
+    crear_compromiso_donacion, crear_fondo_externo, resolver_compromiso_donacion,
 )
 
 
@@ -91,3 +92,30 @@ class DonacionGeneralDetalleView(APIView):
         if donacion is None:
             return Response({"detalle": "Donación inexistente o sin acceso"}, status=404)
         return Response(representar_donacion(donacion, incluir_historial=True))
+
+
+class ResolverDonacionView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, donacion_id):
+        serializer = ResolverDonacionSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        try:
+            donacion = resolver_compromiso_donacion(
+                donacion_id=donacion_id,
+                usuario_actor=request.user,
+                **serializer.validated_data,
+            )
+        except FondoPermisoError as exc:
+            return Response({"detalle": str(exc)}, status=403)
+        except FondoNoEncontradoError as exc:
+            return Response({"detalle": str(exc)}, status=404)
+        except FondoTransicionError as exc:
+            return Response({"detalle": str(exc)}, status=409)
+        except FondoError as exc:
+            return Response({"detalle": str(exc)}, status=400)
+        return Response({
+            "id_donacion": donacion.pk,
+            "estado": donacion.estado_donacion.nombre,
+            "aviso": representar_donacion(donacion)["aviso"],
+        })

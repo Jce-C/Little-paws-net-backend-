@@ -182,6 +182,15 @@ class CompromisoDonacionAPITests(TestCase):
     def setUp(self):
         self.api = APIClient()
 
+    def _crear_compromiso(self, usuario=None):
+        self.api.force_authenticate(user=usuario or self.donante)
+        respuesta = self.api.post(reverse("donacion_listar_crear"), {
+            "id_fondo_externo": self.fondo.pk,
+            "monto_comprometido": "12500.00",
+        }, format="json")
+        self.assertEqual(respuesta.status_code, 201, respuesta.data)
+        return respuesta.data["id_donacion"]
+
     def test_crear_compromiso_no_confirma_pago_y_crea_historial(self):
         self.api.force_authenticate(user=self.donante)
         respuesta = self.api.post(reverse("donacion_listar_crear"), {
@@ -223,3 +232,61 @@ class CompromisoDonacionAPITests(TestCase):
         detalle = self.api.get(ruta)
         self.assertEqual(detalle.status_code, 200, detalle.data)
         self.assertEqual(len(detalle.data["historial"]), 1)
+
+    def test_admin_confirma_con_referencia_y_registra_actor(self):
+        donacion_id = self._crear_compromiso()
+        self.api.force_authenticate(user=self.admin)
+        ruta = reverse("donacion_resolver", args=[donacion_id])
+        respuesta = self.api.post(ruta, {
+            "estado": "Confirmada",
+            "observacion": "Comprobante verificado en la plataforma externa",
+            "referencia_externa": "EXT-2026-001",
+        }, format="json")
+        self.assertEqual(respuesta.status_code, 200, respuesta.data)
+        self.assertEqual(respuesta.data["estado"], "Confirmada")
+        self.assertIn("no procesó el pago", respuesta.data["aviso"])
+        donacion = DonacionGeneral.objects.get(pk=donacion_id)
+        self.assertEqual(donacion.estado_donacion.nombre, "Confirmada")
+        cambios = list(HistorialEstadoDonacion.objects.filter(donacion=donacion).order_by("pk"))
+        self.assertEqual(len(cambios), 2)
+        self.assertEqual(cambios[1].estado_anterior.nombre, "Comprometida")
+        self.assertEqual(cambios[1].estado_nuevo.nombre, "Confirmada")
+        self.assertEqual(cambios[1].usuario_actor, self.admin)
+        self.assertIn("EXT-2026-001", cambios[1].observacion)
+        repetida = self.api.post(ruta, {
+            "estado": "Confirmada", "observacion": "Intento repetido", "referencia_externa": "EXT-2026-002",
+        }, format="json")
+        self.assertEqual(repetida.status_code, 409)
+        self.assertEqual(HistorialEstadoDonacion.objects.filter(donacion=donacion).count(), 2)
+
+    def test_rechazo_documentado_no_requiere_referencia_de_pago(self):
+        donacion_id = self._crear_compromiso()
+        self.api.force_authenticate(user=self.admin)
+        respuesta = self.api.post(reverse("donacion_resolver", args=[donacion_id]), {
+            "estado": "Rechazada", "observacion": "No se pudo verificar el comprobante externo",
+        }, format="json")
+        self.assertEqual(respuesta.status_code, 200, respuesta.data)
+        self.assertEqual(DonacionGeneral.objects.get(pk=donacion_id).estado_donacion.nombre, "Rechazada")
+
+    def test_sin_permiso_o_sin_referencia_no_confirma(self):
+        donacion_id = self._crear_compromiso()
+        ruta = reverse("donacion_resolver", args=[donacion_id])
+        datos = {
+            "estado": "Confirmada", "observacion": "Pago verificado externamente",
+            "referencia_externa": "EXT-2026-003",
+        }
+        self.assertEqual(self.api.post(ruta, datos, format="json").status_code, 403)
+        self.api.force_authenticate(user=self.admin)
+        self.assertEqual(self.api.post(ruta, {
+            "estado": "Confirmada", "observacion": "Pago verificado externamente",
+        }, format="json").status_code, 400)
+        self.assertEqual(DonacionGeneral.objects.get(pk=donacion_id).estado_donacion.nombre, "Comprometida")
+
+    def test_admin_no_resuelve_donacion_propia(self):
+        donacion_id = self._crear_compromiso(usuario=self.admin)
+        respuesta = self.api.post(reverse("donacion_resolver", args=[donacion_id]), {
+            "estado": "Confirmada", "observacion": "Prueba de conflicto de interés",
+            "referencia_externa": "EXT-2026-004",
+        }, format="json")
+        self.assertEqual(respuesta.status_code, 403)
+        self.assertEqual(DonacionGeneral.objects.get(pk=donacion_id).estado_donacion.nombre, "Comprometida")

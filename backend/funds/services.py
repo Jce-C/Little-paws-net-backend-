@@ -17,6 +17,14 @@ class FondoPermisoError(FondoError):
     pass
 
 
+class FondoNoEncontradoError(FondoError):
+    pass
+
+
+class FondoTransicionError(FondoError):
+    pass
+
+
 @transaction.atomic
 def crear_fondo_externo(*, usuario_actor, nombre, instrucciones_transferencia):
     if not administrador_puede(usuario_actor, "fondo.gestionar"):
@@ -54,5 +62,44 @@ def crear_compromiso_donacion(*, usuario_donante, fondo_externo, monto_compromet
         estado_nuevo=estado,
         usuario_actor=usuario_donante,
         observacion="Registro del compromiso; no confirma recepción de dinero",
+    )
+    return donacion
+
+
+@transaction.atomic
+def resolver_compromiso_donacion(*, donacion_id, usuario_actor, estado, observacion, referencia_externa=""):
+    if not administrador_puede(usuario_actor, "donacion.confirmar"):
+        raise FondoPermisoError("No tiene permiso para resolver donaciones")
+    if estado not in ("Confirmada", "Rechazada"):
+        raise FondoError("La decisión debe ser Confirmada o Rechazada")
+    observacion = observacion.strip()
+    referencia_externa = referencia_externa.strip()
+    if not observacion:
+        raise FondoError("La resolución requiere una observación")
+    if estado == "Confirmada" and not referencia_externa:
+        raise FondoError("La confirmación requiere una referencia externa verificable")
+    try:
+        donacion = DonacionGeneral.objects.select_for_update().select_related(
+            "estado_donacion__tipo",
+        ).get(pk=donacion_id)
+    except DonacionGeneral.DoesNotExist as exc:
+        raise FondoNoEncontradoError("Donación inexistente") from exc
+    if donacion.usuario_donante_id == usuario_actor.pk:
+        raise FondoPermisoError("No puede resolver su propio compromiso")
+    anterior = donacion.estado_donacion
+    if anterior.tipo.nombre != "estado_donacion" or anterior.nombre != "Comprometida":
+        raise FondoTransicionError("Solo se puede resolver una donación comprometida")
+    nuevo_estado = ValorMaestro.objects.get(tipo__nombre="estado_donacion", nombre=estado)
+    donacion.estado_donacion = nuevo_estado
+    donacion.save(update_fields=["estado_donacion"])
+    detalle = observacion
+    if estado == "Confirmada":
+        detalle = f"{observacion} | Referencia externa: {referencia_externa}"
+    HistorialEstadoDonacion.objects.create(
+        donacion=donacion,
+        estado_anterior=anterior,
+        estado_nuevo=nuevo_estado,
+        usuario_actor=usuario_actor,
+        observacion=detalle,
     )
     return donacion

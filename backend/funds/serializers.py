@@ -27,7 +27,29 @@ class CompromisoDonacionCrearSerializer(serializers.Serializer):
     )
 
 
+class ResolverDonacionSerializer(serializers.Serializer):
+    estado = serializers.ChoiceField(choices=("Confirmada", "Rechazada"))
+    observacion = serializers.CharField(max_length=2000, allow_blank=False, trim_whitespace=True)
+    referencia_externa = serializers.CharField(
+        max_length=120, required=False, allow_blank=True, trim_whitespace=True,
+        help_text="Identificador del comprobante externo; no incluya datos bancarios sensibles.",
+    )
+
+    def validate(self, attrs):
+        if attrs["estado"] == "Confirmada" and not attrs.get("referencia_externa", ""):
+            raise serializers.ValidationError({
+                "referencia_externa": "Se requiere una referencia externa para confirmar la donación.",
+            })
+        return attrs
+
+
 def representar_donacion(donacion, *, incluir_historial=False):
+    avisos = {
+        "Comprometida": "Compromiso registrado; no acredita recepción de dinero",
+        "Confirmada": "Recepción registrada por un administrador; Little Paws Net no procesó el pago",
+        "Rechazada": "Compromiso rechazado; no se registró dinero recibido",
+        "Cancelada": "Compromiso cancelado; no se registró dinero recibido",
+    }
     datos = {
         "id_donacion": donacion.pk,
         "id_fondo_externo": donacion.fondo_externo_id,
@@ -36,7 +58,7 @@ def representar_donacion(donacion, *, incluir_historial=False):
         "estado": donacion.estado_donacion.nombre,
         "monto_comprometido": str(donacion.monto_comprometido),
         "fecha_compromiso": donacion.fecha_compromiso,
-        "aviso": "Compromiso registrado; no acredita recepción de dinero",
+        "aviso": avisos.get(donacion.estado_donacion.nombre, "Estado informativo; sin procesamiento de pagos"),
     }
     if incluir_historial:
         datos["historial"] = [
