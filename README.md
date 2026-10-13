@@ -1,38 +1,87 @@
-# Little Paws Net — backend colaborativo
+# Little Paws Net — API
 
-Backend Django REST Framework sobre una **base MySQL nueva**. Este repositorio se construye por funcionalidades mediante commits reales de José Carlos, María José y Sally Andrea. El repositorio anterior sirve solo como referencia; no se reutiliza su historial ni su base de datos.
+Backend de Little Paws Net, una plataforma para gestionar reportes y rescates de animales, expedientes médicos, adopciones, apadrinamientos, fondos externos y el catálogo de tiendas aliadas. Está construido con Django y Django REST Framework sobre MySQL. Este repositorio contiene la API; no incluye una interfaz web o móvil.
 
-## Estado
+## Funcionalidades
 
-Incluye la estructura Django, configuración local segura, autenticación por correo/contraseña con JWT, catálogos, reportes, rescate, apadrinamiento y expediente médico. Los módulos de adopción, fondo externo y comercio siguen pendientes de los commits de María José y Sally Andrea.
+- Registro de usuarios y autenticación mediante JWT.
+- Reportes georreferenciados, asignación de casos a fundaciones y seguimiento de estados.
+- Custodia de mascotas, autorización de veterinarios y acceso controlado al expediente mediante QR.
+- Solicitudes de adopción con resolución e historial.
+- Compromisos de apadrinamiento y donación, y registro de distribuciones de fondos externos.
+- Productos de tiendas aliadas, pedidos iniciados, espacios publicitarios y tarifas de publicación.
+- Control de acceso por roles y pertenencia a entidades, con validaciones y trazabilidad en los procesos principales.
+- Respuestas en español e inglés según el encabezado `Accept-Language`. Véase [IDIOMAS.md](backend/IDIOMAS.md).
 
-## Desarrollo local
+Los pedidos no procesan pagos ni reservan inventario. Los compromisos y distribuciones de fondos registran información del sistema; no ejecutan transferencias bancarias.
 
-En `backend/`, crear un entorno virtual e instalar `requirements.txt`. Copiar `.env.example` a `.env` y asignar claves propias; `.env` está excluido de Git. Crear una base MySQL 8 vacía por integrante y ejecutar `python manage.py migrate` desde `backend/`. El usuario MySQL de desarrollo requiere permisos sobre **esa base únicamente**. No apuntar al esquema anterior `little_paws_net_v2`.
+## Requisitos
 
-`LPN_DATA_KEY` es una clave Fernet local para cifrar datos bancarios. Generar una distinta por instalación con `python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"` y copiarla a `.env`. No cambiarla después de almacenar datos cifrados sin plan de rotación; no publicarla.
+- Python y las dependencias fijadas en [requirements.txt](backend/requirements.txt).
+- MySQL 8 con una base de datos vacía y una cuenta con permisos sobre esa base.
+- Una clave Fernet local para proteger los datos sensibles utilizados por la aplicación.
 
-Verificación del backend:
+## Inicio rápido en Windows (PowerShell)
+
+Desde la raíz del repositorio:
+
+```powershell
+cd backend
+py -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install -r requirements.txt
+Copy-Item .env.example .env
+```
+
+Editar `backend/.env` con los datos de la base MySQL y claves propias. Para generar las claves sin compartirlas:
+
+```powershell
+python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
+python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
+```
+
+Asignar los resultados a `DJANGO_SECRET_KEY` y `LPN_DATA_KEY`, respectivamente. La segunda clave debe conservarse para poder descifrar datos ya almacenados. No subir `.env` a Git.
+
+Una vez configurada la conexión:
+
+```powershell
+python manage.py migrate
+python manage.py check --database default
+python manage.py runserver
+```
+
+El servidor de desarrollo queda disponible en `http://127.0.0.1:8000/`. `runserver` es solo para desarrollo local.
+
+## API e idiomas
+
+Todas las rutas funcionales comienzan con `/api/`. Algunos puntos de entrada son:
+
+| Proceso | Rutas de ejemplo |
+| --- | --- |
+| Acceso | `/api/auth/registro/`, `/api/auth/token/`, `/api/auth/perfil/` |
+| Rescate y expediente | `/api/reportes/`, `/api/casos/{id}/`, `/api/expedientes/{id}/consultar/` |
+| Adopción y fondo | `/api/adopciones/`, `/api/fondos/`, `/api/donaciones/`, `/api/distribuciones/` |
+| Comercio | `/api/productos/`, `/api/pedidos/`, `/api/publicidad/`, `/api/tarifas/` |
+| Referencia | `/api/catalogos/`, `/api/idiomas/`, `/api/health/` |
+
+La mayoría de operaciones privadas requieren `Authorization: Bearer <token>`. El cliente puede solicitar inglés con `Accept-Language: en` o español con `Accept-Language: es`; los nombres de rutas y campos JSON no cambian. Las rutas completas están definidas en [config/urls.py](backend/config/urls.py) y en los archivos `urls.py` de cada módulo.
+
+## Verificación
+
+Desde `backend/` y con el entorno virtual activo:
 
 ```powershell
 python manage.py check --database default
-python manage.py migrate
+python manage.py makemigrations --check --dry-run
 python manage.py test --settings=config.test_settings
-python manage.py smoke_rescue
-python manage.py seed_demo_rescue
 ```
 
-Las pruebas automatizadas usan SQLite temporal y no alteran MySQL. `smoke_rescue` verifica en MySQL cobertura espacial, aceptación, cupos, apadrinamiento y expediente; sus filas de prueba se revierten.
-`seed_demo_rescue` carga 25 reportes ficticios y sus relaciones (más de 100 registros del proceso); se puede repetir sin duplicarlos. Solo admite el esquema local `little_paws_net_equipo` y usa correos `.invalid`, nunca datos personales reales.
+La suite automatizada utiliza SQLite en memoria y no modifica MySQL. Para verificar el flujo de rescate, apadrinamiento y expediente sobre MySQL existe `python manage.py smoke_rescue`; sus registros temporales se revierten. Este comando solo admite la base local `little_paws_net_equipo`.
 
-## Rutas principales
+Se pueden cargar registros ficticios e idempotentes del proceso de rescate con `python manage.py seed_demo_rescue`. Este comando también está limitado a `little_paws_net_equipo`; no debe utilizarse en producción ni con datos personales reales.
 
-- `POST /api/auth/registro/`, `POST /api/auth/token/`, `GET /api/auth/perfil/`.
-- `GET /api/catalogos/`; `POST /api/reportes/`; `GET /api/reportes/{id}/`; `POST /api/reportes/{id}/aceptar/`.
-- `GET /api/casos/{id}/`; `POST /api/casos/{id}/cerrar/`; `POST /api/casos/{id}/mascota/`; `POST /api/casos/{id}/custodia/`.
-- `POST /api/apadrinamientos/`; `POST /api/apadrinamientos/{id}/declaraciones/`; `POST /api/apadrinamientos/{id}/confirmaciones/`.
-- `POST /api/expedientes/{id}/autorizaciones/`; `POST /api/expedientes/{id}/qr/`; `POST /api/expedientes/{id}/consultar/`; `POST /api/expedientes/{id}/registros/`.
+## Seguridad y despliegue
 
-Los endpoints de escritura requieren la cuenta, el rol y la pertenencia a la entidad que correspondan. El QR nunca sustituye la verificación profesional ni la autorización vigente. Los compromisos y declaraciones no equivalen a dinero recibido: únicamente la fundación puede confirmar el aporte.
+Las credenciales y claves se configuran fuera del repositorio. Antes de desplegar se deben revisar HTTPS, hosts permitidos, cookies seguras, gestión de secretos y `python manage.py check --deploy`. La configuración incluida está orientada al desarrollo y la validación del proyecto, no a una instalación de producción lista para exponer públicamente.
 
-Las responsabilidades y reglas de colaboración están en [CONTRIBUTING.md](CONTRIBUTING.md).
+Para colaborar, consultar [CONTRIBUTING.md](CONTRIBUTING.md).

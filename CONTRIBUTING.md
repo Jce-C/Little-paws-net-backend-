@@ -1,25 +1,20 @@
-# Colaboración
+# Contribuir a Little Paws Net
 
-- José Carlos (`Jce-C`): identidad, modelos compartidos, reporte, rescate y expediente.
-- María José (`MAJO025`): adopción y fondo externo.
-- Sally Andrea (`andreagutiber-pixel`): productos, pedidos y publicidad.
+Las contribuciones deben mantener la coherencia entre modelos, migraciones, validación de entrada, permisos y respuestas de la API. Los cambios de reglas de negocio requieren pruebas que cubran tanto el caso permitido como el rechazado.
 
-Cada integrante trabaja desde su propia cuenta GitHub en una rama y realiza commits pequeños por funcionalidad. `git config user.email` debe corresponder a un correo asociado a su cuenta; nunca se modifica la autoría de otra persona. Los Pull Requests se integran sin squash para conservar los commits.
+## Flujo de trabajo
 
-Cada proceso debe exponer claramente `models.py`, `serializers.py`, `views.py` y `urls.py`, además de reglas de negocio y pruebas donde corresponda. Los serializers validan datos; permisos y servicios verifican autorización. No se usan templates para esta API. No introducir contraseñas, tokens, datos médicos reales ni archivos `.env` en Git.
+1. Crear una rama a partir de `main` para una funcionalidad o corrección concreta.
+2. Incluir en el mismo cambio las migraciones generadas por Django, si se modifica un modelo.
+3. Revisar el diff y ejecutar las comprobaciones desde `backend/`:
 
-Las apps nuevas se integran en orden de dependencias. Antes de cada commit: revisar el diff, ejecutar `manage.py check`, comprobar migraciones y ejecutar las pruebas aplicables. No rehacer ni falsificar commits ajenos.
+   ```powershell
+   python manage.py check
+   python manage.py makemigrations --check --dry-run
+   python manage.py test --settings=config.test_settings
+   ```
 
-## Secuencia de trabajo
+4. Hacer commits descriptivos y abrir un pull request que explique el alcance, las pruebas y cualquier migración o limitación pendiente.
+5. Antes de integrar, comprobar el comportamiento en MySQL cuando el cambio dependa de funciones específicas de ese motor, como tipos espaciales o disparadores.
 
-1. José Carlos incorpora el modelo mínimo compartido de `Mascota` para que rescate pueda avanzar. María José conserva la ampliación de adopción y fondo externo en sus propios commits.
-2. José Carlos incorpora reporte, caso y trazabilidad en varios commits. María José desarrolla adopción y fondo externo sobre la base compartida.
-3. Sally Andrea puede desarrollar comercio en paralelo, pues depende únicamente de `accounts` y `core`.
-
-Ejemplos de commits pequeños por responsabilidad:
-
-- María José: `feat(adoption): modelar solicitudes`, `feat(adoption): resolver solicitudes`, `feat(funds): registrar distribuciones`, `test(adoption): cubrir decisiones`.
-- Sally Andrea: `feat(commerce): modelar productos`, `feat(commerce): consultar catálogo`, `feat(orders): iniciar pedidos`, `feat(ads): gestionar anuncios`, `test(orders): validar tienda`.
-- José Carlos: `feat(rescue): modelar reportes`, `feat(rescue): aceptar casos`, `feat(rescue): consultar seguimiento`, `test(rescue): cubrir autorizaciones`.
-
-Los mensajes son orientativos: cada commit debe contener cambios reales y comprobables. Antes de comenzar, cada integrante configura `git config user.name` y `git config user.email` localmente, verifica que el correo esté vinculado a su propia cuenta GitHub y obtiene acceso al repositorio. La secuencia habitual es crear una rama propia, programar y probar una función, revisar con `git diff`, hacer `git add` solo de los archivos de esa función, `git commit`, `git push` y abrir un Pull Request. Las migraciones se generan con Django y se incluyen junto al modelo correspondiente.
+No incluir contraseñas, tokens, claves de cifrado, archivos `.env` ni datos personales reales. Las pruebas deben usar información ficticia. Las traducciones deben conservar estables las rutas, claves JSON y reglas de autorización; véase [IDIOMAS.md](backend/IDIOMAS.md).
