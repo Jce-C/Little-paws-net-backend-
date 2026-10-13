@@ -15,6 +15,6 @@ Las contribuciones deben mantener la coherencia entre modelos, migraciones, vali
    ```
 
 4. Hacer commits descriptivos y abrir un pull request que explique el alcance, las pruebas y cualquier migración o limitación pendiente.
-5. Antes de integrar, comprobar el comportamiento en MySQL cuando el cambio dependa de funciones específicas de ese motor, como tipos espaciales o disparadores.
+5. Antes de integrar, comprobar el comportamiento en MySQL cuando el cambio dependa de funciones específicas de ese motor, como tipos espaciales o claves foráneas compuestas.
 
 No incluir contraseñas, tokens, claves de cifrado, archivos `.env` ni datos personales reales. Las pruebas deben usar información ficticia. Las traducciones deben conservar estables las rutas, claves JSON y reglas de autorización; véase [IDIOMAS.md](backend/IDIOMAS.md).
