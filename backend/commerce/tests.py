@@ -172,6 +172,10 @@ class ProductoAPITests(TestCase):
         ingles = self.api.get(reverse("producto_listar_crear"), HTTP_ACCEPT_LANGUAGE="en")
         self.assertEqual(ingles.data[0]["nombre"], "Test food")
         self.assertEqual(ingles.data[0]["descripcion"], "Dog food")
+        self.assertEqual(ingles.data[0]["categoria"], "Food")
+        self.assertEqual(ingles.data[0]["tipo"], "Dry food")
+        self.assertEqual(ingles.data[0]["estado"], "Available")
+        self.assertEqual(ingles["Content-Language"], "en")
         self.assertNotIn("nombre_en", ingles.data[0])
         self.api.force_authenticate(user=self.gestor)
         ruta = reverse("producto_detalle", args=[creada.data["id_producto"]])
@@ -187,6 +191,15 @@ class ProductoAPITests(TestCase):
         self.api.force_authenticate(user=None)
         ingles = self.api.get(reverse("producto_listar_crear"), HTTP_ACCEPT_LANGUAGE="en")
         self.assertEqual(ingles.data[0]["nombre"], "Alimento de prueba")
+
+    def test_error_de_permiso_se_traduce_sin_cambiar_regla(self):
+        self.api.force_authenticate(user=self.ajeno)
+        respuesta = self.api.post(
+            reverse("producto_listar_crear"), self._datos(),
+            format="json", HTTP_ACCEPT_LANGUAGE="en",
+        )
+        self.assertEqual(respuesta.status_code, 403)
+        self.assertEqual(respuesta.data["detalle"], "You cannot manage this store's products")
 
 
 class PedidoAPITests(TestCase):
@@ -255,6 +268,15 @@ class PedidoAPITests(TestCase):
         self.producto1.save(update_fields=["precio"])
         detalle = self.api.get(reverse("pedido_detalle", args=[pedido.pk]))
         self.assertEqual(detalle.data["total_referencial"], "22500.00")
+
+    def test_respuesta_de_pedido_en_ingles(self):
+        pedido_id = self._crear().data["id_pedido"]
+        respuesta = self.api.get(
+            reverse("pedido_detalle", args=[pedido_id]), HTTP_ACCEPT_LANGUAGE="en",
+        )
+        self.assertEqual(respuesta.status_code, 200)
+        self.assertEqual(respuesta.data["estado"], "Started")
+        self.assertIn("payment is not confirmed", respuesta.data["aviso"])
 
     def test_rechaza_producto_de_otra_tienda_sin_dejar_registros(self):
         self.api.force_authenticate(user=self.cliente)
@@ -350,6 +372,14 @@ class PublicidadAPITests(TestCase):
         self.api.force_authenticate(user=None)
         self.assertEqual(len(self.api.get(ruta).data), 1)
         self.assertEqual(self.api.get(reverse("publicidad_detalle", args=[creada.data["id_espacio"]])).status_code, 200)
+
+    def test_aviso_publicitario_en_ingles(self):
+        self.api.force_authenticate(user=self.gestor)
+        creada = self.api.post(reverse("publicidad_listar_crear"), self._datos(), format="json")
+        self.assertEqual(creada.status_code, 201, creada.data)
+        respuesta = self.api.get(reverse("publicidad_listar_crear"), HTTP_ACCEPT_LANGUAGE="en")
+        self.assertEqual(respuesta.status_code, 200)
+        self.assertIn("does not process", respuesta.data[0]["aviso"])
 
     def test_anuncio_futuro_es_visible_solo_para_su_gestor(self):
         self.api.force_authenticate(user=self.gestor)
@@ -479,3 +509,5 @@ class TarifaPublicacionAPITests(TestCase):
         self.api.force_authenticate(user=None)
         ingles = self.api.get(reverse("tarifa_listar_crear"), HTTP_ACCEPT_LANGUAGE="en")
         self.assertEqual(ingles.data[0]["concepto"], "Monthly store listing")
+        self.assertEqual(ingles.data[0]["tipo_tarifa"], "Monthly")
+        self.assertIn("does not confirm", ingles.data[0]["aviso"])

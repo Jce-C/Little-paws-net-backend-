@@ -3,11 +3,11 @@
 from decimal import Decimal
 
 from rest_framework import serializers
-from django.utils.translation import get_language
 
 from core.models import Anunciante, ArchivoDigital, Tienda, ValorMaestro
 
 from .models import Producto
+from .i18n import etiqueta, ingles_activo, texto
 
 
 class ProductoCrearSerializer(serializers.Serializer):
@@ -53,28 +53,32 @@ class ProductoActualizarSerializer(serializers.Serializer):
     def validate(self, attrs):
         desconocidos = set(self.initial_data) - set(self.fields)
         if desconocidos:
-            raise serializers.ValidationError({campo: "Campo no modificable" for campo in desconocidos})
+            raise serializers.ValidationError({
+                campo: texto("Campo no modificable", "Field cannot be changed") for campo in desconocidos
+            })
         if not attrs:
-            raise serializers.ValidationError("Indique al menos un campo para actualizar")
+            raise serializers.ValidationError(texto(
+                "Indique al menos un campo para actualizar", "Provide at least one field to update",
+            ))
         return attrs
 
 
 def representar_producto(producto):
-    ingles = get_language().startswith("en")
+    ingles = ingles_activo()
     return {
         "id_producto": producto.pk,
         "id_tienda": producto.tienda_id,
         "tienda": producto.tienda.entidad.nombre,
         "id_categoria_producto": producto.categoria_producto_id,
-        "categoria": producto.categoria_producto.nombre,
+        "categoria": etiqueta(producto.categoria_producto.nombre),
         "id_tipo_producto": producto.tipo_producto_id,
-        "tipo": producto.tipo_producto.nombre,
+        "tipo": etiqueta(producto.tipo_producto.nombre),
         "nombre": (producto.nombre_en or producto.nombre) if ingles else producto.nombre,
         "descripcion": (producto.descripcion_en or producto.descripcion) if ingles else producto.descripcion,
         "precio": str(producto.precio),
         "existencias": producto.existencias,
         "destacado": producto.destacado,
-        "estado": producto.estado_producto.nombre,
+        "estado": etiqueta(producto.estado_producto.nombre),
     }
 
 
@@ -88,7 +92,9 @@ class DetallePedidoEntradaSerializer(serializers.Serializer):
         if isinstance(data, dict):
             desconocidos = set(data) - set(self.fields)
             if desconocidos:
-                raise serializers.ValidationError({campo: "Campo no permitido" for campo in desconocidos})
+                raise serializers.ValidationError({
+                    campo: texto("Campo no permitido", "Field not allowed") for campo in desconocidos
+                })
         return super().to_internal_value(data)
 
 
@@ -99,15 +105,23 @@ class PedidoCrearSerializer(serializers.Serializer):
     def validate(self, attrs):
         desconocidos = set(self.initial_data) - set(self.fields)
         if desconocidos:
-            raise serializers.ValidationError({campo: "Campo no permitido" for campo in desconocidos})
+            raise serializers.ValidationError({
+                campo: texto("Campo no permitido", "Field not allowed") for campo in desconocidos
+            })
         return attrs
 
     def validate_productos(self, productos):
         if len(productos) > 50:
-            raise serializers.ValidationError("El pedido admite como máximo 50 productos distintos")
+            raise serializers.ValidationError(texto(
+                "El pedido admite como máximo 50 productos distintos",
+                "The order allows at most 50 distinct products",
+            ))
         ids = [item["producto"].pk for item in productos]
         if len(ids) != len(set(ids)):
-            raise serializers.ValidationError("No repita productos; indique una sola cantidad por producto")
+            raise serializers.ValidationError(texto(
+                "No repita productos; indique una sola cantidad por producto",
+                "Do not repeat products; provide one quantity per product",
+            ))
         return productos
 
 
@@ -118,7 +132,7 @@ def representar_pedido(pedido):
         "id_pedido": pedido.pk,
         "id_tienda": pedido.tienda_id,
         "id_usuario_cliente": pedido.usuario_cliente_id,
-        "estado": pedido.estado_pedido.nombre,
+        "estado": etiqueta(pedido.estado_pedido.nombre),
         "fecha_inicio": pedido.fecha_inicio,
         "productos": [
             {
@@ -131,7 +145,10 @@ def representar_pedido(pedido):
             for detalle in detalles
         ],
         "total_referencial": str(total),
-        "aviso": "Pedido iniciado: no confirma pago ni reserva inventario",
+        "aviso": texto(
+            "Pedido iniciado: no confirma pago ni reserva inventario",
+            "Order started: payment is not confirmed and inventory is not reserved",
+        ),
     }
 
 
@@ -153,9 +170,13 @@ class EspacioPublicitarioCrearSerializer(serializers.Serializer):
     def validate(self, attrs):
         desconocidos = set(self.initial_data) - set(self.fields)
         if desconocidos:
-            raise serializers.ValidationError({campo: "Campo no permitido" for campo in desconocidos})
+            raise serializers.ValidationError({
+                campo: texto("Campo no permitido", "Field not allowed") for campo in desconocidos
+            })
         if attrs["fecha_fin"] <= attrs["fecha_inicio"]:
-            raise serializers.ValidationError({"fecha_fin": "Debe ser posterior al inicio"})
+            raise serializers.ValidationError({
+                "fecha_fin": texto("Debe ser posterior al inicio", "Must be later than the start"),
+            })
         return attrs
 
 
@@ -165,13 +186,16 @@ def representar_espacio(espacio):
         "id_anunciante": espacio.anunciante_id,
         "anunciante": espacio.anunciante.entidad.nombre,
         "id_tipo_publicidad": espacio.tipo_publicidad_id,
-        "tipo_publicidad": espacio.tipo_publicidad.nombre,
+        "tipo_publicidad": etiqueta(espacio.tipo_publicidad.nombre),
         "fecha_inicio": espacio.fecha_inicio,
         "fecha_fin": espacio.fecha_fin,
         "url_destino": espacio.url_destino,
         "id_archivo": espacio.archivo_id,
         "url_archivo": espacio.archivo.url_archivo,
-        "aviso": "Publicación informativa; Little Paws Net no procesa cobros de publicidad",
+        "aviso": texto(
+            "Publicación informativa; Little Paws Net no procesa cobros de publicidad",
+            "Informational listing; Little Paws Net does not process advertising payments",
+        ),
     }
 
 
@@ -190,23 +214,30 @@ class TarifaPublicacionCrearSerializer(serializers.Serializer):
     def validate(self, attrs):
         desconocidos = set(self.initial_data) - set(self.fields)
         if desconocidos:
-            raise serializers.ValidationError({campo: "Campo no permitido" for campo in desconocidos})
+            raise serializers.ValidationError({
+                campo: texto("Campo no permitido", "Field not allowed") for campo in desconocidos
+            })
         if attrs["fecha_fin"] < attrs["fecha_inicio"]:
-            raise serializers.ValidationError({"fecha_fin": "Debe ser igual o posterior al inicio"})
+            raise serializers.ValidationError({
+                "fecha_fin": texto("Debe ser igual o posterior al inicio", "Must be on or after the start"),
+            })
         return attrs
 
 
 def representar_tarifa(tarifa):
-    ingles = get_language().startswith("en")
+    ingles = ingles_activo()
     return {
         "id_tarifa": tarifa.pk,
         "id_tienda": tarifa.tienda_id,
         "tienda": tarifa.tienda.entidad.nombre,
         "id_tipo_tarifa": tarifa.tipo_tarifa_id,
-        "tipo_tarifa": tarifa.tipo_tarifa.nombre,
+        "tipo_tarifa": etiqueta(tarifa.tipo_tarifa.nombre),
         "monto": str(tarifa.monto),
         "fecha_inicio": tarifa.fecha_inicio,
         "fecha_fin": tarifa.fecha_fin,
         "concepto": (tarifa.concepto_en or tarifa.concepto) if ingles else tarifa.concepto,
-        "aviso": "Tarifa informativa; no acredita cobro ni pago",
+        "aviso": texto(
+            "Tarifa informativa; no acredita cobro ni pago",
+            "Informational rate; this does not confirm a charge or payment",
+        ),
     }

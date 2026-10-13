@@ -9,6 +9,7 @@ from django.utils import timezone
 from core.models import EntidadMiembroRol
 
 from .models import EspacioPublicitario, PedidoIniciado, Producto, TarifaPublicacion
+from .i18n import error, texto
 from .permissions import administrador_puede, gestor_anunciante_puede
 from .serializers import (
     EspacioPublicitarioCrearSerializer, PedidoCrearSerializer, TarifaPublicacionCrearSerializer,
@@ -46,9 +47,9 @@ class ProductoListCreateView(APIView):
         try:
             producto = crear_producto(usuario_actor=request.user, **serializer.validated_data)
         except ComercioPermisoError as exc:
-            return Response({"detalle": str(exc)}, status=403)
+            return Response({"detalle": error(str(exc))}, status=403)
         except ComercioError as exc:
-            return Response({"detalle": str(exc)}, status=400)
+            return Response({"detalle": error(str(exc))}, status=400)
         producto = Producto.objects.select_related(
             "tienda__entidad", "categoria_producto", "tipo_producto", "estado_producto",
         ).get(pk=producto.pk)
@@ -62,7 +63,7 @@ class ProductoDetalleView(APIView):
     def get(self, request, producto_id):
         producto = productos_publicos().filter(pk=producto_id).first()
         if producto is None:
-            return Response({"detalle": "Producto no disponible"}, status=404)
+            return Response({"detalle": texto("Producto no disponible", "Product unavailable")}, status=404)
         return Response(representar_producto(producto))
 
     def patch(self, request, producto_id):
@@ -73,11 +74,11 @@ class ProductoDetalleView(APIView):
                 usuario_actor=request.user, producto_id=producto_id, cambios=serializer.validated_data,
             )
         except ComercioPermisoError as exc:
-            return Response({"detalle": str(exc)}, status=403)
+            return Response({"detalle": error(str(exc))}, status=403)
         except ComercioNoEncontradoError as exc:
-            return Response({"detalle": str(exc)}, status=404)
+            return Response({"detalle": error(str(exc))}, status=404)
         except ComercioError as exc:
-            return Response({"detalle": str(exc)}, status=400)
+            return Response({"detalle": error(str(exc))}, status=400)
         producto = Producto.objects.select_related(
             "tienda__entidad", "categoria_producto", "tipo_producto", "estado_producto",
         ).get(pk=producto.pk)
@@ -111,9 +112,9 @@ class PedidoListCreateView(APIView):
         try:
             pedido = iniciar_pedido(usuario_cliente=request.user, **serializer.validated_data)
         except ComercioPermisoError as exc:
-            return Response({"detalle": str(exc)}, status=403)
+            return Response({"detalle": error(str(exc))}, status=403)
         except ComercioError as exc:
-            return Response({"detalle": str(exc)}, status=400)
+            return Response({"detalle": error(str(exc))}, status=400)
         pedido = PedidoIniciado.objects.select_related("estado_pedido", "tienda__entidad").get(pk=pedido.pk)
         return Response(representar_pedido(pedido), status=201)
 
@@ -124,7 +125,7 @@ class PedidoDetalleView(APIView):
     def get(self, request, pedido_id):
         pedido = pedidos_visibles(request.user).filter(pk=pedido_id).first()
         if pedido is None:
-            return Response({"detalle": "Pedido inexistente o sin acceso"}, status=404)
+            return Response({"detalle": texto("Pedido inexistente o sin acceso", "Order not found or access denied")}, status=404)
         return Response(representar_pedido(pedido))
 
 
@@ -160,9 +161,9 @@ class EspacioPublicitarioListCreateView(APIView):
                 usuario_actor=request.user, **serializer.validated_data,
             )
         except ComercioPermisoError as exc:
-            return Response({"detalle": str(exc)}, status=403)
+            return Response({"detalle": error(str(exc))}, status=403)
         except ComercioError as exc:
-            return Response({"detalle": str(exc)}, status=400)
+            return Response({"detalle": error(str(exc))}, status=400)
         espacio = espacios_base().get(pk=espacio.pk)
         return Response(representar_espacio(espacio), status=201)
 
@@ -173,7 +174,7 @@ class EspacioPublicitarioDetalleView(APIView):
     def get(self, request, espacio_id):
         espacio = espacios_base().filter(pk=espacio_id).first()
         if espacio is None:
-            return Response({"detalle": "Publicidad inexistente o sin acceso"}, status=404)
+            return Response({"detalle": texto("Publicidad inexistente o sin acceso", "Ad not found or access denied")}, status=404)
         ahora = timezone.now()
         publicado = (
             espacio.fecha_inicio <= ahora < espacio.fecha_fin
@@ -186,7 +187,7 @@ class EspacioPublicitarioDetalleView(APIView):
             or administrador_puede(request.user, "publicidad.gestionar")
         )
         if not (publicado or autorizado):
-            return Response({"detalle": "Publicidad inexistente o sin acceso"}, status=404)
+            return Response({"detalle": texto("Publicidad inexistente o sin acceso", "Ad not found or access denied")}, status=404)
         return Response(representar_espacio(espacio))
 
 
@@ -217,9 +218,9 @@ class TarifaPublicacionListCreateView(APIView):
         try:
             tarifa = crear_tarifa_publicacion(usuario_actor=request.user, **serializer.validated_data)
         except ComercioPermisoError as exc:
-            return Response({"detalle": str(exc)}, status=403)
+            return Response({"detalle": error(str(exc))}, status=403)
         except ComercioError as exc:
-            return Response({"detalle": str(exc)}, status=400)
+            return Response({"detalle": error(str(exc))}, status=400)
         return Response(representar_tarifa(tarifas_base().get(pk=tarifa.pk)), status=201)
 
 
@@ -231,5 +232,5 @@ class TarifaPublicacionDetalleView(APIView):
         if tarifa is None and administrador_puede(request.user, "tarifa.gestionar"):
             tarifa = tarifas_base().filter(pk=tarifa_id).first()
         if tarifa is None:
-            return Response({"detalle": "Tarifa inexistente o sin acceso"}, status=404)
+            return Response({"detalle": texto("Tarifa inexistente o sin acceso", "Rate not found or access denied")}, status=404)
         return Response(representar_tarifa(tarifa))
