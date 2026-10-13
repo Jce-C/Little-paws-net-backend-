@@ -15,7 +15,7 @@ from core.models import (
     Tienda, UsuarioRol, ValorMaestro,
 )
 
-from .models import DetallePedido, EspacioPublicitario, PedidoIniciado, Producto
+from .models import DetallePedido, EspacioPublicitario, PedidoIniciado, Producto, TarifaPublicacion
 
 
 class ComercioModelosTests(TestCase):
@@ -357,3 +357,85 @@ class PublicidadAPITests(TestCase):
         datos["fecha_fin"] = datos["fecha_inicio"]
         self.assertEqual(self.api.post(reverse("publicidad_listar_crear"), datos, format="json").status_code, 400)
         self.assertFalse(EspacioPublicitario.objects.exists())
+
+
+class TarifaPublicacionAPITests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        verificada = ValorMaestro.objects.get(tipo__nombre="estado_verificacion", nombre="Verificada")
+        ciudad = Ciudad.objects.create(nombre="Ciudad Tarifas", departamento="Pruebas")
+        entidad = EntidadVerificable.objects.create(nombre="Tienda Tarifas", estado_verificacion=verificada)
+        cls.tienda = Tienda.objects.create(entidad=entidad, ciudad=ciudad, direccion="Calle Tarifas")
+        cls.admin = Usuario.objects.create_user(email="admin-tarifas@example.invalid", password="clave", nombre="Admin")
+        cls.gestor = Usuario.objects.create_user(email="gestor-tarifas@example.invalid", password="clave", nombre="Gestor")
+        cls.cliente = Usuario.objects.create_user(email="cliente-tarifas@example.invalid", password="clave", nombre="Cliente")
+        UsuarioRol.objects.create(usuario=cls.admin, rol=Rol.objects.get(codigo="ADMIN_PLATAFORMA"))
+        EntidadMiembroRol.objects.create(
+            miembro=EntidadMiembro.objects.create(entidad=entidad, usuario=cls.gestor),
+            rol=Rol.objects.get(codigo="GESTOR_TIENDA"),
+        )
+        cls.tipo = ValorMaestro.objects.get(tipo__nombre="tipo_tarifa", nombre="Mensual")
+
+    def setUp(self):
+        self.api = APIClient()
+
+    def _datos(self, *, dias_inicio=-1, dias_fin=7):
+        hoy = timezone.localdate()
+        return {
+            "id_tienda": self.tienda.pk,
+            "id_tipo_tarifa": self.tipo.pk,
+            "monto": "35000.00",
+            "fecha_inicio": (hoy + timezone.timedelta(days=dias_inicio)).isoformat(),
+            "fecha_fin": (hoy + timezone.timedelta(days=dias_fin)).isoformat(),
+            "concepto": "Publicación mensual de la tienda",
+        }
+
+    def test_admin_crea_tarifa_vigente_y_consulta_publica(self):
+        ruta = reverse("tarifa_listar_crear")
+        self.assertEqual(self.api.get(ruta).data, [])
+        self.api.force_authenticate(user=self.admin)
+        creada = self.api.post(ruta, self._datos(), format="json")
+        self.assertEqual(creada.status_code, 201, creada.data)
+        self.assertEqual(creada.data["monto"], "35000.00")
+        self.assertIn("no acredita cobro", creada.data["aviso"])
+        self.api.force_authenticate(user=None)
+        self.assertEqual(len(self.api.get(ruta).data), 1)
+        self.assertEqual(self.api.get(reverse("tarifa_detalle", args=[creada.data["id_tarifa"]])).status_code, 200)
+
+    def test_solo_admin_puede_crear_tarifas(self):
+        ruta = reverse("tarifa_listar_crear")
+        self.assertEqual(self.api.post(ruta, self._datos(), format="json").status_code, 401)
+        for usuario in (self.gestor, self.cliente):
+            self.api.force_authenticate(user=usuario)
+            self.assertEqual(self.api.post(ruta, self._datos(), format="json").status_code, 403)
+        self.assertFalse(TarifaPublicacion.objects.exists())
+
+    def test_tarifa_futura_solo_es_visible_para_admin(self):
+        self.api.force_authenticate(user=self.admin)
+        creada = self.api.post(reverse("tarifa_listar_crear"), self._datos(dias_inicio=1), format="json")
+        self.assertEqual(creada.status_code, 201, creada.data)
+        detalle = reverse("tarifa_detalle", args=[creada.data["id_tarifa"]])
+        self.api.force_authenticate(user=None)
+        self.assertEqual(self.api.get(reverse("tarifa_listar_crear")).data, [])
+        self.assertEqual(self.api.get(detalle).status_code, 404)
+        self.api.force_authenticate(user=self.gestor)
+        self.assertEqual(self.api.get(detalle).status_code, 404)
+        self.api.force_authenticate(user=self.admin)
+        self.assertEqual(self.api.get(detalle).status_code, 200)
+
+    def test_rechaza_solapamiento_y_datos_invalidos(self):
+        ruta = reverse("tarifa_listar_crear")
+        self.api.force_authenticate(user=self.admin)
+        self.assertEqual(self.api.post(ruta, self._datos(), format="json").status_code, 201)
+        self.assertEqual(self.api.post(ruta, self._datos(dias_inicio=7, dias_fin=14), format="json").status_code, 400)
+        datos = self._datos(dias_inicio=8, dias_fin=7)
+        self.assertEqual(self.api.post(ruta, datos, format="json").status_code, 400)
+        datos = self._datos(dias_inicio=8, dias_fin=14)
+        datos["monto"] = "-1.00"
+        self.assertEqual(self.api.post(ruta, datos, format="json").status_code, 400)
+        datos = self._datos(dias_inicio=8, dias_fin=14)
+        datos["id_tipo_tarifa"] = ValorMaestro.objects.get(
+            tipo__nombre="estado_pedido", nombre="Iniciado",
+        ).pk
+        self.assertEqual(self.api.post(ruta, datos, format="json").status_code, 400)
+        self.assertEqual(TarifaPublicacion.objects.count(), 1)

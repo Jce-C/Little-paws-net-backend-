@@ -6,9 +6,9 @@ from urllib.parse import urlparse
 from django.db import transaction
 from django.utils import timezone
 
-from core.models import Notificacion, ValorMaestro
+from core.models import Notificacion, Tienda, ValorMaestro
 
-from .models import DetallePedido, EspacioPublicitario, PedidoIniciado, Producto
+from .models import DetallePedido, EspacioPublicitario, PedidoIniciado, Producto, TarifaPublicacion
 from .permissions import administrador_puede, gestor_anunciante_puede, gestor_tienda_puede
 
 
@@ -154,4 +154,29 @@ def crear_espacio_publicitario(*, usuario_actor, anunciante, tipo_publicidad,
         anunciante=anunciante, tipo_publicidad=tipo_publicidad,
         fecha_inicio=fecha_inicio, fecha_fin=fecha_fin,
         url_destino=url_destino, archivo=archivo,
+    )
+
+
+@transaction.atomic
+def crear_tarifa_publicacion(*, usuario_actor, tienda, tipo_tarifa, monto,
+                            fecha_inicio, fecha_fin, concepto):
+    if not administrador_puede(usuario_actor, "tarifa.gestionar"):
+        raise ComercioPermisoError("Solo un administrador autorizado puede crear tarifas")
+    tienda = Tienda.objects.select_for_update().select_related(
+        "entidad__estado_verificacion__tipo",
+    ).get(pk=tienda.pk)
+    _exigir_tienda_verificada(tienda)
+    if tipo_tarifa.tipo.nombre != "tipo_tarifa" or monto < 0 or fecha_fin < fecha_inicio:
+        raise ComercioError("Tipo, monto o periodo de tarifa no válidos")
+    concepto = concepto.strip()
+    if not concepto:
+        raise ComercioError("El concepto es obligatorio")
+    if TarifaPublicacion.objects.filter(
+        tienda=tienda, tipo_tarifa=tipo_tarifa,
+        fecha_inicio__lte=fecha_fin, fecha_fin__gte=fecha_inicio,
+    ).exists():
+        raise ComercioError("Ya existe una tarifa de este tipo que se superpone en fechas")
+    return TarifaPublicacion.objects.create(
+        tienda=tienda, tipo_tarifa=tipo_tarifa, monto=monto,
+        fecha_inicio=fecha_inicio, fecha_fin=fecha_fin, concepto=concepto,
     )

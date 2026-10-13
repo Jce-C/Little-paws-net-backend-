@@ -8,16 +8,17 @@ from django.utils import timezone
 
 from core.models import EntidadMiembroRol
 
-from .models import EspacioPublicitario, PedidoIniciado, Producto
+from .models import EspacioPublicitario, PedidoIniciado, Producto, TarifaPublicacion
 from .permissions import administrador_puede, gestor_anunciante_puede
 from .serializers import (
-    EspacioPublicitarioCrearSerializer, PedidoCrearSerializer,
+    EspacioPublicitarioCrearSerializer, PedidoCrearSerializer, TarifaPublicacionCrearSerializer,
     ProductoActualizarSerializer, ProductoCrearSerializer,
-    representar_espacio, representar_pedido, representar_producto,
+    representar_espacio, representar_pedido, representar_producto, representar_tarifa,
 )
 from .services import (
     ComercioError, ComercioNoEncontradoError, ComercioPermisoError,
-    actualizar_producto, crear_espacio_publicitario, crear_producto, iniciar_pedido,
+    actualizar_producto, crear_espacio_publicitario, crear_producto,
+    crear_tarifa_publicacion, iniciar_pedido,
 )
 
 
@@ -187,3 +188,48 @@ class EspacioPublicitarioDetalleView(APIView):
         if not (publicado or autorizado):
             return Response({"detalle": "Publicidad inexistente o sin acceso"}, status=404)
         return Response(representar_espacio(espacio))
+
+
+def tarifas_base():
+    return TarifaPublicacion.objects.select_related("tienda__entidad", "tipo_tarifa")
+
+
+def tarifas_publicas():
+    hoy = timezone.localdate()
+    return tarifas_base().filter(
+        fecha_inicio__lte=hoy, fecha_fin__gte=hoy,
+        tienda__entidad__estado_verificacion__tipo__nombre="estado_verificacion",
+        tienda__entidad__estado_verificacion__nombre="Verificada",
+    )
+
+
+class TarifaPublicacionListCreateView(APIView):
+    def get_permissions(self):
+        return [AllowAny()] if self.request.method == "GET" else [IsAuthenticated()]
+
+    def get(self, request):
+        tarifas = tarifas_publicas().order_by("tienda_id", "tipo_tarifa_id", "pk")
+        return Response([representar_tarifa(tarifa) for tarifa in tarifas])
+
+    def post(self, request):
+        serializer = TarifaPublicacionCrearSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        try:
+            tarifa = crear_tarifa_publicacion(usuario_actor=request.user, **serializer.validated_data)
+        except ComercioPermisoError as exc:
+            return Response({"detalle": str(exc)}, status=403)
+        except ComercioError as exc:
+            return Response({"detalle": str(exc)}, status=400)
+        return Response(representar_tarifa(tarifas_base().get(pk=tarifa.pk)), status=201)
+
+
+class TarifaPublicacionDetalleView(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request, tarifa_id):
+        tarifa = tarifas_publicas().filter(pk=tarifa_id).first()
+        if tarifa is None and administrador_puede(request.user, "tarifa.gestionar"):
+            tarifa = tarifas_base().filter(pk=tarifa_id).first()
+        if tarifa is None:
+            return Response({"detalle": "Tarifa inexistente o sin acceso"}, status=404)
+        return Response(representar_tarifa(tarifa))

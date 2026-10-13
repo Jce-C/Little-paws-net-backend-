@@ -167,3 +167,38 @@ def representar_espacio(espacio):
         "url_archivo": espacio.archivo.url_archivo,
         "aviso": "Publicación informativa; Little Paws Net no procesa cobros de publicidad",
     }
+
+
+class TarifaPublicacionCrearSerializer(serializers.Serializer):
+    id_tienda = serializers.PrimaryKeyRelatedField(queryset=Tienda.objects.all(), source="tienda")
+    id_tipo_tarifa = serializers.PrimaryKeyRelatedField(
+        queryset=ValorMaestro.objects.filter(tipo__nombre="tipo_tarifa"),
+        source="tipo_tarifa",
+    )
+    monto = serializers.DecimalField(max_digits=12, decimal_places=2, min_value=Decimal("0.00"))
+    fecha_inicio = serializers.DateField()
+    fecha_fin = serializers.DateField()
+    concepto = serializers.CharField(max_length=255, allow_blank=False, trim_whitespace=True)
+
+    def validate(self, attrs):
+        desconocidos = set(self.initial_data) - set(self.fields)
+        if desconocidos:
+            raise serializers.ValidationError({campo: "Campo no permitido" for campo in desconocidos})
+        if attrs["fecha_fin"] < attrs["fecha_inicio"]:
+            raise serializers.ValidationError({"fecha_fin": "Debe ser igual o posterior al inicio"})
+        return attrs
+
+
+def representar_tarifa(tarifa):
+    return {
+        "id_tarifa": tarifa.pk,
+        "id_tienda": tarifa.tienda_id,
+        "tienda": tarifa.tienda.entidad.nombre,
+        "id_tipo_tarifa": tarifa.tipo_tarifa_id,
+        "tipo_tarifa": tarifa.tipo_tarifa.nombre,
+        "monto": str(tarifa.monto),
+        "fecha_inicio": tarifa.fecha_inicio,
+        "fecha_fin": tarifa.fecha_fin,
+        "concepto": tarifa.concepto,
+        "aviso": "Tarifa informativa; no acredita cobro ni pago",
+    }
