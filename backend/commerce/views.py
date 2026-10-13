@@ -3,12 +3,19 @@
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from django.db.models import Q
 
-from .models import Producto
-from .serializers import ProductoActualizarSerializer, ProductoCrearSerializer, representar_producto
+from core.models import EntidadMiembroRol
+
+from .models import PedidoIniciado, Producto
+from .permissions import administrador_puede
+from .serializers import (
+    PedidoCrearSerializer, ProductoActualizarSerializer, ProductoCrearSerializer,
+    representar_pedido, representar_producto,
+)
 from .services import (
     ComercioError, ComercioNoEncontradoError, ComercioPermisoError,
-    actualizar_producto, crear_producto,
+    actualizar_producto, crear_producto, iniciar_pedido,
 )
 
 
@@ -72,3 +79,47 @@ class ProductoDetalleView(APIView):
             "tienda__entidad", "categoria_producto", "tipo_producto", "estado_producto",
         ).get(pk=producto.pk)
         return Response(representar_producto(producto))
+
+
+def pedidos_visibles(usuario):
+    pedidos = PedidoIniciado.objects.select_related("estado_pedido", "tienda__entidad")
+    if not usuario.is_active:
+        return pedidos.none()
+    if administrador_puede(usuario, "pedido.consultar_tienda"):
+        return pedidos
+    tiendas = EntidadMiembroRol.objects.filter(
+        miembro__usuario=usuario, miembro__fecha_salida__isnull=True,
+        rol__codigo="GESTOR_TIENDA", rol__ambito="ENTIDAD",
+        rol__rolpermiso__permiso__codigo="pedido.consultar_tienda",
+    ).values("miembro__entidad_id")
+    return pedidos.filter(Q(usuario_cliente=usuario) | Q(tienda_id__in=tiendas))
+
+
+class PedidoListCreateView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        pedidos = pedidos_visibles(request.user).order_by("-fecha_inicio", "-pk")
+        return Response([representar_pedido(pedido) for pedido in pedidos])
+
+    def post(self, request):
+        serializer = PedidoCrearSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        try:
+            pedido = iniciar_pedido(usuario_cliente=request.user, **serializer.validated_data)
+        except ComercioPermisoError as exc:
+            return Response({"detalle": str(exc)}, status=403)
+        except ComercioError as exc:
+            return Response({"detalle": str(exc)}, status=400)
+        pedido = PedidoIniciado.objects.select_related("estado_pedido", "tienda__entidad").get(pk=pedido.pk)
+        return Response(representar_pedido(pedido), status=201)
+
+
+class PedidoDetalleView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, pedido_id):
+        pedido = pedidos_visibles(request.user).filter(pk=pedido_id).first()
+        if pedido is None:
+            return Response({"detalle": "Pedido inexistente o sin acceso"}, status=404)
+        return Response(representar_pedido(pedido))

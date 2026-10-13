@@ -2,9 +2,9 @@
 
 from django.db import transaction
 
-from core.models import ValorMaestro
+from core.models import Notificacion, ValorMaestro
 
-from .models import Producto
+from .models import DetallePedido, PedidoIniciado, Producto
 from .permissions import administrador_puede, gestor_tienda_puede
 
 
@@ -64,3 +64,53 @@ def actualizar_producto(*, usuario_actor, producto_id, cambios):
         setattr(producto, campo, valor)
     producto.save(update_fields=list(cambios))
     return producto
+
+
+@transaction.atomic
+def iniciar_pedido(*, usuario_cliente, tienda, productos):
+    if not usuario_cliente.is_active:
+        raise ComercioPermisoError("La cuenta del cliente no está activa")
+    _exigir_tienda_verificada(tienda)
+    if not productos or len(productos) > 50:
+        raise ComercioError("El pedido requiere entre 1 y 50 productos")
+    ids = [item["producto"].pk for item in productos]
+    if len(ids) != len(set(ids)):
+        raise ComercioError("No se puede repetir un producto en el mismo pedido")
+
+    bloqueados = {
+        producto.pk: producto
+        for producto in Producto.objects.select_for_update().select_related(
+            "estado_producto__tipo",
+        ).filter(pk__in=ids).order_by("pk")
+    }
+    for item in productos:
+        producto = bloqueados.get(item["producto"].pk)
+        cantidad = item["cantidad"]
+        if producto is None or producto.tienda_id != tienda.pk:
+            raise ComercioError("Todos los productos deben pertenecer a la tienda seleccionada")
+        if producto.estado_producto.tipo.nombre != "estado_producto" or (
+            producto.estado_producto.nombre != "Disponible"
+        ):
+            raise ComercioError("Uno de los productos no está disponible")
+        if cantidad <= 0 or cantidad > producto.existencias:
+            raise ComercioError("Cantidad superior a las existencias disponibles")
+        if producto.precio <= 0:
+            raise ComercioError("Uno de los productos no tiene precio válido")
+
+    estado = ValorMaestro.objects.get(tipo__nombre="estado_pedido", nombre="Iniciado")
+    pedido = PedidoIniciado.objects.create(
+        tienda=tienda, usuario_cliente=usuario_cliente, estado_pedido=estado,
+    )
+    for item in productos:
+        producto = bloqueados[item["producto"].pk]
+        DetallePedido.objects.create(
+            pedido=pedido, producto=producto, cantidad=item["cantidad"],
+            precio_referencia=producto.precio,
+        )
+    tipo_notificacion = ValorMaestro.objects.get(tipo__nombre="tipo_notificacion", nombre="Pedido iniciado")
+    Notificacion.objects.create(
+        usuario=usuario_cliente,
+        tipo_notificacion=tipo_notificacion,
+        contenido=f"Se inició el pedido {pedido.pk} para {tienda.entidad.nombre}. No implica cobro ni reserva.",
+    )
+    return pedido

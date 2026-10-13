@@ -6,6 +6,8 @@ from rest_framework import serializers
 
 from core.models import Tienda, ValorMaestro
 
+from .models import Producto
+
 
 class ProductoCrearSerializer(serializers.Serializer):
     id_tienda = serializers.PrimaryKeyRelatedField(queryset=Tienda.objects.all(), source="tienda")
@@ -67,4 +69,61 @@ def representar_producto(producto):
         "existencias": producto.existencias,
         "destacado": producto.destacado,
         "estado": producto.estado_producto.nombre,
+    }
+
+
+class DetallePedidoEntradaSerializer(serializers.Serializer):
+    id_producto = serializers.PrimaryKeyRelatedField(
+        queryset=Producto.objects.all(), source="producto",
+    )
+    cantidad = serializers.IntegerField(min_value=1, max_value=1000)
+
+    def to_internal_value(self, data):
+        if isinstance(data, dict):
+            desconocidos = set(data) - set(self.fields)
+            if desconocidos:
+                raise serializers.ValidationError({campo: "Campo no permitido" for campo in desconocidos})
+        return super().to_internal_value(data)
+
+
+class PedidoCrearSerializer(serializers.Serializer):
+    id_tienda = serializers.PrimaryKeyRelatedField(queryset=Tienda.objects.all(), source="tienda")
+    productos = DetallePedidoEntradaSerializer(many=True, allow_empty=False)
+
+    def validate(self, attrs):
+        desconocidos = set(self.initial_data) - set(self.fields)
+        if desconocidos:
+            raise serializers.ValidationError({campo: "Campo no permitido" for campo in desconocidos})
+        return attrs
+
+    def validate_productos(self, productos):
+        if len(productos) > 50:
+            raise serializers.ValidationError("El pedido admite como máximo 50 productos distintos")
+        ids = [item["producto"].pk for item in productos]
+        if len(ids) != len(set(ids)):
+            raise serializers.ValidationError("No repita productos; indique una sola cantidad por producto")
+        return productos
+
+
+def representar_pedido(pedido):
+    detalles = list(pedido.detallepedido_set.select_related("producto").order_by("producto_id"))
+    total = sum((detalle.precio_referencia * detalle.cantidad for detalle in detalles), Decimal("0.00"))
+    return {
+        "id_pedido": pedido.pk,
+        "id_tienda": pedido.tienda_id,
+        "id_usuario_cliente": pedido.usuario_cliente_id,
+        "estado": pedido.estado_pedido.nombre,
+        "fecha_inicio": pedido.fecha_inicio,
+        "productos": [
+            {
+                "id_producto": detalle.producto_id,
+                "nombre": detalle.producto.nombre,
+                "cantidad": detalle.cantidad,
+                "precio_referencia": str(detalle.precio_referencia),
+                "subtotal_referencia": str(detalle.precio_referencia * detalle.cantidad),
+            }
+            for detalle in detalles
+        ],
+        "total_referencial": str(total),
+        "aviso": "Pedido iniciado: no confirma pago ni reserva inventario",
     }

@@ -10,7 +10,7 @@ from rest_framework.test import APIClient
 from accounts.models import Usuario
 from core.models import (
     Ciudad, EntidadMiembro, EntidadMiembroRol, EntidadVerificable,
-    Permiso, Rol, RolPermiso, Tienda, ValorMaestro,
+    Notificacion, Permiso, Rol, RolPermiso, Tienda, UsuarioRol, ValorMaestro,
 )
 
 from .models import DetallePedido, PedidoIniciado, Producto
@@ -155,3 +155,114 @@ class ProductoAPITests(TestCase):
         datos["precio"] = "0.00"
         self.assertEqual(self.api.post(reverse("producto_listar_crear"), datos, format="json").status_code, 400)
         self.assertFalse(Producto.objects.exists())
+
+
+class PedidoAPITests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        verificada = ValorMaestro.objects.get(tipo__nombre="estado_verificacion", nombre="Verificada")
+        ciudad = Ciudad.objects.create(nombre="Ciudad Pedidos", departamento="Pruebas")
+        entidad = EntidadVerificable.objects.create(nombre="Tienda Pedidos", estado_verificacion=verificada)
+        cls.tienda = Tienda.objects.create(entidad=entidad, ciudad=ciudad, direccion="Calle 1")
+        otra_entidad = EntidadVerificable.objects.create(nombre="Otra Tienda Pedidos", estado_verificacion=verificada)
+        cls.otra_tienda = Tienda.objects.create(entidad=otra_entidad, ciudad=ciudad, direccion="Calle 2")
+        cls.cliente = Usuario.objects.create_user(email="cliente-pedido@example.invalid", password="clave", nombre="Cliente")
+        cls.otro = Usuario.objects.create_user(email="otro-pedido@example.invalid", password="clave", nombre="Otro")
+        cls.gestor = Usuario.objects.create_user(email="gestor-pedido@example.invalid", password="clave", nombre="Gestor")
+        cls.admin = Usuario.objects.create_user(email="admin-pedido@example.invalid", password="clave", nombre="Admin")
+        UsuarioRol.objects.create(usuario=cls.admin, rol=Rol.objects.get(codigo="ADMIN_PLATAFORMA"))
+        EntidadMiembroRol.objects.create(
+            miembro=EntidadMiembro.objects.create(entidad=entidad, usuario=cls.gestor),
+            rol=Rol.objects.get(codigo="GESTOR_TIENDA"),
+        )
+        categoria = ValorMaestro.objects.get(tipo__nombre="categoria_producto", nombre="Alimentos")
+        tipo = ValorMaestro.objects.get(tipo__nombre="tipo_producto", nombre="Alimento seco")
+        disponible = ValorMaestro.objects.get(tipo__nombre="estado_producto", nombre="Disponible")
+        cls.producto1 = Producto.objects.create(
+            tienda=cls.tienda, categoria_producto=categoria, tipo_producto=tipo,
+            nombre="Producto uno", precio=Decimal("10000.00"), existencias=5,
+            estado_producto=disponible,
+        )
+        cls.producto2 = Producto.objects.create(
+            tienda=cls.tienda, categoria_producto=categoria, tipo_producto=tipo,
+            nombre="Producto dos", precio=Decimal("2500.00"), existencias=3,
+            estado_producto=disponible,
+        )
+        cls.producto_ajeno = Producto.objects.create(
+            tienda=cls.otra_tienda, categoria_producto=categoria, tipo_producto=tipo,
+            nombre="Producto ajeno", precio=Decimal("3000.00"), existencias=10,
+            estado_producto=disponible,
+        )
+
+    def setUp(self):
+        self.api = APIClient()
+
+    def _datos(self):
+        return {"id_tienda": self.tienda.pk, "productos": [
+            {"id_producto": self.producto1.pk, "cantidad": 2},
+            {"id_producto": self.producto2.pk, "cantidad": 1},
+        ]}
+
+    def _crear(self):
+        self.api.force_authenticate(user=self.cliente)
+        respuesta = self.api.post(reverse("pedido_listar_crear"), self._datos(), format="json")
+        self.assertEqual(respuesta.status_code, 201, respuesta.data)
+        return respuesta
+
+    def test_crea_pedido_atomico_con_precios_y_notificacion_interna(self):
+        respuesta = self._crear()
+        self.assertEqual(respuesta.data["estado"], "Iniciado")
+        self.assertEqual(respuesta.data["total_referencial"], "22500.00")
+        self.assertIn("no confirma pago", respuesta.data["aviso"])
+        pedido = PedidoIniciado.objects.get(pk=respuesta.data["id_pedido"])
+        self.assertEqual(pedido.detallepedido_set.count(), 2)
+        self.assertEqual(Notificacion.objects.filter(usuario=self.cliente).count(), 1)
+        self.producto1.refresh_from_db()
+        self.assertEqual(self.producto1.existencias, 5)
+        self.producto1.precio = Decimal("13000.00")
+        self.producto1.save(update_fields=["precio"])
+        detalle = self.api.get(reverse("pedido_detalle", args=[pedido.pk]))
+        self.assertEqual(detalle.data["total_referencial"], "22500.00")
+
+    def test_rechaza_producto_de_otra_tienda_sin_dejar_registros(self):
+        self.api.force_authenticate(user=self.cliente)
+        datos = self._datos()
+        datos["productos"][1]["id_producto"] = self.producto_ajeno.pk
+        respuesta = self.api.post(reverse("pedido_listar_crear"), datos, format="json")
+        self.assertEqual(respuesta.status_code, 400, respuesta.data)
+        self.assertFalse(PedidoIniciado.objects.exists())
+        self.assertFalse(DetallePedido.objects.exists())
+        self.assertFalse(Notificacion.objects.exists())
+
+    def test_rechaza_duplicados_y_cantidad_sin_existencias(self):
+        self.api.force_authenticate(user=self.cliente)
+        datos = self._datos()
+        datos["productos"][1]["id_producto"] = self.producto1.pk
+        self.assertEqual(self.api.post(reverse("pedido_listar_crear"), datos, format="json").status_code, 400)
+        datos = self._datos()
+        datos["productos"][0]["cantidad"] = 6
+        self.assertEqual(self.api.post(reverse("pedido_listar_crear"), datos, format="json").status_code, 400)
+        self.assertFalse(PedidoIniciado.objects.exists())
+
+    def test_no_acepta_precio_enviado_por_cliente(self):
+        self.api.force_authenticate(user=self.cliente)
+        datos = self._datos()
+        datos["productos"][0]["precio_referencia"] = "0.01"
+        respuesta = self.api.post(reverse("pedido_listar_crear"), datos, format="json")
+        self.assertEqual(respuesta.status_code, 400, respuesta.data)
+        self.assertFalse(PedidoIniciado.objects.exists())
+
+    def test_solo_cliente_gestor_de_tienda_y_admin_ven_pedido(self):
+        pedido_id = self._crear().data["id_pedido"]
+        ruta = reverse("pedido_detalle", args=[pedido_id])
+        self.api.force_authenticate(user=self.otro)
+        self.assertEqual(self.api.get(ruta).status_code, 404)
+        self.assertEqual(self.api.get(reverse("pedido_listar_crear")).data, [])
+        self.api.force_authenticate(user=self.gestor)
+        self.assertEqual(self.api.get(ruta).status_code, 200)
+        self.api.force_authenticate(user=self.admin)
+        self.assertEqual(self.api.get(ruta).status_code, 200)
+
+    def test_requiere_autenticacion(self):
+        self.assertEqual(self.api.post(reverse("pedido_listar_crear"), self._datos(), format="json").status_code, 401)
+        self.assertEqual(self.api.get(reverse("pedido_listar_crear")).status_code, 401)
