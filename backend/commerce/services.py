@@ -41,7 +41,7 @@ def _exigir_tienda_verificada(tienda):
 
 @transaction.atomic
 def crear_producto(*, usuario_actor, tienda, categoria_producto, tipo_producto, nombre,
-                   precio, existencias, descripcion="", destacado=False):
+                   precio, existencias, descripcion="", nombre_en="", descripcion_en="", destacado=False):
     _exigir_gestor(usuario_actor, tienda.pk)
     _exigir_tienda_verificada(tienda)
     if precio <= 0 or existencias < 0:
@@ -49,7 +49,8 @@ def crear_producto(*, usuario_actor, tienda, categoria_producto, tipo_producto, 
     estado = ValorMaestro.objects.get(tipo__nombre="estado_producto", nombre="Disponible")
     return Producto.objects.create(
         tienda=tienda, categoria_producto=categoria_producto, tipo_producto=tipo_producto,
-        nombre=nombre.strip(), descripcion=descripcion.strip(), precio=precio,
+        nombre=nombre.strip(), nombre_en=nombre_en.strip(),
+        descripcion=descripcion.strip(), descripcion_en=descripcion_en.strip(), precio=precio,
         existencias=existencias, destacado=destacado, estado_producto=estado,
     )
 
@@ -159,7 +160,7 @@ def crear_espacio_publicitario(*, usuario_actor, anunciante, tipo_publicidad,
 
 @transaction.atomic
 def crear_tarifa_publicacion(*, usuario_actor, tienda, tipo_tarifa, monto,
-                            fecha_inicio, fecha_fin, concepto):
+                            fecha_inicio, fecha_fin, concepto, concepto_en=""):
     if not administrador_puede(usuario_actor, "tarifa.gestionar"):
         raise ComercioPermisoError("Solo un administrador autorizado puede crear tarifas")
     tienda = Tienda.objects.select_for_update().select_related(
@@ -178,5 +179,6 @@ def crear_tarifa_publicacion(*, usuario_actor, tienda, tipo_tarifa, monto,
         raise ComercioError("Ya existe una tarifa de este tipo que se superpone en fechas")
     return TarifaPublicacion.objects.create(
         tienda=tienda, tipo_tarifa=tipo_tarifa, monto=monto,
-        fecha_inicio=fecha_inicio, fecha_fin=fecha_fin, concepto=concepto,
+        fecha_inicio=fecha_inicio, fecha_fin=fecha_fin,
+        concepto=concepto, concepto_en=concepto_en.strip(),
     )

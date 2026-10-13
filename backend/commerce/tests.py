@@ -158,6 +158,36 @@ class ProductoAPITests(TestCase):
         self.assertEqual(self.api.post(reverse("producto_listar_crear"), datos, format="json").status_code, 400)
         self.assertFalse(Producto.objects.exists())
 
+    def test_nombre_y_descripcion_del_producto_se_localizan(self):
+        self.api.force_authenticate(user=self.gestor)
+        datos = self._datos()
+        datos.update({
+            "nombre_en": "Test food", "descripcion": "Alimento para perro",
+            "descripcion_en": "Dog food",
+        })
+        creada = self.api.post(reverse("producto_listar_crear"), datos, format="json")
+        self.assertEqual(creada.status_code, 201, creada.data)
+        self.assertEqual(creada.data["nombre"], "Alimento de prueba")
+        self.api.force_authenticate(user=None)
+        ingles = self.api.get(reverse("producto_listar_crear"), HTTP_ACCEPT_LANGUAGE="en")
+        self.assertEqual(ingles.data[0]["nombre"], "Test food")
+        self.assertEqual(ingles.data[0]["descripcion"], "Dog food")
+        self.assertNotIn("nombre_en", ingles.data[0])
+        self.api.force_authenticate(user=self.gestor)
+        ruta = reverse("producto_detalle", args=[creada.data["id_producto"]])
+        self.assertEqual(self.api.patch(ruta, {"nombre_en": "Updated food"}, format="json").status_code, 200)
+        self.api.force_authenticate(user=None)
+        actualizado = self.api.get(ruta, HTTP_ACCEPT_LANGUAGE="en")
+        self.assertEqual(actualizado.data["nombre"], "Updated food")
+
+    def test_productos_sin_traduccion_mantienen_texto_original(self):
+        self.api.force_authenticate(user=self.gestor)
+        creada = self.api.post(reverse("producto_listar_crear"), self._datos(), format="json")
+        self.assertEqual(creada.status_code, 201, creada.data)
+        self.api.force_authenticate(user=None)
+        ingles = self.api.get(reverse("producto_listar_crear"), HTTP_ACCEPT_LANGUAGE="en")
+        self.assertEqual(ingles.data[0]["nombre"], "Alimento de prueba")
+
 
 class PedidoAPITests(TestCase):
     @classmethod
@@ -439,3 +469,13 @@ class TarifaPublicacionAPITests(TestCase):
         ).pk
         self.assertEqual(self.api.post(ruta, datos, format="json").status_code, 400)
         self.assertEqual(TarifaPublicacion.objects.count(), 1)
+
+    def test_concepto_de_tarifa_se_localiza(self):
+        self.api.force_authenticate(user=self.admin)
+        datos = self._datos()
+        datos["concepto_en"] = "Monthly store listing"
+        creada = self.api.post(reverse("tarifa_listar_crear"), datos, format="json")
+        self.assertEqual(creada.status_code, 201, creada.data)
+        self.api.force_authenticate(user=None)
+        ingles = self.api.get(reverse("tarifa_listar_crear"), HTTP_ACCEPT_LANGUAGE="en")
+        self.assertEqual(ingles.data[0]["concepto"], "Monthly store listing")

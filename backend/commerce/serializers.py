@@ -3,6 +3,7 @@
 from decimal import Decimal
 
 from rest_framework import serializers
+from django.utils.translation import get_language
 
 from core.models import Anunciante, ArchivoDigital, Tienda, ValorMaestro
 
@@ -18,7 +19,9 @@ class ProductoCrearSerializer(serializers.Serializer):
         queryset=ValorMaestro.objects.filter(tipo__nombre="tipo_producto"), source="tipo_producto",
     )
     nombre = serializers.CharField(max_length=150, allow_blank=False, trim_whitespace=True)
+    nombre_en = serializers.CharField(max_length=150, allow_blank=True, required=False, trim_whitespace=True)
     descripcion = serializers.CharField(max_length=4000, allow_blank=True, required=False, trim_whitespace=True)
+    descripcion_en = serializers.CharField(max_length=4000, allow_blank=True, required=False, trim_whitespace=True)
     precio = serializers.DecimalField(max_digits=12, decimal_places=2, min_value=Decimal("0.01"))
     existencias = serializers.IntegerField(min_value=0)
     destacado = serializers.BooleanField(required=False, default=False)
@@ -26,7 +29,9 @@ class ProductoCrearSerializer(serializers.Serializer):
 
 class ProductoActualizarSerializer(serializers.Serializer):
     nombre = serializers.CharField(max_length=150, allow_blank=False, trim_whitespace=True, required=False)
+    nombre_en = serializers.CharField(max_length=150, allow_blank=True, trim_whitespace=True, required=False)
     descripcion = serializers.CharField(max_length=4000, allow_blank=True, trim_whitespace=True, required=False)
+    descripcion_en = serializers.CharField(max_length=4000, allow_blank=True, trim_whitespace=True, required=False)
     precio = serializers.DecimalField(
         max_digits=12, decimal_places=2, min_value=Decimal("0.01"), required=False,
     )
@@ -55,6 +60,7 @@ class ProductoActualizarSerializer(serializers.Serializer):
 
 
 def representar_producto(producto):
+    ingles = get_language().startswith("en")
     return {
         "id_producto": producto.pk,
         "id_tienda": producto.tienda_id,
@@ -63,8 +69,8 @@ def representar_producto(producto):
         "categoria": producto.categoria_producto.nombre,
         "id_tipo_producto": producto.tipo_producto_id,
         "tipo": producto.tipo_producto.nombre,
-        "nombre": producto.nombre,
-        "descripcion": producto.descripcion,
+        "nombre": (producto.nombre_en or producto.nombre) if ingles else producto.nombre,
+        "descripcion": (producto.descripcion_en or producto.descripcion) if ingles else producto.descripcion,
         "precio": str(producto.precio),
         "existencias": producto.existencias,
         "destacado": producto.destacado,
@@ -179,6 +185,7 @@ class TarifaPublicacionCrearSerializer(serializers.Serializer):
     fecha_inicio = serializers.DateField()
     fecha_fin = serializers.DateField()
     concepto = serializers.CharField(max_length=255, allow_blank=False, trim_whitespace=True)
+    concepto_en = serializers.CharField(max_length=255, allow_blank=True, required=False, trim_whitespace=True)
 
     def validate(self, attrs):
         desconocidos = set(self.initial_data) - set(self.fields)
@@ -190,6 +197,7 @@ class TarifaPublicacionCrearSerializer(serializers.Serializer):
 
 
 def representar_tarifa(tarifa):
+    ingles = get_language().startswith("en")
     return {
         "id_tarifa": tarifa.pk,
         "id_tienda": tarifa.tienda_id,
@@ -199,6 +207,6 @@ def representar_tarifa(tarifa):
         "monto": str(tarifa.monto),
         "fecha_inicio": tarifa.fecha_inicio,
         "fecha_fin": tarifa.fecha_fin,
-        "concepto": tarifa.concepto,
+        "concepto": (tarifa.concepto_en or tarifa.concepto) if ingles else tarifa.concepto,
         "aviso": "Tarifa informativa; no acredita cobro ni pago",
     }

@@ -19,7 +19,9 @@ class Producto(models.Model):
         related_name="productos_tipo",
     )
     nombre = models.CharField(max_length=150)
+    nombre_en = models.CharField(max_length=150, blank=True)
     descripcion = models.TextField(blank=True)
+    descripcion_en = models.TextField(blank=True)
     precio = models.DecimalField(max_digits=12, decimal_places=2)
     existencias = models.PositiveIntegerField(default=0)
     destacado = models.BooleanField(default=False)
@@ -114,6 +116,7 @@ class TarifaPublicacion(models.Model):
     fecha_inicio = models.DateField()
     fecha_fin = models.DateField()
     concepto = models.CharField(max_length=255)
+    concepto_en = models.CharField(max_length=255, blank=True)
 
     class Meta:
         db_table = "TarifaPublicacion"
