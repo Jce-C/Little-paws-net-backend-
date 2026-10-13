@@ -4,18 +4,20 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.db.models import Q
+from django.utils import timezone
 
 from core.models import EntidadMiembroRol
 
-from .models import PedidoIniciado, Producto
-from .permissions import administrador_puede
+from .models import EspacioPublicitario, PedidoIniciado, Producto
+from .permissions import administrador_puede, gestor_anunciante_puede
 from .serializers import (
-    PedidoCrearSerializer, ProductoActualizarSerializer, ProductoCrearSerializer,
-    representar_pedido, representar_producto,
+    EspacioPublicitarioCrearSerializer, PedidoCrearSerializer,
+    ProductoActualizarSerializer, ProductoCrearSerializer,
+    representar_espacio, representar_pedido, representar_producto,
 )
 from .services import (
     ComercioError, ComercioNoEncontradoError, ComercioPermisoError,
-    actualizar_producto, crear_producto, iniciar_pedido,
+    actualizar_producto, crear_espacio_publicitario, crear_producto, iniciar_pedido,
 )
 
 
@@ -123,3 +125,65 @@ class PedidoDetalleView(APIView):
         if pedido is None:
             return Response({"detalle": "Pedido inexistente o sin acceso"}, status=404)
         return Response(representar_pedido(pedido))
+
+
+def espacios_base():
+    return EspacioPublicitario.objects.select_related(
+        "anunciante__entidad", "tipo_publicidad", "archivo",
+    )
+
+
+def espacios_publicos():
+    ahora = timezone.now()
+    return espacios_base().filter(
+        fecha_inicio__lte=ahora, fecha_fin__gt=ahora,
+        anunciante__entidad__estado_verificacion__tipo__nombre="estado_verificacion",
+        anunciante__entidad__estado_verificacion__nombre="Verificada",
+        archivo__visibilidad="PUBLICO",
+    )
+
+
+class EspacioPublicitarioListCreateView(APIView):
+    def get_permissions(self):
+        return [AllowAny()] if self.request.method == "GET" else [IsAuthenticated()]
+
+    def get(self, request):
+        espacios = espacios_publicos().order_by("fecha_fin", "pk")
+        return Response([representar_espacio(espacio) for espacio in espacios])
+
+    def post(self, request):
+        serializer = EspacioPublicitarioCrearSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        try:
+            espacio = crear_espacio_publicitario(
+                usuario_actor=request.user, **serializer.validated_data,
+            )
+        except ComercioPermisoError as exc:
+            return Response({"detalle": str(exc)}, status=403)
+        except ComercioError as exc:
+            return Response({"detalle": str(exc)}, status=400)
+        espacio = espacios_base().get(pk=espacio.pk)
+        return Response(representar_espacio(espacio), status=201)
+
+
+class EspacioPublicitarioDetalleView(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request, espacio_id):
+        espacio = espacios_base().filter(pk=espacio_id).first()
+        if espacio is None:
+            return Response({"detalle": "Publicidad inexistente o sin acceso"}, status=404)
+        ahora = timezone.now()
+        publicado = (
+            espacio.fecha_inicio <= ahora < espacio.fecha_fin
+            and espacio.anunciante.entidad.estado_verificacion.tipo.nombre == "estado_verificacion"
+            and espacio.anunciante.entidad.estado_verificacion.nombre == "Verificada"
+            and espacio.archivo.visibilidad == "PUBLICO"
+        )
+        autorizado = (
+            gestor_anunciante_puede(request.user, espacio.anunciante_id, "publicidad.gestionar")
+            or administrador_puede(request.user, "publicidad.gestionar")
+        )
+        if not (publicado or autorizado):
+            return Response({"detalle": "Publicidad inexistente o sin acceso"}, status=404)
+        return Response(representar_espacio(espacio))

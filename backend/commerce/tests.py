@@ -5,15 +5,17 @@ from decimal import Decimal
 from django.db import IntegrityError, transaction
 from django.test import TestCase
 from django.urls import reverse
+from django.utils import timezone
 from rest_framework.test import APIClient
 
 from accounts.models import Usuario
 from core.models import (
-    Ciudad, EntidadMiembro, EntidadMiembroRol, EntidadVerificable,
-    Notificacion, Permiso, Rol, RolPermiso, Tienda, UsuarioRol, ValorMaestro,
+    Anunciante, ArchivoDigital, Ciudad, EntidadMiembro, EntidadMiembroRol,
+    EntidadVerificable, Notificacion, Permiso, Rol, RolPermiso,
+    Tienda, UsuarioRol, ValorMaestro,
 )
 
-from .models import DetallePedido, PedidoIniciado, Producto
+from .models import DetallePedido, EspacioPublicitario, PedidoIniciado, Producto
 
 
 class ComercioModelosTests(TestCase):
@@ -266,3 +268,92 @@ class PedidoAPITests(TestCase):
     def test_requiere_autenticacion(self):
         self.assertEqual(self.api.post(reverse("pedido_listar_crear"), self._datos(), format="json").status_code, 401)
         self.assertEqual(self.api.get(reverse("pedido_listar_crear")).status_code, 401)
+
+
+class PublicidadAPITests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        verificada = ValorMaestro.objects.get(tipo__nombre="estado_verificacion", nombre="Verificada")
+        entidad = EntidadVerificable.objects.create(nombre="Anunciante Pruebas", estado_verificacion=verificada)
+        cls.anunciante = Anunciante.objects.create(entidad=entidad, nit_documento="NIT-ADS-1")
+        otra_entidad = EntidadVerificable.objects.create(nombre="Anunciante Ajeno", estado_verificacion=verificada)
+        cls.otro_anunciante = Anunciante.objects.create(entidad=otra_entidad, nit_documento="NIT-ADS-2")
+        cls.gestor = Usuario.objects.create_user(email="gestor-ads@example.invalid", password="clave", nombre="Gestor")
+        cls.ajeno = Usuario.objects.create_user(email="ajeno-ads@example.invalid", password="clave", nombre="Ajeno")
+        EntidadMiembroRol.objects.create(
+            miembro=EntidadMiembro.objects.create(entidad=entidad, usuario=cls.gestor),
+            rol=Rol.objects.get(codigo="GESTOR_ANUNCIANTE"),
+        )
+        EntidadMiembroRol.objects.create(
+            miembro=EntidadMiembro.objects.create(entidad=otra_entidad, usuario=cls.ajeno),
+            rol=Rol.objects.get(codigo="GESTOR_ANUNCIANTE"),
+        )
+        cls.archivo = ArchivoDigital.objects.create(
+            storage_key="pruebas/banner.png", url_archivo="https://cdn.example.com/banner.png",
+            mime_type="image/png", tamano_bytes=1024, visibilidad="PUBLICO", usuario_cargador=cls.gestor,
+        )
+        cls.tipo = ValorMaestro.objects.get(tipo__nombre="tipo_publicidad", nombre="Banner")
+
+    def setUp(self):
+        self.api = APIClient()
+
+    def _datos(self, *, futuro=False):
+        inicio = timezone.now() + timezone.timedelta(days=1) if futuro else timezone.now() - timezone.timedelta(minutes=1)
+        return {
+            "id_anunciante": self.anunciante.pk,
+            "id_tipo_publicidad": self.tipo.pk,
+            "fecha_inicio": inicio.isoformat(),
+            "fecha_fin": (inicio + timezone.timedelta(days=7)).isoformat(),
+            "url_destino": "https://example.com/adopcion",
+            "id_archivo": self.archivo.pk,
+        }
+
+    def test_gestor_publica_y_catalogo_es_publico(self):
+        ruta = reverse("publicidad_listar_crear")
+        self.assertEqual(self.api.get(ruta).data, [])
+        self.assertEqual(self.api.post(ruta, self._datos(), format="json").status_code, 401)
+        self.api.force_authenticate(user=self.gestor)
+        creada = self.api.post(ruta, self._datos(), format="json")
+        self.assertEqual(creada.status_code, 201, creada.data)
+        self.assertEqual(creada.data["url_archivo"], "https://cdn.example.com/banner.png")
+        self.assertNotIn("storage_key", creada.data)
+        self.api.force_authenticate(user=None)
+        self.assertEqual(len(self.api.get(ruta).data), 1)
+        self.assertEqual(self.api.get(reverse("publicidad_detalle", args=[creada.data["id_espacio"]])).status_code, 200)
+
+    def test_anuncio_futuro_es_visible_solo_para_su_gestor(self):
+        self.api.force_authenticate(user=self.gestor)
+        creada = self.api.post(reverse("publicidad_listar_crear"), self._datos(futuro=True), format="json")
+        self.assertEqual(creada.status_code, 201, creada.data)
+        ruta = reverse("publicidad_detalle", args=[creada.data["id_espacio"]])
+        self.api.force_authenticate(user=None)
+        self.assertEqual(self.api.get(reverse("publicidad_listar_crear")).data, [])
+        self.assertEqual(self.api.get(ruta).status_code, 404)
+        self.api.force_authenticate(user=self.ajeno)
+        self.assertEqual(self.api.get(ruta).status_code, 404)
+        self.api.force_authenticate(user=self.gestor)
+        self.assertEqual(self.api.get(ruta).status_code, 200)
+
+    def test_otra_entidad_y_archivo_privado_son_rechazados(self):
+        self.api.force_authenticate(user=self.gestor)
+        datos = self._datos()
+        datos["id_anunciante"] = self.otro_anunciante.pk
+        self.assertEqual(self.api.post(reverse("publicidad_listar_crear"), datos, format="json").status_code, 403)
+        archivo_privado = ArchivoDigital.objects.create(
+            storage_key="pruebas/banner-privado.png", url_archivo="https://cdn.example.com/privado.png",
+            mime_type="image/png", tamano_bytes=1024, visibilidad="PRIVADO", usuario_cargador=self.gestor,
+        )
+        datos = self._datos()
+        datos["id_archivo"] = archivo_privado.pk
+        self.assertEqual(self.api.post(reverse("publicidad_listar_crear"), datos, format="json").status_code, 400)
+        self.assertFalse(EspacioPublicitario.objects.exists())
+
+    def test_rechaza_url_interna_y_fecha_invalida(self):
+        self.api.force_authenticate(user=self.gestor)
+        datos = self._datos()
+        datos["url_destino"] = "https://127.0.0.1/admin"
+        self.assertEqual(self.api.post(reverse("publicidad_listar_crear"), datos, format="json").status_code, 400)
+        datos = self._datos()
+        datos["fecha_fin"] = datos["fecha_inicio"]
+        self.assertEqual(self.api.post(reverse("publicidad_listar_crear"), datos, format="json").status_code, 400)
+        self.assertFalse(EspacioPublicitario.objects.exists())

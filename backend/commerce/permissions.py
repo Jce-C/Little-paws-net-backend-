@@ -24,3 +24,15 @@ def gestor_tienda_puede(usuario, tienda_id, codigo_permiso):
             rol__rolpermiso__permiso__codigo=codigo_permiso,
         ).exists()
     )
+
+
+def gestor_anunciante_puede(usuario, anunciante_id, codigo_permiso):
+    return bool(
+        usuario.is_authenticated and usuario.is_active
+        and EntidadMiembroRol.objects.filter(
+            miembro__entidad_id=anunciante_id, miembro__usuario=usuario,
+            miembro__fecha_salida__isnull=True,
+            rol__codigo="GESTOR_ANUNCIANTE", rol__ambito=Rol.Ambito.ENTIDAD,
+            rol__rolpermiso__permiso__codigo=codigo_permiso,
+        ).exists()
+    )

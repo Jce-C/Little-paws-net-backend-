@@ -4,7 +4,7 @@ from decimal import Decimal
 
 from rest_framework import serializers
 
-from core.models import Tienda, ValorMaestro
+from core.models import Anunciante, ArchivoDigital, Tienda, ValorMaestro
 
 from .models import Producto
 
@@ -126,4 +126,44 @@ def representar_pedido(pedido):
         ],
         "total_referencial": str(total),
         "aviso": "Pedido iniciado: no confirma pago ni reserva inventario",
+    }
+
+
+class EspacioPublicitarioCrearSerializer(serializers.Serializer):
+    id_anunciante = serializers.PrimaryKeyRelatedField(
+        queryset=Anunciante.objects.all(), source="anunciante",
+    )
+    id_tipo_publicidad = serializers.PrimaryKeyRelatedField(
+        queryset=ValorMaestro.objects.filter(tipo__nombre="tipo_publicidad"),
+        source="tipo_publicidad",
+    )
+    fecha_inicio = serializers.DateTimeField()
+    fecha_fin = serializers.DateTimeField()
+    url_destino = serializers.URLField(max_length=2048)
+    id_archivo = serializers.PrimaryKeyRelatedField(
+        queryset=ArchivoDigital.objects.all(), source="archivo",
+    )
+
+    def validate(self, attrs):
+        desconocidos = set(self.initial_data) - set(self.fields)
+        if desconocidos:
+            raise serializers.ValidationError({campo: "Campo no permitido" for campo in desconocidos})
+        if attrs["fecha_fin"] <= attrs["fecha_inicio"]:
+            raise serializers.ValidationError({"fecha_fin": "Debe ser posterior al inicio"})
+        return attrs
+
+
+def representar_espacio(espacio):
+    return {
+        "id_espacio": espacio.pk,
+        "id_anunciante": espacio.anunciante_id,
+        "anunciante": espacio.anunciante.entidad.nombre,
+        "id_tipo_publicidad": espacio.tipo_publicidad_id,
+        "tipo_publicidad": espacio.tipo_publicidad.nombre,
+        "fecha_inicio": espacio.fecha_inicio,
+        "fecha_fin": espacio.fecha_fin,
+        "url_destino": espacio.url_destino,
+        "id_archivo": espacio.archivo_id,
+        "url_archivo": espacio.archivo.url_archivo,
+        "aviso": "Publicación informativa; Little Paws Net no procesa cobros de publicidad",
     }
