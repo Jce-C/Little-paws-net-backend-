@@ -6,6 +6,7 @@ from rest_framework import serializers
 
 from animals.models import Mascota
 from core.models import ValorMaestro
+from core.i18n import texto
 
 
 class ReporteCrearSerializer(serializers.Serializer):
@@ -18,7 +19,7 @@ class ReporteCrearSerializer(serializers.Serializer):
 
     def validate_tipo_reporte(self, value):
         if value.tipo.nombre != "tipo_reporte":
-            raise serializers.ValidationError("No corresponde a un tipo de reporte")
+            raise serializers.ValidationError(texto("No corresponde a un tipo de reporte", "Invalid report type"))
         return value
 
     def validate_mascota(self, value):
@@ -26,7 +27,7 @@ class ReporteCrearSerializer(serializers.Serializer):
             return value
         usuario = self.context["request"].user
         if not usuario.is_authenticated or value.dueno_id != usuario.pk:
-            raise serializers.ValidationError("Solo puede asociar una mascota propia")
+            raise serializers.ValidationError(texto("Solo puede asociar una mascota propia", "You can only link your own pet"))
         return value
 
 
@@ -38,7 +39,9 @@ class GestionAnonimaSerializer(serializers.Serializer):
 
     def validate(self, attrs):
         if not any(campo in attrs for campo in ("descripcion", "contacto_reportante")) and not attrs["cerrar"]:
-            raise serializers.ValidationError("Indique un cambio o solicite cerrar el reporte")
+            raise serializers.ValidationError(texto(
+                "Indique un cambio o solicite cerrar el reporte", "Provide a change or request to close the report",
+            ))
         return attrs
 
 

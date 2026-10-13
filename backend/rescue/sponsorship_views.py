@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from core.crypto import cifrar
+from core.i18n import error, etiqueta, texto
 
 from .models import Apadrinamiento, CuentaFundacion, DeclaracionTransferencia
 from .serializers import (
@@ -30,8 +31,8 @@ class CompromisoView(APIView):
                 monto=serializer.validated_data["monto_comprometido"],
             )
         except ApadrinamientoError as exc:
-            return Response({"detalle": str(exc)}, status=400)
-        return Response({"id_apadrinamiento": apadrinamiento.pk, "estado": "En espera"}, status=201)
+            return Response({"detalle": error(str(exc))}, status=400)
+        return Response({"id_apadrinamiento": apadrinamiento.pk, "estado": etiqueta("En espera")}, status=201)
 
 
 class CuentaCrearView(APIView):
@@ -39,14 +40,14 @@ class CuentaCrearView(APIView):
 
     def post(self, request, fundacion_id):
         if not miembro_puede(fundacion_id, request.user.pk, "aporte.confirmar"):
-            return Response({"detalle": "Sin permiso para esta fundación"}, status=403)
+            return Response({"detalle": texto("Sin permiso para esta fundación", "Not authorized for this foundation")}, status=403)
         serializer = CuentaCrearSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         datos = serializer.validated_data
         try:
             cifrado = cifrar(datos["numero_cuenta"])
         except ImproperlyConfigured:
-            return Response({"detalle": "Cifrado no configurado"}, status=503)
+            return Response({"detalle": texto("Cifrado no configurado", "Encryption is not configured")}, status=503)
         cuenta = CuentaFundacion.objects.create(
             fundacion_id=fundacion_id, numero_cuenta_cifrado=cifrado,
             numero_cuenta_ultimos4=datos["numero_cuenta"][-4:],
@@ -64,13 +65,13 @@ class CuentaRevelarView(APIView):
                 apadrinamiento_id=apadrinamiento_id, usuario_padrino_id=request.user.pk,
             )
         except ApadrinamientoError as exc:
-            return Response({"detalle": str(exc)}, status=400)
+            return Response({"detalle": error(str(exc))}, status=400)
         except (ImproperlyConfigured, ValueError):
-            return Response({"detalle": "Datos bancarios no disponibles"}, status=503)
+            return Response({"detalle": texto("Datos bancarios no disponibles", "Banking details are unavailable")}, status=503)
         respuesta = Response({
             "banco": cuenta.banco, "tipo_cuenta": cuenta.tipo_cuenta,
             "titular": cuenta.titular, "numero_cuenta": numero,
-            "nota": "La transferencia se realiza fuera de Little Paws Net.",
+            "nota": texto("La transferencia se realiza fuera de Little Paws Net.", "The transfer takes place outside Little Paws Net."),
         })
         respuesta["Cache-Control"] = "no-store"
         return respuesta
@@ -86,14 +87,14 @@ class DeclaracionView(APIView):
             pk=apadrinamiento_id, usuario_padrino=request.user,
         ).first()
         if apadrinamiento is None:
-            return Response({"detalle": "Apadrinamiento inexistente o sin acceso"}, status=404)
+            return Response({"detalle": texto("Apadrinamiento inexistente o sin acceso", "Sponsorship not found or access denied")}, status=404)
         try:
             referencia = (
                 cifrar(serializer.validated_data["referencia"])
                 if serializer.validated_data.get("referencia") else None
             )
         except ImproperlyConfigured:
-            return Response({"detalle": "Cifrado no configurado"}, status=503)
+            return Response({"detalle": texto("Cifrado no configurado", "Encryption is not configured")}, status=503)
         declaracion = DeclaracionTransferencia.objects.create(
             apadrinamiento=apadrinamiento,
             monto_declarado=serializer.validated_data["monto_declarado"],
@@ -116,5 +117,5 @@ class ConfirmacionView(APIView):
                 monto=serializer.validated_data["monto_confirmado"],
             )
         except ApadrinamientoError as exc:
-            return Response({"detalle": str(exc)}, status=400)
-        return Response({"id_confirmacion": confirmacion.pk, "estado": "Aceptado"}, status=201)
+            return Response({"detalle": error(str(exc))}, status=400)
+        return Response({"id_confirmacion": confirmacion.pk, "estado": etiqueta("Aceptado")}, status=201)

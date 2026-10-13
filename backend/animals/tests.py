@@ -57,6 +57,15 @@ class ExpedienteTests(TestCase):
     def setUp(self):
         self.api = APIClient()
 
+    def test_validacion_de_expediente_en_ingles(self):
+        self.api.force_authenticate(user=self.gestor)
+        respuesta = self.api.post(reverse("caso_mascota_crear", args=[self.caso.pk]), {
+            "raza": Raza.objects.get(nombre="Mestizo", especie__nombre="Canino").pk,
+            "es_estimada": True,
+        }, format="json", HTTP_ACCEPT_LANGUAGE="en")
+        self.assertEqual(respuesta.status_code, 400)
+        self.assertIn("estimated date", str(respuesta.data).lower())
+
     def test_fundacion_identifica_mascota_del_caso(self):
         reporte = Reporte.objects.create(
             usuario_reportante=self.ajeno,
