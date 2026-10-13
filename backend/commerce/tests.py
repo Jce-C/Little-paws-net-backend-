@@ -2,7 +2,7 @@
 
 from decimal import Decimal
 
-from django.db import IntegrityError, transaction
+from django.db import IntegrityError, connection, transaction
 from django.test import TestCase
 from django.urls import reverse
 from django.utils import timezone
@@ -58,18 +58,49 @@ class ComercioModelosTests(TestCase):
             estado_pedido=ValorMaestro.objects.get(tipo__nombre="estado_pedido", nombre="Iniciado"),
         )
         detalle = DetallePedido.objects.create(
-            pedido=pedido, producto=self.producto, cantidad=2, precio_referencia=self.producto.precio,
+            pedido=pedido, producto=self.producto, tienda=self.tienda,
+            cantidad=2, precio_referencia=self.producto.precio,
         )
         self.assertEqual(detalle.pk, (pedido.pk, self.producto.pk))
         with self.assertRaises(IntegrityError):
             with transaction.atomic():
                 DetallePedido.objects.create(
-                    pedido=pedido, producto=self.producto, cantidad=1, precio_referencia=self.producto.precio,
+                    pedido=pedido, producto=self.producto, tienda=self.tienda,
+                    cantidad=1, precio_referencia=self.producto.precio,
                 )
         with self.assertRaises(IntegrityError):
             with transaction.atomic():
                 detalle.cantidad = 0
                 detalle.save(update_fields=["cantidad"])
+
+    def test_mysql_impide_mezclar_tiendas_en_detalle(self):
+        if connection.vendor != "mysql":
+            self.skipTest("Las FK compuestas de esta regla se instalan en MySQL")
+
+        entidad = EntidadVerificable.objects.create(
+            nombre="Segunda tienda",
+            estado_verificacion=self.tienda.entidad.estado_verificacion,
+        )
+        otra_tienda = Tienda.objects.create(
+            entidad=entidad, ciudad=self.tienda.ciudad, direccion="Calle 2",
+        )
+        producto_ajeno = Producto.objects.create(
+            tienda=otra_tienda,
+            categoria_producto=self.producto.categoria_producto,
+            tipo_producto=self.producto.tipo_producto,
+            nombre="Producto ajeno", precio=Decimal("100.00"), existencias=1,
+            estado_producto=self.producto.estado_producto,
+        )
+        pedido = PedidoIniciado.objects.create(
+            tienda=self.tienda, usuario_cliente=self.cliente,
+            estado_pedido=ValorMaestro.objects.get(tipo__nombre="estado_pedido", nombre="Iniciado"),
+        )
+        with self.assertRaises(IntegrityError):
+            with transaction.atomic():
+                DetallePedido.objects.create(
+                    pedido=pedido, producto=producto_ajeno, tienda=self.tienda,
+                    cantidad=1, precio_referencia=producto_ajeno.precio,
+                )
 
 
 class ProductoAPITests(TestCase):

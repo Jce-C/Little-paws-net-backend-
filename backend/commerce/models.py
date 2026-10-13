@@ -33,6 +33,7 @@ class Producto(models.Model):
     class Meta:
         db_table = "Producto"
         constraints = [
+            models.UniqueConstraint(fields=["id_producto", "tienda"], name="uq_producto_tienda"),
             models.CheckConstraint(condition=Q(precio__gt=0), name="ck_producto_precio_pos"),
             models.CheckConstraint(condition=Q(existencias__gte=0), name="ck_producto_existencias"),
         ]
@@ -69,6 +70,9 @@ class PedidoIniciado(models.Model):
 
     class Meta:
         db_table = "PedidoIniciado"
+        constraints = [
+            models.UniqueConstraint(fields=["id_pedido", "tienda"], name="uq_pedido_tienda"),
+        ]
         indexes = [
             models.Index(fields=["usuario_cliente", "fecha_inicio"], name="ix_pedido_cliente_fecha"),
             models.Index(fields=["tienda", "fecha_inicio"], name="ix_pedido_tienda_fecha"),
@@ -79,6 +83,7 @@ class DetallePedido(models.Model):
     pk = models.CompositePrimaryKey("pedido_id", "producto_id")
     pedido = models.ForeignKey(PedidoIniciado, on_delete=models.PROTECT, db_column="id_pedido")
     producto = models.ForeignKey(Producto, on_delete=models.PROTECT, db_column="id_producto")
+    tienda = models.ForeignKey(Tienda, on_delete=models.PROTECT, db_column="id_tienda")
     cantidad = models.PositiveIntegerField()
     precio_referencia = models.DecimalField(max_digits=12, decimal_places=2)
 

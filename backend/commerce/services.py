@@ -109,7 +109,7 @@ def iniciar_pedido(*, usuario_cliente, tienda, productos):
     for item in productos:
         producto = bloqueados[item["producto"].pk]
         DetallePedido.objects.create(
-            pedido=pedido, producto=producto, cantidad=item["cantidad"],
+            pedido=pedido, producto=producto, tienda=tienda, cantidad=item["cantidad"],
             precio_referencia=producto.precio,
         )
     tipo_notificacion = ValorMaestro.objects.get(tipo__nombre="tipo_notificacion", nombre="Pedido iniciado")

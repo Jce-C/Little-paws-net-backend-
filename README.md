@@ -15,6 +15,8 @@ Backend de Little Paws Net, una plataforma para gestionar reportes y rescates de
 
 Los pedidos no procesan pagos ni reservan inventario. Los compromisos y distribuciones de fondos registran información del sistema; no ejecutan transferencias bancarias.
 
+La coherencia de tienda en los pedidos se impone con dos claves foráneas compuestas en MySQL: cada detalle debe corresponder tanto al pedido como al producto de la misma tienda. La migración `commerce.0010` sustituye los disparadores usados anteriormente; no requiere cambiar `log_bin_trust_function_creators`.
+
 ## Requisitos
 
 - Python y las dependencias fijadas en [requirements.txt](backend/requirements.txt).
