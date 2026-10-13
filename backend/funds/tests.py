@@ -53,6 +53,21 @@ class ModelosFondoTests(TestCase):
         self.assertEqual(donacion.monto_comprometido, Decimal("15000.00"))
         self.assertIsNotNone(donacion.fecha_compromiso)
 
+    def test_donacion_en_ingles_sin_traducir_nombre_del_fondo(self):
+        donacion = DonacionGeneral.objects.create(
+            fondo_externo=self.fondo,
+            usuario_donante=self.usuario,
+            estado_donacion=self.comprometida,
+            monto_comprometido=Decimal("15000.00"),
+        )
+        api = APIClient()
+        api.force_authenticate(user=self.usuario)
+        respuesta = api.get(reverse("donacion_detalle", args=[donacion.pk]), HTTP_ACCEPT_LANGUAGE="en")
+        self.assertEqual(respuesta.status_code, 200)
+        self.assertEqual(respuesta.data["estado"], "Pledged")
+        self.assertEqual(respuesta.data["fondo"], "Fondo de prueba")
+        self.assertIn("receipt of funds is not confirmed", respuesta.data["aviso"])
+
     def test_catalogos_y_permisos_no_son_globales_por_defecto(self):
         self.assertEqual(
             set(ValorMaestro.objects.filter(tipo__nombre="estado_donacion").values_list("nombre", flat=True)),
@@ -123,6 +138,14 @@ class FondoExternoAPITests(TestCase):
     def setUp(self):
         self.api = APIClient()
         self.clave = Fernet.generate_key().decode("ascii")
+
+    def test_error_de_permiso_en_ingles(self):
+        self.api.force_authenticate(user=self.usuario)
+        respuesta = self.api.post(reverse("fondo_listar_crear"), {
+            "nombre": "Fund test", "instrucciones_transferencia": "External transfer",
+        }, format="json", HTTP_ACCEPT_LANGUAGE="en")
+        self.assertEqual(respuesta.status_code, 403)
+        self.assertEqual(respuesta.data["detalle"], "You cannot configure funds")
 
     def test_solo_administrador_configura_fondo_y_datos_quedan_cifrados(self):
         ruta = reverse("fondo_listar_crear")

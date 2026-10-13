@@ -56,6 +56,22 @@ class FlujoRescateTests(TestCase):
         self.assertEqual(respuesta.status_code, 201, respuesta.data)
         return respuesta
 
+    def test_rescate_en_ingles_con_estado_y_error_localizados(self):
+        respuesta = self.api.post(reverse("reporte_crear"), {
+            "tipo_reporte": self.tipo_reporte.pk,
+            "descripcion": "Injured animal",
+            "latitud": "4.609710", "longitud": "-74.081750",
+        }, format="json", HTTP_ACCEPT_LANGUAGE="en")
+        self.assertEqual(respuesta.status_code, 201, respuesta.data)
+        self.assertEqual(respuesta.data["estado"], "Pending")
+        self.assertEqual(respuesta["Content-Language"], "en")
+        ruta = reverse("reporte_gestion_anonima", args=[respuesta.data["id_reporte"]])
+        error = self.api.post(ruta, {
+            "codigo_gestion": "wrong", "cerrar": True,
+        }, format="json", HTTP_ACCEPT_LANGUAGE="en")
+        self.assertEqual(error.status_code, 403)
+        self.assertEqual(error.data["detalle"], "Invalid credential")
+
     def test_reporte_anonimo_con_codigo_privado_y_auditoria(self):
         respuesta = self.crear_reporte()
         reporte = Reporte.objects.get(pk=respuesta.data["id_reporte"])

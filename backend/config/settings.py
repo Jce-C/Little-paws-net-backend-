@@ -36,11 +36,13 @@ INSTALLED_APPS = [
     "rescue",
     "adoptions",
     "funds",
+    "commerce",
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -100,6 +102,7 @@ SIMPLE_JWT = {
 }
 
 LANGUAGE_CODE = "es-co"
+LANGUAGES = [("es", "Español"), ("en", "English")]
 TIME_ZONE = "America/Bogota"
 USE_I18N = True
 USE_TZ = True

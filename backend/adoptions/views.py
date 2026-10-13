@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from animals.models import CustodiaMascota
+from core.i18n import error, etiqueta, texto
 
 from .models import SolicitudAdopcion
 from .serializers import (
@@ -50,7 +51,7 @@ class SolicitudAdopcionListCreateView(APIView):
             try:
                 mascota_id = serializers.IntegerField(min_value=1).run_validation(mascota_id)
             except serializers.ValidationError:
-                return Response({"id_mascota": ["Debe ser un entero positivo."]}, status=400)
+                return Response({"id_mascota": [texto("Debe ser un entero positivo.", "Must be a positive integer.")]}, status=400)
             solicitudes = solicitudes.filter(mascota_id=mascota_id)
         return Response([representar_solicitud(solicitud) for solicitud in solicitudes])
 
@@ -65,7 +66,7 @@ class SolicitudAdopcionListCreateView(APIView):
                 observaciones=datos.get("observaciones", ""),
             )
         except AdopcionError as exc:
-            return Response({"detalle": str(exc)}, status=400)
+            return Response({"detalle": error(str(exc))}, status=400)
         solicitud = SolicitudAdopcion.objects.select_related(
             "mascota",
             "estado_adopcion",
@@ -79,7 +80,7 @@ class SolicitudAdopcionDetalleView(APIView):
     def get(self, request, solicitud_id):
         solicitud = solicitudes_visibles(request.user).filter(pk=solicitud_id).first()
         if solicitud is None:
-            return Response({"detalle": "Solicitud inexistente o sin acceso"}, status=404)
+            return Response({"detalle": texto("Solicitud inexistente o sin acceso", "Application not found or access denied")}, status=404)
         return Response(representar_solicitud(solicitud, incluir_historial=True))
 
 
@@ -97,10 +98,10 @@ class ResolverSolicitudAdopcionView(APIView):
                 observacion=serializer.validated_data["observacion"],
             )
         except AdopcionPermisoError as exc:
-            return Response({"detalle": str(exc)}, status=403)
+            return Response({"detalle": error(str(exc))}, status=403)
         except AdopcionError as exc:
-            return Response({"detalle": str(exc)}, status=400)
+            return Response({"detalle": error(str(exc))}, status=400)
         return Response({
             "id_solicitud_adopcion": solicitud.pk,
-            "estado": solicitud.estado_adopcion.nombre,
+            "estado": etiqueta(solicitud.estado_adopcion.nombre),
         })

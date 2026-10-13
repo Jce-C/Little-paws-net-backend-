@@ -11,6 +11,7 @@ from rest_framework.throttling import AnonRateThrottle
 from rest_framework.views import APIView
 
 from core.models import ValorMaestro
+from core.i18n import error, etiqueta, texto
 
 from .models import CasoRescate, HistorialEstadoReporte, Reporte, ReporteUbicacion
 from .serializers import (
@@ -45,7 +46,7 @@ class ReporteCrearView(APIView):
             reporte=reporte, estado_nuevo=estado, usuario_actor=None if anonimo else request.user,
             observacion="Creación del reporte",
         )
-        respuesta = {"id_reporte": reporte.pk, "estado": "Pendiente"}
+        respuesta = {"id_reporte": reporte.pk, "estado": etiqueta("Pendiente")}
         if codigo:
             respuesta["codigo_gestion"] = codigo
         return Response(respuesta, status=status.HTTP_201_CREATED)
@@ -62,11 +63,11 @@ class GestionAnonimaView(APIView):
         datos = serializer.validated_data
         reporte = Reporte.objects.select_for_update().filter(pk=reporte_id, usuario_reportante__isnull=True).first()
         if reporte is None:
-            return Response({"detalle": "Reporte no disponible"}, status=404)
+            return Response({"detalle": texto("Reporte no disponible", "Report unavailable")}, status=404)
         if not check_password(datos["codigo_gestion"], reporte.codigo_gestion_hash):
-            return Response({"detalle": "Credencial inválida"}, status=403)
+            return Response({"detalle": texto("Credencial inválida", "Invalid credential")}, status=403)
         if reporte.estado_reporte.nombre != "Pendiente" or CasoRescate.objects.filter(reporte=reporte).exists():
-            return Response({"detalle": "El reporte ya no admite cambios"}, status=409)
+            return Response({"detalle": texto("El reporte ya no admite cambios", "The report can no longer be changed")}, status=409)
         campos = ["fecha_actualizacion"]
         for campo in ("descripcion", "contacto_reportante"):
             if campo in datos:
@@ -81,7 +82,7 @@ class GestionAnonimaView(APIView):
                 observacion="Cierre solicitado con código privado",
             )
         reporte.save(update_fields=campos)
-        return Response({"id_reporte": reporte.pk, "estado": reporte.estado_reporte.nombre})
+        return Response({"id_reporte": reporte.pk, "estado": etiqueta(reporte.estado_reporte.nombre)})
 
 
 class ReporteDetalleView(APIView):
@@ -90,20 +91,20 @@ class ReporteDetalleView(APIView):
     def get(self, request, reporte_id):
         reporte = Reporte.objects.select_related("estado_reporte", "tipo_reporte").filter(pk=reporte_id).first()
         if reporte is None:
-            return Response({"detalle": "Reporte inexistente"}, status=404)
+            return Response({"detalle": texto("Reporte inexistente", "Report not found")}, status=404)
         caso = CasoRescate.objects.select_related("estado_caso", "fundacion__entidad").filter(reporte=reporte).first()
         es_reportante = reporte.usuario_reportante_id == request.user.pk
         es_miembro = bool(caso and caso.fundacion.entidad.entidadmiembro_set.filter(
             usuario=request.user, fecha_salida__isnull=True,
         ).exists())
         if not (es_reportante or es_miembro):
-            return Response({"detalle": "Sin acceso al reporte"}, status=403)
+            return Response({"detalle": texto("Sin acceso al reporte", "Access to the report denied")}, status=403)
         return Response({
-            "id_reporte": reporte.pk, "tipo": reporte.tipo_reporte.nombre,
-            "estado": reporte.estado_reporte.nombre, "fecha_creacion": reporte.fecha_creacion,
+            "id_reporte": reporte.pk, "tipo": etiqueta(reporte.tipo_reporte.nombre),
+            "estado": etiqueta(reporte.estado_reporte.nombre), "fecha_creacion": reporte.fecha_creacion,
             "caso": None if caso is None else {
                 "id_caso": caso.pk, "fundacion": caso.fundacion.entidad.nombre,
-                "estado": caso.estado_caso.nombre,
+                "estado": etiqueta(caso.estado_caso.nombre),
             },
         })
 
@@ -122,7 +123,7 @@ class AceptarReporteView(APIView):
                 justificacion_sin_cupo=serializer.validated_data.get("justificacion_sin_cupo", ""),
             )
         except ReglaNegocioError as exc:
-            return Response({"detalle": str(exc)}, status=400)
+            return Response({"detalle": error(str(exc))}, status=400)
         return Response({"id_caso": caso.pk, "id_reporte": caso.reporte_id}, status=201)
 
 
@@ -132,16 +133,16 @@ class CasoDetalleView(APIView):
     def get(self, request, caso_id):
         caso = CasoRescate.objects.select_related("reporte", "fundacion__entidad", "estado_caso").filter(pk=caso_id).first()
         if caso is None:
-            return Response({"detalle": "Caso inexistente"}, status=404)
+            return Response({"detalle": texto("Caso inexistente", "Case not found")}, status=404)
         es_reportante = caso.reporte.usuario_reportante_id == request.user.pk
         es_miembro = caso.fundacion.entidad.entidadmiembro_set.filter(
             usuario=request.user, fecha_salida__isnull=True,
         ).exists()
         if not (es_reportante or es_miembro):
-            return Response({"detalle": "Sin acceso al caso"}, status=403)
+            return Response({"detalle": texto("Sin acceso al caso", "Access to the case denied")}, status=403)
         return Response({
             "id_caso": caso.pk, "id_reporte": caso.reporte_id,
-            "fundacion": caso.fundacion.entidad.nombre, "estado": caso.estado_caso.nombre,
+            "fundacion": caso.fundacion.entidad.nombre, "estado": etiqueta(caso.estado_caso.nombre),
             "fecha_aceptacion": caso.fecha_aceptacion,
         })
 
@@ -159,5 +160,5 @@ class CerrarCasoView(APIView):
                 observacion=serializer.validated_data.get("observacion", ""),
             )
         except ReglaNegocioError as exc:
-            return Response({"detalle": str(exc)}, status=400)
-        return Response({"id_caso": caso.pk, "estado": caso.estado_caso.nombre})
+            return Response({"detalle": error(str(exc))}, status=400)
+        return Response({"id_caso": caso.pk, "estado": etiqueta(caso.estado_caso.nombre)})

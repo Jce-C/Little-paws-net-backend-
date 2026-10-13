@@ -4,6 +4,7 @@ from rest_framework import serializers
 from django.utils import timezone
 
 from core.models import ValorMaestro
+from core.i18n import texto
 
 from .models import Raza
 
@@ -19,13 +20,17 @@ class MascotaCasoSerializer(serializers.Serializer):
     def validate(self, attrs):
         fecha = attrs.get("fecha_nacimiento")
         if attrs.get("es_estimada") and fecha is None:
-            raise serializers.ValidationError("Una fecha estimada requiere fecha_nacimiento")
+            raise serializers.ValidationError(texto(
+                "Una fecha estimada requiere fecha_nacimiento", "An estimated date requires fecha_nacimiento",
+            ))
         if fecha and fecha > timezone.localdate():
-            raise serializers.ValidationError("La fecha de nacimiento no puede ser futura")
+            raise serializers.ValidationError(texto(
+                "La fecha de nacimiento no puede ser futura", "The birth date cannot be in the future",
+            ))
         for campo, tipo in (("sexo", "sexo_mascota"), ("tamano", "tamano_mascota")):
             valor = attrs.get(campo)
             if valor is not None and valor.tipo.nombre != tipo:
-                raise serializers.ValidationError({campo: "Valor de catálogo incorrecto"})
+                raise serializers.ValidationError({campo: texto("Valor de catálogo incorrecto", "Invalid catalog value")})
         return attrs
 
 

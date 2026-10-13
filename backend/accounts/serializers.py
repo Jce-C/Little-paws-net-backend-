@@ -4,6 +4,7 @@ from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 
 from .models import Usuario
+from core.i18n import texto
 
 
 class RegistroSerializer(serializers.Serializer):
@@ -15,7 +16,9 @@ class RegistroSerializer(serializers.Serializer):
     def validate_email(self, value):
         email = Usuario.objects.normalize_email(value).strip()
         if Usuario.objects.filter(email__iexact=email).exists():
-            raise serializers.ValidationError("El correo ya está registrado")
+            raise serializers.ValidationError(texto(
+                "El correo ya está registrado", "This email address is already registered",
+            ))
         return email
 
     def validate(self, attrs):
