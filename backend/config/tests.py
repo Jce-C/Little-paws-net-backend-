@@ -7,3 +7,25 @@ class SaludSinBaseTests(SimpleTestCase):
         response = self.client.get(reverse("health"), HTTP_HOST="localhost")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(), {"status": "ok"})
+
+    def test_idioma_predeterminado_espanol(self):
+        response = self.client.get(reverse("idiomas"), HTTP_HOST="localhost")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["idioma_actual"], "es")
+        self.assertEqual(response["Content-Language"], "es")
+        self.assertIn("Accept-Language", response.get("Vary", ""))
+
+    def test_ingles_por_accept_language(self):
+        response = self.client.get(
+            reverse("idiomas"), HTTP_HOST="localhost", HTTP_ACCEPT_LANGUAGE="en-US,en;q=0.9",
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["idioma_actual"], "en")
+        self.assertEqual(response.json()["mensaje"], "Available languages")
+        self.assertEqual(response["Content-Language"], "en")
+
+    def test_idioma_no_admitido_vuelve_a_espanol(self):
+        response = self.client.get(
+            reverse("idiomas"), HTTP_HOST="localhost", HTTP_ACCEPT_LANGUAGE="fr",
+        )
+        self.assertEqual(response.json()["idioma_actual"], "es")
