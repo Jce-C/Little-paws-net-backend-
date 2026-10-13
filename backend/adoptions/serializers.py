@@ -1,6 +1,7 @@
 """Validacion y representacion de solicitudes de adopcion."""
 
 from rest_framework import serializers
+from core.i18n import etiqueta
 
 class SolicitudAdopcionCrearSerializer(serializers.Serializer):
     id_mascota = serializers.IntegerField(min_value=1)
@@ -22,7 +23,7 @@ def representar_solicitud(solicitud, incluir_historial=False):
         "id_mascota": solicitud.mascota_id,
         "mascota": solicitud.mascota.nombre,
         "id_usuario_adoptante": solicitud.usuario_adoptante_id,
-        "estado": solicitud.estado_adopcion.nombre,
+        "estado": etiqueta(solicitud.estado_adopcion.nombre),
         "fecha_solicitud": solicitud.fecha_solicitud,
         "observaciones": solicitud.observaciones,
     }
@@ -30,8 +31,8 @@ def representar_solicitud(solicitud, incluir_historial=False):
         datos["historial"] = [
             {
                 "id_historial_adopcion": cambio.pk,
-                "estado_anterior": None if cambio.estado_anterior is None else cambio.estado_anterior.nombre,
-                "estado_nuevo": cambio.estado_nuevo.nombre,
+                "estado_anterior": None if cambio.estado_anterior is None else etiqueta(cambio.estado_anterior.nombre),
+                "estado_nuevo": etiqueta(cambio.estado_nuevo.nombre),
                 "id_usuario_actor": cambio.usuario_actor_id,
                 "fecha_cambio": cambio.fecha_cambio,
                 "observacion": cambio.observacion,

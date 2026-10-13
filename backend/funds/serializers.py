@@ -5,6 +5,7 @@ from decimal import Decimal
 from rest_framework import serializers
 
 from core.models import ArchivoDigital, Fundacion
+from core.i18n import etiqueta, texto
 
 from .models import FondoExterno
 
@@ -40,7 +41,10 @@ class ResolverDonacionSerializer(serializers.Serializer):
     def validate(self, attrs):
         if attrs["estado"] == "Confirmada" and not attrs.get("referencia_externa", ""):
             raise serializers.ValidationError({
-                "referencia_externa": "Se requiere una referencia externa para confirmar la donación.",
+                "referencia_externa": texto(
+                    "Se requiere una referencia externa para confirmar la donación.",
+                    "An external reference is required to confirm the donation.",
+                ),
             })
         return attrs
 
@@ -57,17 +61,25 @@ def representar_donacion(donacion, *, incluir_historial=False):
         "id_fondo_externo": donacion.fondo_externo_id,
         "fondo": donacion.fondo_externo.nombre,
         "id_usuario_donante": donacion.usuario_donante_id,
-        "estado": donacion.estado_donacion.nombre,
+        "estado": etiqueta(donacion.estado_donacion.nombre),
         "monto_comprometido": str(donacion.monto_comprometido),
         "fecha_compromiso": donacion.fecha_compromiso,
-        "aviso": avisos.get(donacion.estado_donacion.nombre, "Estado informativo; sin procesamiento de pagos"),
+        "aviso": texto(
+            avisos.get(donacion.estado_donacion.nombre, "Estado informativo; sin procesamiento de pagos"),
+            {
+                "Comprometida": "Pledge recorded; receipt of funds is not confirmed",
+                "Confirmada": "Receipt recorded by an administrator; Little Paws Net did not process the payment",
+                "Rechazada": "Pledge rejected; no receipt of funds was recorded",
+                "Cancelada": "Pledge cancelled; no receipt of funds was recorded",
+            }.get(donacion.estado_donacion.nombre, "Informational status; no payment processing"),
+        ),
     }
     if incluir_historial:
         datos["historial"] = [
             {
                 "id_historial_donacion": cambio.pk,
-                "estado_anterior": None if cambio.estado_anterior_id is None else cambio.estado_anterior.nombre,
-                "estado_nuevo": cambio.estado_nuevo.nombre,
+                "estado_anterior": None if cambio.estado_anterior_id is None else etiqueta(cambio.estado_anterior.nombre),
+                "estado_nuevo": etiqueta(cambio.estado_nuevo.nombre),
                 "id_usuario_actor": cambio.usuario_actor_id,
                 "fecha_cambio": cambio.fecha_cambio,
                 "observacion": cambio.observacion,
@@ -106,7 +118,7 @@ def representar_distribucion(distribucion):
         "id_fondo_externo": distribucion.fondo_externo_id,
         "id_fundacion": distribucion.fundacion_id,
         "monto_reportado": str(distribucion.monto_reportado),
-        "estado": distribucion.estado_distribucion.nombre,
+        "estado": etiqueta(distribucion.estado_distribucion.nombre),
         "fecha_distribucion": distribucion.fecha_distribucion,
         "fecha_reporte": distribucion.fecha_reporte,
         "id_usuario_reportador": distribucion.usuario_reportador_id,
@@ -115,5 +127,8 @@ def representar_distribucion(distribucion):
         "id_usuario_confirmador": distribucion.usuario_confirmador_id,
         "fecha_confirmacion": distribucion.fecha_confirmacion,
         "observacion_confirmacion": distribucion.observacion_confirmacion,
-        "aviso": "Registro informativo de una distribución externa; Little Paws Net no transfiere fondos",
+        "aviso": texto(
+            "Registro informativo de una distribución externa; Little Paws Net no transfiere fondos",
+            "Informational record of an external distribution; Little Paws Net does not transfer funds",
+        ),
     }

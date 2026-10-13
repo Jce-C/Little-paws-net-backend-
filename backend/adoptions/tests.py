@@ -119,6 +119,29 @@ class SolicitudAdopcionAPITests(TestCase):
     def setUp(self):
         self.api = APIClient()
 
+    def test_solicitud_en_ingles_con_estado_localizado(self):
+        self.api.force_authenticate(user=self.solicitante)
+        respuesta = self.api.post(reverse("adopcion_listar_crear"), {
+            "id_mascota": self.mascota.pk,
+            "observaciones": "I can care for this pet",
+        }, format="json", HTTP_ACCEPT_LANGUAGE="en")
+        self.assertEqual(respuesta.status_code, 201, respuesta.data)
+        self.assertEqual(respuesta.data["estado"], "Pending")
+        self.assertEqual(respuesta.data["observaciones"], "I can care for this pet")
+        detalle = self.api.get(
+            reverse("adopcion_detalle", args=[respuesta.data["id_solicitud_adopcion"]]),
+            HTTP_ACCEPT_LANGUAGE="en",
+        )
+        self.assertEqual(detalle.data["historial"][0]["estado_nuevo"], "Pending")
+
+    def test_error_de_adopcion_en_ingles(self):
+        self.api.force_authenticate(user=self.solicitante)
+        respuesta = self.api.post(reverse("adopcion_listar_crear"), {
+            "id_mascota": 999999,
+        }, format="json", HTTP_ACCEPT_LANGUAGE="en")
+        self.assertEqual(respuesta.status_code, 400)
+        self.assertEqual(respuesta.data["detalle"], "Pet not found")
+
     def test_crear_solicitud_crea_historial(self):
         self.api.force_authenticate(user=self.solicitante)
         respuesta = self.api.post(reverse("adopcion_listar_crear"), {

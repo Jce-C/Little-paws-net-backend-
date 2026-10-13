@@ -6,6 +6,7 @@ from rest_framework.views import APIView
 
 from core.crypto import descifrar
 from core.models import EntidadMiembroRol
+from core.i18n import error, etiqueta, texto
 
 from .models import DistribucionReportadaFondo, DonacionGeneral, FondoExterno
 from .permissions import administrador_puede
@@ -37,9 +38,9 @@ class FondoExternoListCreateView(APIView):
                 **serializer.validated_data,
             )
         except FondoPermisoError as exc:
-            return Response({"detalle": str(exc)}, status=403)
+            return Response({"detalle": error(str(exc))}, status=403)
         except FondoError as exc:
-            return Response({"detalle": str(exc)}, status=400)
+            return Response({"detalle": error(str(exc))}, status=400)
         return Response(representar_fondo(fondo), status=201)
 
 
@@ -49,11 +50,14 @@ class FondoExternoInstruccionesView(APIView):
     def get(self, request, fondo_id):
         fondo = FondoExterno.objects.filter(pk=fondo_id).first()
         if fondo is None:
-            return Response({"detalle": "Fondo inexistente"}, status=404)
+            return Response({"detalle": texto("Fondo inexistente", "Fund not found")}, status=404)
         return Response({
             "id_fondo_externo": fondo.pk,
             "instrucciones_transferencia": descifrar(fondo.datos_transferencia_cifrados),
-            "aviso": "Transferencia externa; Little Paws Net no procesa el pago",
+            "aviso": texto(
+                "Transferencia externa; Little Paws Net no procesa el pago",
+                "External transfer; Little Paws Net does not process the payment",
+            ),
         })
 
 
@@ -80,9 +84,9 @@ class DonacionGeneralListCreateView(APIView):
                 **serializer.validated_data,
             )
         except FondoPermisoError as exc:
-            return Response({"detalle": str(exc)}, status=403)
+            return Response({"detalle": error(str(exc))}, status=403)
         except FondoError as exc:
-            return Response({"detalle": str(exc)}, status=400)
+            return Response({"detalle": error(str(exc))}, status=400)
         donacion = DonacionGeneral.objects.select_related("fondo_externo", "estado_donacion").get(pk=donacion.pk)
         return Response(representar_donacion(donacion), status=201)
 
@@ -93,7 +97,7 @@ class DonacionGeneralDetalleView(APIView):
     def get(self, request, donacion_id):
         donacion = donaciones_visibles(request.user).filter(pk=donacion_id).first()
         if donacion is None:
-            return Response({"detalle": "Donación inexistente o sin acceso"}, status=404)
+            return Response({"detalle": texto("Donación inexistente o sin acceso", "Donation not found or access denied")}, status=404)
         return Response(representar_donacion(donacion, incluir_historial=True))
 
 
@@ -110,16 +114,16 @@ class ResolverDonacionView(APIView):
                 **serializer.validated_data,
             )
         except FondoPermisoError as exc:
-            return Response({"detalle": str(exc)}, status=403)
+            return Response({"detalle": error(str(exc))}, status=403)
         except FondoNoEncontradoError as exc:
-            return Response({"detalle": str(exc)}, status=404)
+            return Response({"detalle": error(str(exc))}, status=404)
         except FondoTransicionError as exc:
-            return Response({"detalle": str(exc)}, status=409)
+            return Response({"detalle": error(str(exc))}, status=409)
         except FondoError as exc:
-            return Response({"detalle": str(exc)}, status=400)
+            return Response({"detalle": error(str(exc))}, status=400)
         return Response({
             "id_donacion": donacion.pk,
-            "estado": donacion.estado_donacion.nombre,
+            "estado": etiqueta(donacion.estado_donacion.nombre),
             "aviso": representar_donacion(donacion)["aviso"],
         })
 
@@ -151,9 +155,9 @@ class DistribucionListCreateView(APIView):
         try:
             registro = reportar_distribucion(usuario_actor=request.user, **serializer.validated_data)
         except FondoPermisoError as exc:
-            return Response({"detalle": str(exc)}, status=403)
+            return Response({"detalle": error(str(exc))}, status=403)
         except FondoError as exc:
-            return Response({"detalle": str(exc)}, status=400)
+            return Response({"detalle": error(str(exc))}, status=400)
         return Response(representar_distribucion(registro), status=201)
 
 
@@ -163,7 +167,7 @@ class DistribucionDetalleView(APIView):
     def get(self, request, distribucion_id):
         registro = distribuciones_visibles(request.user).filter(pk=distribucion_id).first()
         if registro is None:
-            return Response({"detalle": "Distribución inexistente o sin acceso"}, status=404)
+            return Response({"detalle": texto("Distribución inexistente o sin acceso", "Distribution not found or access denied")}, status=404)
         return Response(representar_distribucion(registro))
 
 
@@ -180,11 +184,11 @@ class ConfirmarDistribucionView(APIView):
                 **serializer.validated_data,
             )
         except FondoPermisoError as exc:
-            return Response({"detalle": str(exc)}, status=403)
+            return Response({"detalle": error(str(exc))}, status=403)
         except FondoNoEncontradoError as exc:
-            return Response({"detalle": str(exc)}, status=404)
+            return Response({"detalle": error(str(exc))}, status=404)
         except FondoTransicionError as exc:
-            return Response({"detalle": str(exc)}, status=409)
+            return Response({"detalle": error(str(exc))}, status=409)
         except FondoError as exc:
-            return Response({"detalle": str(exc)}, status=400)
+            return Response({"detalle": error(str(exc))}, status=400)
         return Response(representar_distribucion(registro))
