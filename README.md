@@ -2,6 +2,23 @@
 
 Backend de Little Paws Net, una plataforma para gestionar reportes y rescates de animales, expedientes médicos, adopciones, apadrinamientos, fondos externos y el catálogo de tiendas aliadas. Está construido con Django y Django REST Framework sobre MySQL. Este repositorio contiene la API; no incluye una interfaz web o móvil.
 
+## Evaluación en línea (sin instalación)
+
+La versión de demostración ya está desplegada con Django y MySQL en Railway. Desde este repositorio se puede comprobar directamente:
+
+| Recurso | Enlace |
+| --- | --- |
+| Entrada de la API | [Abrir Little Paws Net](https://little-paws-api-production.up.railway.app/) |
+| Estado del servicio | [Comprobar `/api/health/`](https://little-paws-api-production.up.railway.app/api/health/) |
+| Más de 100 registros ficticios | [Ver conteos actualizados](https://little-paws-api-production.up.railway.app/api/demo/resumen/) |
+| Catálogos | [Consultar `/api/catalogos/`](https://little-paws-api-production.up.railway.app/api/catalogos/) |
+| Idiomas español e inglés | [Consultar `/api/idiomas/`](https://little-paws-api-production.up.railway.app/api/idiomas/) |
+| Panel interno | [Abrir Django Admin](https://little-paws-api-production.up.railway.app/admin/) |
+
+Los conteos corresponden a datos de prueba, no a información personal real. El Admin requiere una cuenta facilitada por el equipo fuera de Git; las rutas privadas de la API requieren autenticación JWT. Esta demostración se consulta desde las URL anteriores: no es necesario clonar el repositorio ni crear MySQL en el computador del evaluador.
+
+El archivo `.env` no se publica. En Railway, las variables privadas del servicio cumplen esa función y la aplicación usa la base MySQL alojada allí. Las instrucciones de instalación local más abajo son **opcionales** y no describen el despliegue de evaluación.
+
 ## Funcionalidades
 
 - Registro de usuarios y autenticación mediante JWT.
@@ -17,13 +34,13 @@ Los pedidos no procesan pagos ni reservan inventario. Los compromisos y distribu
 
 La coherencia de tienda en los pedidos se impone con dos claves foráneas compuestas en MySQL: cada detalle debe corresponder tanto al pedido como al producto de la misma tienda. La migración `commerce.0010` sustituye los disparadores usados anteriormente; no requiere cambiar `log_bin_trust_function_creators`.
 
-## Requisitos
+## Requisitos para instalación local opcional
 
 - Python y las dependencias fijadas en [requirements.txt](backend/requirements.txt).
 - MySQL 8 con una base de datos vacía y una cuenta con permisos sobre esa base.
 - Una clave Fernet local para proteger los datos sensibles utilizados por la aplicación.
 
-## Inicio rápido en Windows (PowerShell)
+## Instalación local opcional en Windows (PowerShell)
 
 Desde la raíz del repositorio:
 
@@ -92,6 +109,6 @@ Ejecute `python manage.py migrate` antes de iniciar o actualizar la aplicación.
 
 ## Seguridad y despliegue
 
-Las credenciales y claves se configuran fuera del repositorio. Antes de desplegar se deben revisar HTTPS, hosts permitidos, cookies seguras, gestión de secretos y `python manage.py check --deploy`. La configuración incluida está orientada al desarrollo y la validación del proyecto, no a una instalación de producción lista para exponer públicamente.
+Las credenciales y claves se configuran fuera del repositorio. La instancia de Railway es una demostración académica con datos ficticios; no debe confundirse con una instalación de producción para datos reales. Para un despliegue nuevo se deben revisar HTTPS, hosts permitidos, cookies seguras, gestión de secretos y `python manage.py check --deploy`.
 
 Para colaborar, consultar [CONTRIBUTING.md](CONTRIBUTING.md).
