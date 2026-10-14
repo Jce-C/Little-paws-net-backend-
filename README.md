@@ -80,7 +80,15 @@ python manage.py test --settings=config.test_settings
 
 La suite automatizada utiliza SQLite en memoria y no modifica MySQL. Para verificar el flujo de rescate, apadrinamiento y expediente sobre MySQL existe `python manage.py smoke_rescue`; sus registros temporales se revierten. Este comando solo admite la base local `little_paws_net_equipo`.
 
-Se pueden cargar registros ficticios e idempotentes del proceso de rescate con `python manage.py seed_demo_rescue`. Este comando también está limitado a `little_paws_net_equipo`; no debe utilizarse en producción ni con datos personales reales.
+Se pueden cargar registros ficticios e idempotentes del proceso de rescate con `python manage.py seed_demo_rescue`. Este comando está limitado a las bases de desarrollo y demostración indicadas a continuación; no debe utilizarse con datos personales reales.
+
+Para una demostración alojada en Railway, el comando también admite exclusivamente la base vacía `little_paws_net_demo`. Los datos que crea son ficticios; no se copia la base local ni se publica un archivo `.env`.
+
+## Demostración en Railway
+
+El repositorio incluye un `Dockerfile` para servir la API con Gunicorn y los archivos estáticos del Admin con WhiteNoise. En Railway se necesitan un servicio MySQL y un servicio de esta aplicación en el mismo proyecto. Configure en la aplicación `MYSQL_HOST`, `MYSQL_PORT`, `MYSQL_DATABASE`, `MYSQL_USER` y `MYSQL_PASSWORD` como referencias a las variables privadas del servicio MySQL; no copie las credenciales al repositorio. Configure además `DJANGO_SECRET_KEY`, `LPN_DATA_KEY`, `DJANGO_ALLOWED_HOSTS`, `DJANGO_CSRF_TRUSTED_ORIGINS` y `DJANGO_SECURE_COOKIES=true`.
+
+Ejecute `python manage.py migrate` antes de iniciar o actualizar la aplicación. Solo en la base de demostración, ejecute una vez `python manage.py seed_demo_rescue` para cargar datos ficticios. La URL raíz muestra un índice JSON de rutas públicas, y `/api/health/` permite comprobar que el servidor está activo. Los recursos protegidos siguen requiriendo autenticación. Una visita a la URL pública no muestra una interfaz de usuario: el repositorio contiene únicamente el backend.
 
 ## Seguridad y despliegue
 
