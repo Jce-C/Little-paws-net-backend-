@@ -88,7 +88,7 @@ Para una demostración alojada en Railway, el comando también admite exclusivam
 
 El repositorio incluye un `Dockerfile` para servir la API con Gunicorn y los archivos estáticos del Admin con WhiteNoise. En Railway se necesitan un servicio MySQL y un servicio de esta aplicación en el mismo proyecto. Configure en la aplicación `MYSQL_HOST`, `MYSQL_PORT`, `MYSQL_DATABASE`, `MYSQL_USER` y `MYSQL_PASSWORD` como referencias a las variables privadas del servicio MySQL; no copie las credenciales al repositorio. Configure además `DJANGO_SECRET_KEY`, `LPN_DATA_KEY`, `DJANGO_ALLOWED_HOSTS`, `DJANGO_CSRF_TRUSTED_ORIGINS` y `DJANGO_SECURE_COOKIES=true`.
 
-Ejecute `python manage.py migrate` antes de iniciar o actualizar la aplicación. Solo en la base de demostración, ejecute una vez `python manage.py seed_demo_rescue` para cargar datos ficticios. La URL raíz muestra un índice JSON de rutas públicas, y `/api/health/` permite comprobar que el servidor está activo. Los recursos protegidos siguen requiriendo autenticación. Una visita a la URL pública no muestra una interfaz de usuario: el repositorio contiene únicamente el backend.
+Ejecute `python manage.py migrate` antes de iniciar o actualizar la aplicación. Solo en la base de demostración, ejecute una vez `python manage.py seed_demo_rescue` para cargar datos ficticios. La URL raíz muestra un índice JSON de rutas públicas; `/api/health/` comprueba que el servidor está activo y `/api/demo/resumen/` muestra conteos agregados únicamente en la base `little_paws_net_demo`. Los recursos protegidos siguen requiriendo autenticación. Una visita a la URL pública no muestra una interfaz de usuario: el repositorio contiene únicamente el backend.
 
 ## Seguridad y despliegue
 

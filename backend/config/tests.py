@@ -29,3 +29,12 @@ class SaludSinBaseTests(SimpleTestCase):
             reverse("idiomas"), HTTP_HOST="localhost", HTTP_ACCEPT_LANGUAGE="fr",
         )
         self.assertEqual(response.json()["idioma_actual"], "es")
+
+
+class PublicEndpointsTests(SimpleTestCase):
+    def test_index_and_health_are_public(self):
+        self.assertEqual(self.client.get("/").status_code, 200)
+        self.assertEqual(self.client.get("/api/health/").json(), {"status": "ok"})
+
+    def test_demo_summary_is_not_exposed_on_other_databases(self):
+        self.assertEqual(self.client.get("/api/demo/resumen/").status_code, 404)
