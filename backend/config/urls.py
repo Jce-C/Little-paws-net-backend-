@@ -8,6 +8,16 @@ def health(request):
     return JsonResponse({"status": "ok"})
 
 
+def inicio(request):
+    return JsonResponse({
+        "proyecto": "Little Paws Net",
+        "descripcion": "API REST para rescate, adopcion, fondos y comercio aliado.",
+        "documentacion": "https://github.com/Jce-C/Little-paws-net-backend-",
+        "rutas_publicas": ["/api/health/", "/api/idiomas/", "/api/catalogos/", "/api/productos/"],
+        "nota": "Los demas recursos requieren autenticacion. Esta API no incluye frontend.",
+    })
+
+
 def idiomas(request):
     idioma = get_language().split("-")[0]
     return JsonResponse({
@@ -19,6 +29,7 @@ def idiomas(request):
 
 
 urlpatterns = [
+    path("", inicio, name="inicio"),
     path("admin/", admin.site.urls),
     path("api/health/", health, name="health"),
     path("api/idiomas/", idiomas, name="idiomas"),

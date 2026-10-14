@@ -38,8 +38,9 @@ class Command(BaseCommand):
 
     @transaction.atomic
     def handle(self, *args, **options):
-        if connection.vendor != "mysql" or connection.settings_dict["NAME"] != "little_paws_net_equipo":
-            raise CommandError("La carga DEMO solo se permite en little_paws_net_equipo sobre MySQL")
+        bases_demo = {"little_paws_net_equipo", "little_paws_net_demo"}
+        if connection.vendor != "mysql" or connection.settings_dict["NAME"] not in bases_demo:
+            raise CommandError("La carga DEMO solo se permite en bases MySQL de demostración autorizadas")
         gestor = _usuario("demo.jose.gestor@example.invalid", "Gestor demo")
         usuario_vet = _usuario("demo.jose.vet@example.invalid", "Veterinaria demo")
         ciudad, _ = Ciudad.objects.get_or_create(nombre="Ciudad DEMO", departamento="DEMO")
