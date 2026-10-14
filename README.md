@@ -11,10 +11,9 @@ cd backend
 py -3.12 -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install -r requirements.txt
-Copy-Item .env.example .env
 ```
 
-Antes de ejecutar Django, complete en `backend/.env` los valores de `MYSQL_PASSWORD`, `DJANGO_SECRET_KEY` y `LPN_DATA_KEY` facilitados para la demostración. El archivo de ejemplo ya señala el servidor MySQL de Railway; no hay que instalar ni crear MySQL en el computador. La cuenta SQL de evaluación es limitada y distinta de la cuenta que usa la API desplegada. El equipo entrega la contraseña de Django Admin por separado.
+El archivo `backend/.env` de esta demostración académica ya apunta a Railway con una cuenta SQL de lectura. No hay que instalar ni crear MySQL en el computador. El equipo entrega la contraseña de Django Admin por separado.
 
 ```powershell
 python manage.py check --database default
@@ -50,6 +49,6 @@ Las pruebas utilizan una base SQLite temporal y no modifican el MySQL de Railway
 
 ## Despliegue
 
-Railway construye la API con el `Dockerfile`: instala Python y dependencias, reúne los archivos estáticos del Admin y ejecuta Gunicorn. El profesor **no necesita Docker** para usar `runserver`. Las variables privadas de Railway configuran la instancia publicada, que ejecuta las migraciones antes de cada despliegue. La cuenta SQL pública de demostración se usa únicamente para la copia local de evaluación.
+Railway construye la API con el `Dockerfile`: instala Python y dependencias, reúne los archivos estáticos del Admin y ejecuta Gunicorn. El profesor **no necesita Docker** para usar `runserver`. Las variables privadas de Railway configuran la instancia publicada, que ejecuta las migraciones antes de cada despliegue. La cuenta SQL pública de demostración se usa únicamente para la copia local de evaluación; `.dockerignore` evita incorporarla a la imagen desplegada.
 
 Los registros son ficticios. Un acceso SQL publicado permite conexiones de terceros y no debe reutilizarse para datos reales. Tras la evaluación deben revocarse sus credenciales. Para colaboración y cambios, consulte [CONTRIBUTING.md](CONTRIBUTING.md).
