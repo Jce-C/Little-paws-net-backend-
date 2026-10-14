@@ -24,6 +24,11 @@ class SaludSinBaseTests(SimpleTestCase):
         self.assertEqual(response.json()["mensaje"], "Available languages")
         self.assertEqual(response["Content-Language"], "en")
 
+    def test_ingles_por_enlace_de_demostracion(self):
+        response = self.client.get(reverse("idiomas") + "?lang=en", HTTP_HOST="localhost")
+        self.assertEqual(response.json()["idioma_actual"], "en")
+        self.assertEqual(response["Content-Language"], "en")
+
     def test_idioma_no_admitido_vuelve_a_espanol(self):
         response = self.client.get(
             reverse("idiomas"), HTTP_HOST="localhost", HTTP_ACCEPT_LANGUAGE="fr",

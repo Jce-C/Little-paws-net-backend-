@@ -20,13 +20,17 @@ def inicio(request):
 
 
 def idiomas(request):
-    idioma = get_language().split("-")[0]
-    return JsonResponse({
+    idioma = request.GET.get("lang", "").lower()
+    if idioma not in {"es", "en"}:
+        idioma = get_language().split("-")[0]
+    response = JsonResponse({
         "idioma_actual": idioma,
         "idioma_predeterminado": "es",
         "idiomas_disponibles": ["es", "en"],
         "mensaje": "Idiomas disponibles" if idioma == "es" else "Available languages",
     })
+    response["Content-Language"] = idioma
+    return response
 
 
 def demo_resumen(request):

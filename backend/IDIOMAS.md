@@ -4,6 +4,9 @@ La API usa español por defecto y admite inglés mediante el encabezado HTTP
 `Accept-Language: en`. Las respuestas indican el idioma elegido en
 `Content-Language`; `/api/idiomas/` permite comprobarlo. Los nombres de campos
 JSON y las rutas se mantienen estables en ambos idiomas para no romper clientes.
+Para una comprobación directa en el navegador, solo el endpoint de diagnóstico
+admite también `/api/idiomas/?lang=en` y `/api/idiomas/?lang=es`. Las demás rutas
+usan el encabezado `Accept-Language`.
 
 Los módulos de rescate, expediente, adopción, fondo y comercio localizan sus
 estados, etiquetas de catálogo, avisos y errores de negocio controlados por el
