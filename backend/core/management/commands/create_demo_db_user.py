@@ -20,8 +20,13 @@ class Command(BaseCommand):
         with connection.cursor() as cursor:
             cursor.execute("CREATE USER IF NOT EXISTS 'lpn_docente_demo'@'%' IDENTIFIED BY %s", [password])
             cursor.execute("ALTER USER 'lpn_docente_demo'@'%' IDENTIFIED BY %s", [password])
+            cursor.execute("GRANT SELECT ON `little_paws_net_demo`.* TO 'lpn_docente_demo'@'%'")
             cursor.execute(
-                "GRANT SELECT, INSERT, UPDATE, DELETE ON `little_paws_net_demo`.* "
+                "GRANT INSERT, UPDATE, DELETE ON `little_paws_net_demo`.`django_session` "
+                "TO 'lpn_docente_demo'@'%'"
+            )
+            cursor.execute(
+                "GRANT UPDATE (`last_login`) ON `little_paws_net_demo`.`Usuario` "
                 "TO 'lpn_docente_demo'@'%'"
             )
 

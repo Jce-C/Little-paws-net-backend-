@@ -1,4 +1,4 @@
-"""Configuración inicial; cada equipo conserva sus secretos fuera de Git."""
+"""Configuración compartida para ejecución local contra Railway y despliegue."""
 
 import os
 from datetime import timedelta
@@ -13,7 +13,7 @@ load_dotenv(BASE_DIR / ".env")
 
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 if not SECRET_KEY:
-    raise ImproperlyConfigured("Configure DJANGO_SECRET_KEY en backend/.env")
+    raise ImproperlyConfigured("Configure DJANGO_SECRET_KEY en el entorno o backend/.env")
 
 DEBUG = os.getenv("DJANGO_DEBUG", "false").lower() in {"1", "true", "yes"}
 ALLOWED_HOSTS = [
@@ -69,10 +69,10 @@ ASGI_APPLICATION = "config.asgi.application"
 
 DATABASES = {"default": {
     "ENGINE": "django.db.backends.mysql",
-    "NAME": os.getenv("MYSQL_DATABASE", "little_paws_net_equipo"),
-    "USER": os.getenv("MYSQL_USER", "lpn_equipo"),
+    "NAME": os.getenv("MYSQL_DATABASE", ""),
+    "USER": os.getenv("MYSQL_USER", ""),
     "PASSWORD": os.getenv("MYSQL_PASSWORD", ""),
-    "HOST": os.getenv("MYSQL_HOST", "127.0.0.1"),
+    "HOST": os.getenv("MYSQL_HOST", ""),
     "PORT": os.getenv("MYSQL_PORT", "3306"),
     "OPTIONS": {"charset": "utf8mb4"},
 }}
