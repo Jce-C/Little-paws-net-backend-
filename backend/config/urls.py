@@ -34,7 +34,7 @@ def idiomas(request):
 
 
 def demo_resumen(request):
-    if connection.settings_dict["NAME"] != "little_paws_net_demo":
+    if connection.settings_dict["NAME"] not in {"little_paws_net_demo", "little_paws_net_eval"}:
         return JsonResponse({"detalle": "No disponible"}, status=404)
 
     from accounts.models import Usuario
