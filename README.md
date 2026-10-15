@@ -32,7 +32,7 @@ Abra [Django Admin local](http://127.0.0.1:8000/admin/) e inicie sesión con la 
 
 ## Idiomas
 
-La API responde en español por defecto. En la mayoría de las rutas, el cliente cambia al inglés enviando `Accept-Language: en`; para volver al español, `Accept-Language: es`. Los mensajes cambian, pero las rutas y nombres de campos JSON permanecen estables. Para verlo rápidamente desde un navegador, abra [español](https://little-paws-api-production.up.railway.app/api/idiomas/?lang=es) e [inglés](https://little-paws-api-production.up.railway.app/api/idiomas/?lang=en). Véase [IDIOMAS.md](backend/IDIOMAS.md).
+La API responde en español por defecto. En la mayoría de las rutas, el cliente cambia al inglés enviando `Accept-Language: en`; para volver al español, `Accept-Language: es`. Los mensajes cambian, pero las rutas y nombres de campos JSON permanecen estables. Para verlo rápidamente desde un navegador, abra [español](https://little-paws-api-production.up.railway.app/api/idiomas/?lang=es) e [inglés](https://little-paws-api-production.up.railway.app/api/idiomas/?lang=en). El propio Django Admin adapta sus textos estándar al idioma preferido del navegador; los nombres propios del modelo permanecen en español. Véase [IDIOMAS.md](backend/IDIOMAS.md).
 
 ## Estructura
 
