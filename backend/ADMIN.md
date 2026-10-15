@@ -1,8 +1,9 @@
 # Panel interno de Django Admin
 
 El panel `/admin/` es una herramienta de soporte y demostración, no la interfaz
-de los usuarios de Little Paws Net. Se accede con una cuenta superusuario creada
-localmente. No compartir sus credenciales ni utilizarla como cuenta cotidiana.
+de los usuarios de Little Paws Net. La copia de evaluación se conecta a MySQL
+de Railway y usa la cuenta temporal de superusuario indicada por el equipo.
+No utilizar esa cuenta como cuenta cotidiana.
 
 ## Qué se puede cargar desde el panel
 
@@ -25,7 +26,7 @@ editar esas tablas directamente omitiría permisos y trazabilidad.
 
 ## Comprobación rápida
 
-Con el entorno virtual activo, desde `backend/`:
+Con el entorno virtual activo y el `.env` de demostración configurado, desde `backend/`:
 
 ```powershell
 python manage.py check
@@ -36,12 +37,11 @@ python manage.py runserver
 
 Entrar en `http://127.0.0.1:8000/admin/` y probar en este orden:
 
-1. Crear una especie de demostración en **Animals → Especies**.
-2. Crear un usuario normal en **Accounts → Usuarios**.
-3. Crear un reporte en **Rescue → Reportes**, seleccionando un tipo de reporte
-   existente y coordenadas válidas.
-4. Abrir el reporte recién creado: la ubicación y el estado se muestran, pero
-   la edición directa está deshabilitada.
+1. Revisar los usuarios ficticios en **Accounts → Usuarios**.
+2. Revisar los reportes en **Rescue → Reportes** y sus detalles.
+3. Añadir una especie o un usuario de prueba y confirmar que aparece en la lista.
+4. Revisar mascotas, casos y apadrinamientos. Sus estados sensibles solo cambian
+   mediante las API y servicios previstos; no fuerce cambios directos desde Admin.
 
 Los cambios de `admin.py` no alteran el esquema de MySQL ni requieren nuevas
 migraciones. El modelo `Usuario` actual solo concede permisos de Django Admin

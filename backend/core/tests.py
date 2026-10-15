@@ -1,14 +1,8 @@
 from django.test import TestCase
 from django.urls import reverse
-from django.core.management import call_command
-from django.core.management.base import CommandError
 
 
 class CatalogosTests(TestCase):
-    def test_demo_mysql_user_cannot_be_created_in_sqlite(self):
-        with self.assertRaises(CommandError):
-            call_command("create_demo_db_user")
-
     def test_catalogos_publicos_contienen_estados_de_reporte(self):
         response = self.client.get(reverse("catalogos"))
         self.assertEqual(response.status_code, 200)

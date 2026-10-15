@@ -1,114 +1,54 @@
-# Little Paws Net — API
+# Little Paws Net — backend
 
-Backend de Little Paws Net, una plataforma para gestionar reportes y rescates de animales, expedientes médicos, adopciones, apadrinamientos, fondos externos y el catálogo de tiendas aliadas. Está construido con Django y Django REST Framework sobre MySQL. Este repositorio contiene la API; no incluye una interfaz web o móvil.
+API de Little Paws Net desarrollada con Django 5.2, Django REST Framework y MySQL 8. La base de datos de demostración y el servidor público están alojados en Railway. Este repositorio no contiene un frontend.
 
-## Evaluación en línea (sin instalación)
+## Abrir la copia en otro computador
 
-La versión de demostración ya está desplegada con Django y MySQL en Railway. Desde este repositorio se puede comprobar directamente:
-
-| Recurso | Enlace |
-| --- | --- |
-| Entrada de la API | [Abrir Little Paws Net](https://little-paws-api-production.up.railway.app/) |
-| Estado del servicio | [Comprobar `/api/health/`](https://little-paws-api-production.up.railway.app/api/health/) |
-| Más de 100 registros ficticios | [Ver conteos actualizados](https://little-paws-api-production.up.railway.app/api/demo/resumen/) |
-| Catálogos | [Consultar `/api/catalogos/`](https://little-paws-api-production.up.railway.app/api/catalogos/) |
-| Idiomas español e inglés | [Consultar `/api/idiomas/`](https://little-paws-api-production.up.railway.app/api/idiomas/) |
-| Panel interno | [Abrir Django Admin](https://little-paws-api-production.up.railway.app/admin/) |
-
-Los conteos corresponden a datos de prueba, no a información personal real. El Admin requiere una cuenta facilitada por el equipo fuera de Git; las rutas privadas de la API requieren autenticación JWT. Esta demostración se consulta desde las URL anteriores: no es necesario clonar el repositorio ni crear MySQL en el computador del evaluador.
-
-El archivo `.env` no se publica. En Railway, las variables privadas del servicio cumplen esa función y la aplicación usa la base MySQL alojada allí. Las instrucciones de instalación local más abajo son **opcionales** y no describen el despliegue de evaluación.
-
-## Funcionalidades
-
-- Registro de usuarios y autenticación mediante JWT.
-- Reportes georreferenciados, asignación de casos a fundaciones y seguimiento de estados.
-- Custodia de mascotas, autorización de veterinarios y acceso controlado al expediente mediante QR.
-- Solicitudes de adopción con resolución e historial.
-- Compromisos de apadrinamiento y donación, y registro de distribuciones de fondos externos.
-- Productos de tiendas aliadas, pedidos iniciados, espacios publicitarios y tarifas de publicación.
-- Control de acceso por roles y pertenencia a entidades, con validaciones y trazabilidad en los procesos principales.
-- Respuestas en español e inglés según el encabezado `Accept-Language`. Véase [IDIOMAS.md](backend/IDIOMAS.md).
-
-Los pedidos no procesan pagos ni reservan inventario. Los compromisos y distribuciones de fondos registran información del sistema; no ejecutan transferencias bancarias.
-
-La coherencia de tienda en los pedidos se impone con dos claves foráneas compuestas en MySQL: cada detalle debe corresponder tanto al pedido como al producto de la misma tienda. La migración `commerce.0010` sustituye los disparadores usados anteriormente; no requiere cambiar `log_bin_trust_function_creators`.
-
-## Requisitos para instalación local opcional
-
-- Python y las dependencias fijadas en [requirements.txt](backend/requirements.txt).
-- MySQL 8 con una base de datos vacía y una cuenta con permisos sobre esa base.
-- Una clave Fernet local para proteger los datos sensibles utilizados por la aplicación.
-
-## Instalación local opcional en Windows (PowerShell)
-
-Desde la raíz del repositorio:
+Requisitos: Python 3.12, Git y acceso a Internet. En PowerShell, desde la carpeta clonada:
 
 ```powershell
 cd backend
-py -m venv .venv
+py -3.12 -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install -r requirements.txt
-Copy-Item .env.example .env
 ```
 
-Editar `backend/.env` con los datos de la base MySQL y claves propias. Para generar las claves sin compartirlas:
+El archivo `backend/.env` de esta demostración académica ya apunta a una **copia de evaluación en Railway** con una cuenta SQL que permite trabajar desde Django Admin. No hay que instalar ni crear MySQL en el computador. El equipo entrega la contraseña de Django Admin por separado.
 
 ```powershell
-python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
-python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
-```
-
-Asignar los resultados a `DJANGO_SECRET_KEY` y `LPN_DATA_KEY`, respectivamente. La segunda clave debe conservarse para poder descifrar datos ya almacenados. No subir `.env` a Git.
-
-Una vez configurada la conexión:
-
-```powershell
-python manage.py migrate
 python manage.py check --database default
 python manage.py runserver
 ```
 
-El servidor de desarrollo queda disponible en `http://127.0.0.1:8000/`. `runserver` es solo para desarrollo local.
+Abra [Django Admin local](http://127.0.0.1:8000/admin/) e inicie sesión con la cuenta temporal de evaluación. Podrá consultar, añadir y editar los recursos que el Admin permite, con las restricciones de cada proceso. Los datos iniciales proceden de Railway. `runserver` sirve solo para la demostración en el computador; no reemplaza el despliegue de Railway. No ejecute `migrate` ni `seed_demo_rescue` al abrir la copia: la base ya tiene tablas y más de 100 registros ficticios.
 
-## API e idiomas
+## Demostración publicada
 
-Todas las rutas funcionales comienzan con `/api/`. Algunos puntos de entrada son:
+- [Entrada de la API](https://little-paws-api-production.up.railway.app/)
+- [Estado del servicio](https://little-paws-api-production.up.railway.app/api/health/)
+- [Conteos de datos ficticios](https://little-paws-api-production.up.railway.app/api/demo/resumen/)
+- [Catálogos](https://little-paws-api-production.up.railway.app/api/catalogos/)
+- [Django Admin publicado](https://little-paws-api-production.up.railway.app/admin/)
 
-| Proceso | Rutas de ejemplo |
-| --- | --- |
-| Acceso | `/api/auth/registro/`, `/api/auth/token/`, `/api/auth/perfil/` |
-| Rescate y expediente | `/api/reportes/`, `/api/casos/{id}/`, `/api/expedientes/{id}/consultar/` |
-| Adopción y fondo | `/api/adopciones/`, `/api/fondos/`, `/api/donaciones/`, `/api/distribuciones/` |
-| Comercio | `/api/productos/`, `/api/pedidos/`, `/api/publicidad/`, `/api/tarifas/` |
-| Referencia | `/api/catalogos/`, `/api/idiomas/`, `/api/health/` |
+## Idiomas
 
-La mayoría de operaciones privadas requieren `Authorization: Bearer <token>`. El cliente puede solicitar inglés con `Accept-Language: en` o español con `Accept-Language: es`; los nombres de rutas y campos JSON no cambian. Las rutas completas están definidas en [config/urls.py](backend/config/urls.py) y en los archivos `urls.py` de cada módulo.
+La API responde en español por defecto. En la mayoría de las rutas, el cliente cambia al inglés enviando `Accept-Language: en`; para volver al español, `Accept-Language: es`. Los mensajes cambian, pero las rutas y nombres de campos JSON permanecen estables. Para verlo rápidamente desde un navegador, abra [español](https://little-paws-api-production.up.railway.app/api/idiomas/?lang=es) e [inglés](https://little-paws-api-production.up.railway.app/api/idiomas/?lang=en). El propio Django Admin adapta sus textos estándar al idioma preferido del navegador; los nombres propios del modelo permanecen en español. Véase [IDIOMAS.md](backend/IDIOMAS.md).
 
-## Verificación
+## Estructura
 
-Desde `backend/` y con el entorno virtual activo:
+`backend/config/` contiene configuración y rutas generales. Las aplicaciones `accounts`, `core`, `rescue`, `animals`, `adoptions`, `funds` y `commerce` separan modelos, serializadores, servicios, vistas, URLs, migraciones y pruebas. El Admin sirve para consulta, carga supervisada de catálogos, usuarios y reportes; las transiciones delicadas siguen pasando por las APIs y servicios. Véase [ADMIN.md](backend/ADMIN.md).
+
+## Comprobación automatizada
 
 ```powershell
-python manage.py check --database default
 python manage.py makemigrations --check --dry-run
 python manage.py test --settings=config.test_settings
 ```
 
-La suite automatizada utiliza SQLite en memoria y no modifica MySQL. Para verificar el flujo de rescate, apadrinamiento y expediente sobre MySQL existe `python manage.py smoke_rescue`; sus registros temporales se revierten. Este comando solo admite la base local `little_paws_net_equipo`.
+Las pruebas utilizan una base SQLite temporal y no modifican el MySQL de Railway. Las rutas completas se encuentran en [config/urls.py](backend/config/urls.py) y los `urls.py` de cada módulo.
 
-Se pueden cargar registros ficticios e idempotentes del proceso de rescate con `python manage.py seed_demo_rescue`. Este comando está limitado a las bases de desarrollo y demostración indicadas a continuación; no debe utilizarse con datos personales reales.
+## Despliegue
 
-Para una demostración alojada en Railway, el comando también admite exclusivamente la base vacía `little_paws_net_demo`. Los datos que crea son ficticios; no se copia la base local ni se publica un archivo `.env`.
+Railway construye la API con el `Dockerfile`: instala Python y dependencias, reúne los archivos estáticos del Admin y ejecuta Gunicorn. El profesor **no necesita Docker** para usar `runserver`. Las variables privadas de Railway configuran la instancia publicada sobre `little_paws_net_demo`. El `.env` público conecta la copia descargada a `little_paws_net_eval`, una base separada con los mismos datos iniciales; los cambios del profesor no aparecerán en la API publicada. `.dockerignore` evita incorporar ese `.env` a la imagen desplegada.
 
-## Demostración en Railway
-
-El repositorio incluye un `Dockerfile` para servir la API con Gunicorn y los archivos estáticos del Admin con WhiteNoise. En Railway se necesitan un servicio MySQL y un servicio de esta aplicación en el mismo proyecto. Configure en la aplicación `MYSQL_HOST`, `MYSQL_PORT`, `MYSQL_DATABASE`, `MYSQL_USER` y `MYSQL_PASSWORD` como referencias a las variables privadas del servicio MySQL; no copie las credenciales al repositorio. Configure además `DJANGO_SECRET_KEY`, `LPN_DATA_KEY`, `DJANGO_ALLOWED_HOSTS`, `DJANGO_CSRF_TRUSTED_ORIGINS` y `DJANGO_SECURE_COOKIES=true`.
-
-Ejecute `python manage.py migrate` antes de iniciar o actualizar la aplicación. Solo en la base de demostración, ejecute una vez `python manage.py seed_demo_rescue` para cargar datos ficticios. La URL raíz muestra un índice JSON de rutas públicas; `/api/health/` comprueba que el servidor está activo y `/api/demo/resumen/` muestra conteos agregados únicamente en la base `little_paws_net_demo`. Los recursos protegidos siguen requiriendo autenticación. Una visita a la URL pública no muestra una interfaz de usuario: el repositorio contiene únicamente el backend.
-
-## Seguridad y despliegue
-
-Las credenciales y claves se configuran fuera del repositorio. La instancia de Railway es una demostración académica con datos ficticios; no debe confundirse con una instalación de producción para datos reales. Para un despliegue nuevo se deben revisar HTTPS, hosts permitidos, cookies seguras, gestión de secretos y `python manage.py check --deploy`.
-
-Para colaborar, consultar [CONTRIBUTING.md](CONTRIBUTING.md).
+Los registros son ficticios. Un acceso SQL publicado permite conexiones de terceros y no debe reutilizarse para datos reales. Tras la evaluación deben revocarse sus credenciales. Para colaboración y cambios, consulte [CONTRIBUTING.md](CONTRIBUTING.md).
