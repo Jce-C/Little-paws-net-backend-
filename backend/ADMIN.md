@@ -39,8 +39,9 @@ Entrar en `http://127.0.0.1:8000/admin/` y probar en este orden:
 
 1. Revisar los usuarios ficticios en **Accounts → Usuarios**.
 2. Revisar los reportes en **Rescue → Reportes** y sus detalles.
-3. Revisar mascotas, casos y apadrinamientos. La cuenta SQL de la copia local
-   es de consulta, así que no cree ni edite registros desde esta copia.
+3. Añadir una especie o un usuario de prueba y confirmar que aparece en la lista.
+4. Revisar mascotas, casos y apadrinamientos. Sus estados sensibles solo cambian
+   mediante las API y servicios previstos; no fuerce cambios directos desde Admin.
 
 Los cambios de `admin.py` no alteran el esquema de MySQL ni requieren nuevas
 migraciones. El modelo `Usuario` actual solo concede permisos de Django Admin

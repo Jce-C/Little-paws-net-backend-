@@ -13,14 +13,14 @@ py -3.12 -m venv .venv
 python -m pip install -r requirements.txt
 ```
 
-El archivo `backend/.env` de esta demostración académica ya apunta a Railway con una cuenta SQL de lectura. No hay que instalar ni crear MySQL en el computador. El equipo entrega la contraseña de Django Admin por separado.
+El archivo `backend/.env` de esta demostración académica ya apunta a una **copia de evaluación en Railway** con una cuenta SQL que permite trabajar desde Django Admin. No hay que instalar ni crear MySQL en el computador. El equipo entrega la contraseña de Django Admin por separado.
 
 ```powershell
 python manage.py check --database default
 python manage.py runserver
 ```
 
-Abra [Django Admin local](http://127.0.0.1:8000/admin/) e inicie sesión con la cuenta temporal de evaluación. Los datos que aparecen proceden de Railway. `runserver` sirve solo para la demostración en el computador; no reemplaza el despliegue de Railway. No ejecute `migrate` ni `seed_demo_rescue` en esa copia: la base ya tiene tablas y más de 100 registros ficticios.
+Abra [Django Admin local](http://127.0.0.1:8000/admin/) e inicie sesión con la cuenta temporal de evaluación. Podrá consultar, añadir y editar los recursos que el Admin permite, con las restricciones de cada proceso. Los datos iniciales proceden de Railway. `runserver` sirve solo para la demostración en el computador; no reemplaza el despliegue de Railway. No ejecute `migrate` ni `seed_demo_rescue` al abrir la copia: la base ya tiene tablas y más de 100 registros ficticios.
 
 ## Demostración publicada
 
@@ -49,6 +49,6 @@ Las pruebas utilizan una base SQLite temporal y no modifican el MySQL de Railway
 
 ## Despliegue
 
-Railway construye la API con el `Dockerfile`: instala Python y dependencias, reúne los archivos estáticos del Admin y ejecuta Gunicorn. El profesor **no necesita Docker** para usar `runserver`. Las variables privadas de Railway configuran la instancia publicada, que ejecuta las migraciones antes de cada despliegue. La cuenta SQL pública de demostración se usa únicamente para la copia local de evaluación; `.dockerignore` evita incorporarla a la imagen desplegada.
+Railway construye la API con el `Dockerfile`: instala Python y dependencias, reúne los archivos estáticos del Admin y ejecuta Gunicorn. El profesor **no necesita Docker** para usar `runserver`. Las variables privadas de Railway configuran la instancia publicada sobre `little_paws_net_demo`. El `.env` público conecta la copia descargada a `little_paws_net_eval`, una base separada con los mismos datos iniciales; los cambios del profesor no aparecerán en la API publicada. `.dockerignore` evita incorporar ese `.env` a la imagen desplegada.
 
 Los registros son ficticios. Un acceso SQL publicado permite conexiones de terceros y no debe reutilizarse para datos reales. Tras la evaluación deben revocarse sus credenciales. Para colaboración y cambios, consulte [CONTRIBUTING.md](CONTRIBUTING.md).
