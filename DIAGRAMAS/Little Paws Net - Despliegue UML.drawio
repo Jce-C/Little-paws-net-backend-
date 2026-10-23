@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mxfile host="app.diagrams.net" modified="2026-10-13T00:00:00.000Z" agent="Codex" version="24.7.17" type="device">
+  <diagram id="despliegue-local" name="Despliegue actual (local)">
+    <mxGraphModel dx="1800" dy="1060" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1800" pageHeight="1060" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="titulo-2" value="Little Paws Net · Diagrama de despliegue UML" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=middle;fontSize=27;fontStyle=1;fontColor=#143C5B;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="45" y="28" width="1520" height="42" />
+        </mxCell>
+        <mxCell id="subtitulo-3" value="Estado comprobado: desarrollo local por integrante; no representa un servidor público" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=middle;fontSize=14;fontColor=#456276;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="45" y="73" width="1600" height="31" />
+        </mxCell>
+        <mxCell id="github-4" value="&lt;b&gt;«external» GitHub&lt;/b&gt;&lt;br&gt;Repositorio de código y migraciones&lt;br&gt;&lt;font style='font-size:12px'&gt;No ejecuta la API&lt;/font&gt;" style="rounded=0;html=1;whiteSpace=wrap;align=left;verticalAlign=middle;spacingLeft=18;fontSize=16;fontColor=#524B70;fillColor=#F3EFFB;strokeColor=#8774A6;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="55" y="178" width="270" height="160" />
+        </mxCell>
+        <mxCell id="estacion-5" value="«device» Estación de desarrollo · Windows&lt;br&gt;&lt;font style='font-size:12px;font-weight:normal'&gt;Topología local reproducible en el PC de cada integrante; CPU/RAM no documentadas&lt;/font&gt;" style="rounded=0;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacingTop=19;spacingLeft=20;fontSize=19;fontStyle=1;fontColor=#193D56;fillColor=#EAF2FA;strokeColor=#376A91;strokeWidth=3;shadow=1;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="395" y="140" width="1340" height="725" />
+        </mxCell>
+        <mxCell id="navegador-6" value="«executionEnvironment» Navegador" style="rounded=0;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacingTop=15;spacingLeft=15;fontSize=16;fontStyle=1;fontColor=#244B62;fillColor=#F6FAFF;strokeColor=#7197B7;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="445" y="260" width="315" height="185" />
+        </mxCell>
+        <mxCell id="cliente-7" value="«artifact» Cliente de prueba&lt;br&gt;Solicitudes HTTP y respuesta JSON&lt;br&gt;JWT · Accept-Language: es/en" style="shape=note;size=16;html=1;whiteSpace=wrap;align=left;verticalAlign=middle;spacingLeft=17;spacingRight=15;fontSize=14;fontColor=#254457;fillColor=#FFFFFF;strokeColor=#52809C;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="475" y="323" width="255" height="88" />
+        </mxCell>
+        <mxCell id="python-8" value="«executionEnvironment» Python 3 + .venv&lt;br&gt;&lt;font style='font-size:12px;font-weight:normal'&gt;manage.py runserver · solo desarrollo&lt;/font&gt;" style="rounded=0;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacingTop=15;spacingLeft=15;fontSize=16;fontStyle=1;fontColor=#244B62;fillColor=#F6FAFF;strokeColor=#7197B7;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="810" y="230" width="425" height="540" />
+        </mxCell>
+        <mxCell id="backend-9" value="«artifact» Backend Django 5.2.18&lt;br&gt;DRF 3.18.3 · Simple JWT 5.5.1&lt;br&gt;config + accounts + core + rescue&lt;br&gt;animals + adoptions + funds + commerce" style="shape=note;size=16;html=1;whiteSpace=wrap;align=left;verticalAlign=middle;spacingLeft=17;spacingRight=15;fontSize=14;fontColor=#254457;fillColor=#FFFFFF;strokeColor=#52809C;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="845" y="335" width="352" height="175" />
+        </mxCell>
+        <mxCell id="env-10" value="«artifact» backend/.env (local)&lt;br&gt;Secretos, conexión MySQL y clave Fernet" style="shape=note;size=16;html=1;whiteSpace=wrap;align=left;verticalAlign=middle;spacingLeft=17;spacingRight=15;fontSize=14;fontColor=#254457;fillColor=#FFFFFF;strokeColor=#52809C;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="845" y="565" width="352" height="80" />
+        </mxCell>
+        <mxCell id="migraciones-11" value="«artifact» apps/*/migrations&lt;br&gt;Esquema aplicado con manage.py migrate" style="shape=note;size=16;html=1;whiteSpace=wrap;align=left;verticalAlign=middle;spacingLeft=17;spacingRight=15;fontSize=14;fontColor=#254457;fillColor=#FFFFFF;strokeColor=#52809C;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="845" y="680" width="352" height="70" />
+        </mxCell>
+        <mxCell id="mysql-12" value="«executionEnvironment» MySQL Server 8&lt;br&gt;&lt;font style='font-size:12px;font-weight:normal'&gt;Servicio instalado localmente&lt;/font&gt;" style="rounded=0;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacingTop=15;spacingLeft=15;fontSize=16;fontStyle=1;fontColor=#244B62;fillColor=#F6FAFF;strokeColor=#7197B7;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1280" y="260" width="385" height="340" />
+        </mxCell>
+        <mxCell id="datos-13" value="«database» little_paws_net_equipo&lt;br&gt;Tablas creadas por migraciones Django" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=18;fillColor=#EEE9F8;strokeColor=#765BA4;strokeWidth=2;fontSize=16;fontColor=#3E3155;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1320" y="355" width="305" height="135" />
+        </mxCell>
+        <mxCell id="github-pc-14" value="git clone / pull / push (HTTPS)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;jettySize=auto;orthogonalLoop=1;strokeColor=#8065A6;strokeWidth=2;dashed=1;dashPattern=7 5;endArrow=open;endFill=0;fontSize=13;fontColor=#62467F;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="github-4" target="estacion-5">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="browser-api-15" value="HTTP · 127.0.0.1:8000 · /api/" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;jettySize=auto;orthogonalLoop=1;strokeColor=#247292;strokeWidth=2.5;endArrow=none;fontSize=13;fontColor=#174962;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="cliente-7" target="backend-9">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="api-db-16" value="TCP · 127.0.0.1:3306 · mysqlclient 2.3.0" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;jettySize=auto;orthogonalLoop=1;strokeColor=#247292;strokeWidth=2.5;endArrow=none;fontSize=13;fontColor=#174962;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="backend-9" target="datos-13">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="env-api-17" value="lee configuración" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;jettySize=auto;orthogonalLoop=1;strokeColor=#8065A6;strokeWidth=2;dashed=1;dashPattern=7 5;endArrow=open;endFill=0;fontSize=13;fontColor=#62467F;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="backend-9" target="env-10">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="migraciones-db-18" value="DDL al migrar" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;jettySize=auto;orthogonalLoop=1;strokeColor=#8065A6;strokeWidth=2;dashed=1;dashPattern=7 5;endArrow=open;endFill=0;fontSize=13;fontColor=#62467F;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="migraciones-11" target="datos-13">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="nota-estado-19" value="&lt;b&gt;Límite del despliegue actual&lt;/b&gt;&lt;br&gt;No hay frontend móvil/web implementado, servidor de producción, dominio público ni pasarela de pagos. El navegador prueba la API; la interfaz Figma es un diseño. Para exponer el sistema fuera del PC harían falta un cliente real, servidor de aplicación, HTTPS, configuración de seguridad y operación de la base." style="rounded=1;arcSize=5;html=1;whiteSpace=wrap;align=left;verticalAlign=middle;spacing=14;fontSize=14;fontColor=#655025;fillColor=#FFF7E5;strokeColor=#C8A24C;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="55" y="900" width="1665" height="105" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
