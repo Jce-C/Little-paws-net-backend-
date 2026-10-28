@@ -20,6 +20,7 @@ class Usuario(AbstractBaseUser):
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
+    debe_cambiar_clave = models.BooleanField(default=False)
 
     objects = UsuarioManager()
 

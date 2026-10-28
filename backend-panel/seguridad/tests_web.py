@@ -33,6 +33,39 @@ class AccesoWebTests(BaseRBAC):
         self.assertEqual(r.status_code, 302)
         return r
 
+    def test_clave_temporal_obliga_cambio_y_bloquea_api(self):
+        self.admin.debe_cambiar_clave = True
+        self.admin.save(update_fields=["debe_cambiar_clave"])
+        self.browser.force_login(self.admin)
+        self.assertRedirects(self.browser.get("/panel/"), "/panel/cambiar-clave/", fetch_redirect_response=False)
+        self.assertEqual(self.browser.get("/api/seguridad/usuarios/").status_code, 403)
+        self.assertEqual(self.browser.get("/panel/cambiar-clave/").status_code, 200)
+
+    def test_cambio_clave_verifica_actual_y_conserva_sesion(self):
+        browser = Client()
+        self.admin.debe_cambiar_clave = True
+        self.admin.save(update_fields=["debe_cambiar_clave"])
+        browser.force_login(self.admin)
+        datos = {"old_password": "incorrecta", "new_password1": "Clave-Nueva-Sintetica-486935", "new_password2": "Clave-Nueva-Sintetica-486935"}
+        self.assertEqual(browser.post("/panel/cambiar-clave/", datos).status_code, 400)
+        self.admin.refresh_from_db()
+        self.assertTrue(self.admin.debe_cambiar_clave)
+        datos["old_password"] = "Clave-Sintetica-Para-Pruebas-6549"
+        self.assertRedirects(browser.post("/panel/cambiar-clave/", datos), "/panel/", fetch_redirect_response=False)
+        self.admin.refresh_from_db()
+        self.assertFalse(self.admin.debe_cambiar_clave)
+        self.assertTrue(self.admin.check_password(datos["new_password1"]))
+        self.assertIn("_auth_user_id", browser.session)
+
+    def test_clave_temporal_no_obtiene_jwt(self):
+        self.admin.debe_cambiar_clave = True
+        self.admin.save(update_fields=["debe_cambiar_clave"])
+        from accounts.token_views import TokenSinClaveTemporalSerializer
+        from rest_framework.exceptions import AuthenticationFailed
+        serializer = TokenSinClaveTemporalSerializer(data={"email": self.admin.email, "password": "Clave-Sintetica-Para-Pruebas-6549"})
+        with self.assertRaises(AuthenticationFailed):
+            serializer.is_valid(raise_exception=True)
+
     def test_login_usa_suma_servidor_y_no_entrega_respuesta(self):
         d = self.formulario()
         fila = DesafioWeb.objects.get(pk=d["captcha_token"])

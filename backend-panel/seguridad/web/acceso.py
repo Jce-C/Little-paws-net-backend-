@@ -2,6 +2,7 @@
 import secrets
 import time
 import uuid
+from ipaddress import ip_address
 from datetime import timedelta
 
 from django.conf import settings
@@ -9,8 +10,22 @@ from django.contrib.auth import logout
 from django.db import transaction
 from django.utils import timezone
 from django.utils.crypto import constant_time_compare, salted_hmac
+from django.http import JsonResponse
+from django.shortcuts import redirect
 
 from seguridad.models import DesafioWeb, LimiteWeb
+
+
+def ip_cliente(request):
+    # Solo el servicio detrás del edge de Railway confía en X-Real-IP.
+    # En desarrollo u otro servidor, una cabecera enviada por el cliente se ignora.
+    remoto = request.META.get("REMOTE_ADDR", "sin-ip")
+    if getattr(settings, "LPN_TRUST_RAILWAY_PROXY", False):
+        try:
+            return str(ip_address(request.META.get("HTTP_X_REAL_IP", "")))
+        except ValueError:
+            pass
+    return remoto
 
 
 def huella(valor):
@@ -70,6 +85,11 @@ class SesionWebMiddleware:
         inicio = request.session.get("lpn_web_inicio")
         if inicio is not None and (not isinstance(inicio, (float, int)) or time.time()-inicio > settings.LPN_WEB_SESSION_SECONDS):
             logout(request)
+        if request.user.is_authenticated and request.user.debe_cambiar_clave:
+            if request.path.startswith("/api/"):
+                return JsonResponse({"detail": "Cambia tu contraseña temporal desde el panel."}, status=403)
+            if request.path.startswith("/panel/") and request.path not in ("/panel/cambiar-clave/", "/panel/logout/"):
+                return redirect("panel:cambiar_clave")
         respuesta = self.get_response(request)
         if request.path.startswith(("/panel/", "/api/seguridad/")):
             respuesta["Cache-Control"] = "no-store"
