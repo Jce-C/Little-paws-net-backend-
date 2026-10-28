@@ -1,0 +1,23 @@
+/* Little Paws Net · sistema visual compartido · inspiración editorial ElevenLabs */
+@font-face{font-family:Inter;src:url("fonts/Inter.ttf") format("truetype");font-style:normal;font-weight:100 900;font-display:swap}
+@font-face{font-family:"LPN Script";src:url("fonts/LeckerliOne.ttf") format("truetype");font-style:normal;font-weight:400;font-display:swap}
+:root{
+ --lpn-canvas:#f7f2e7;--lpn-surface:#f0e8d9;--lpn-paper:#fffdf7;--lpn-stone:#ddd4c4;
+ --lpn-ink:#332d26;--lpn-body:#514b40;--lpn-muted:#696356;--lpn-caption:#696356;
+ --lpn-cream:#fcf0d3;--lpn-sand:#ddc5ab;--lpn-sage:#b2cd99;--lpn-brown:#423222;
+ --lpn-focus:#705035;--lpn-input:#8a8879;--lpn-danger:#933e32;--lpn-danger-bg:#fbefeb;--lpn-success:#3f6040;
+ --lpn-primary:#4f6655;--lpn-primary-hover:#405644;--lpn-primary-active:#344738;
+ --lpn-sage-soft:#e2e9da;--lpn-sidebar:#ecefe3;--lpn-table-head:#dde5d6;--lpn-table-ink:#354b3b;
+ --lpn-clay:#805d46;--lpn-clay-soft:#efe0d0;--lpn-row-alt:#f8f4ea;--lpn-row-hover:#eef2e6;
+ --lpn-secondary-hover:#f0e6d6;--lpn-secondary-active:#e6dac8;
+ --lpn-font:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;--lpn-brand:"LPN Script",cursive;
+ --lpn-space-1:4px;--lpn-space-2:8px;--lpn-space-3:12px;--lpn-space-4:16px;--lpn-space-6:24px;--lpn-space-8:32px;--lpn-space-12:48px;--lpn-space-16:64px;
+ --lpn-radius-input:8px;--lpn-radius-card:20px;--lpn-radius-feature:24px;--lpn-radius-pill:9999px;
+ --lpn-shadow:0 2px 5px #42322206,0 8px 24px #42322205;
+ --lpn-title:clamp(2rem,3.4vw,3rem);--lpn-body-size:1rem;--lpn-line:1.6;
+ /* Alias para los componentes existentes del panel. */
+ --bosque:var(--lpn-primary);--bosque-oscuro:var(--lpn-primary-hover);--tinta:var(--lpn-ink);--secundario:var(--lpn-muted);
+ --papel:var(--lpn-canvas);--blanco:var(--lpn-paper);--linea:var(--lpn-stone);--menta:#eef1e8;--arena:#f4eadc;
+ --rojo:var(--lpn-danger);--fuente:var(--lpn-font);--radio:var(--lpn-radius-card)
+}
+
