@@ -8,3 +8,13 @@
 **/.coverage
 **/media/
 **/staticfiles/
+
+# Panel nuevo y recursos locales: nunca publicar secretos ni evidencias.
+**/.env.*
+!**/.env.example
+**/node_modules/
+**/.private-data/
+/output/
+/sites/
+/.agents/
+/.codex_tmp/
