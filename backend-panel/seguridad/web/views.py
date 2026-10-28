@@ -3,7 +3,8 @@ from functools import wraps
 
 from django.conf import settings
 from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse
@@ -16,7 +17,7 @@ from rest_framework.exceptions import PermissionDenied
 
 from seguridad.autorizacion import usuario_activo, puede, tiene_base
 from seguridad.servicios import auditar
-from .acceso import emitir, consumir, limitar
+from .acceso import emitir, consumir, limitar, ip_cliente
 from .contexto import construir
 from .forms import LoginForm
 
@@ -33,7 +34,7 @@ def retorno_seguro(request, destino):
 def iniciar(request):
     if request.user.is_authenticated and usuario_activo(request.user):
         return redirect("panel:inicio")
-    ip = request.META.get("REMOTE_ADDR", "sin-ip")
+    ip = ip_cliente(request)
     destino = request.POST.get("next", request.GET.get("next", ""))[:2048]
     error, estado, correo = "", 200, ""
     if request.method == "POST":
@@ -103,6 +104,26 @@ def salir(request):
         auditar(request.user, "sesion.web_cerrar", "sesion")
     logout(request)
     return redirect("panel:login")
+
+
+@never_cache
+@sensitive_post_parameters("old_password", "new_password1", "new_password2")
+@csrf_protect
+@require_http_methods(["GET", "POST"])
+def cambiar_clave(request):
+    if not request.user.is_authenticated or not usuario_activo(request.user):
+        return redirect("panel:login")
+    if request.method == "POST" and not limitar("cambio-clave", request.user.pk, 8):
+        return limite(request)
+    form = PasswordChangeForm(request.user, request.POST if request.method == "POST" else None)
+    if request.method == "POST" and form.is_valid():
+        usuario = form.save(commit=False)
+        usuario.debe_cambiar_clave = False
+        usuario.save(update_fields=["password", "debe_cambiar_clave"])
+        update_session_auth_hash(request, usuario)
+        auditar(usuario, "sesion.cambiar_clave", "usuarios", usuario.pk)
+        return redirect("panel:inicio")
+    return render(request, "seguridad/web/cambiar_clave.html", {"form": form}, status=400 if request.method == "POST" else 200)
 
 
 @csrf_protect

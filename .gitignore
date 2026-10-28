@@ -1,6 +1,5 @@
 # Configuración privada y entornos locales
 **/.env
-!backend/.env
 **/.venv/
 **/__pycache__/
 **/*.py[cod]

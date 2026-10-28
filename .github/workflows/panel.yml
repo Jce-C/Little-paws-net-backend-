@@ -1,0 +1,44 @@
+name: Panel Django
+on:
+  push:
+    branches: [entrega-panel, main]
+    paths: ['backend-panel/**', '.github/workflows/panel.yml']
+  pull_request:
+    branches: [entrega-panel, main]
+    paths: ['backend-panel/**', '.github/workflows/panel.yml']
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_ROOT_PASSWORD: isolated-ci-only
+        ports: ['3307:3306']
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -pisolated-ci-only"
+          --health-interval=10s --health-timeout=5s --health-retries=15
+    defaults:
+      run:
+        working-directory: backend-panel
+    env:
+      DJANGO_SECRET_KEY: isolated-ci-only-not-a-production-key
+      MYSQL_PORT: '3306'
+      LPN_TEST_MYSQL_HOST: 127.0.0.1
+      LPN_TEST_MYSQL_PORT: '3307'
+      LPN_TEST_MYSQL_USER: root
+      LPN_TEST_MYSQL_PASSWORD: isolated-ci-only
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+          cache: pip
+          cache-dependency-path: backend-panel/requirements*.txt
+      - run: sudo apt-get update && sudo apt-get install -y default-libmysqlclient-dev pkg-config
+      - run: python -m pip install -r requirements-railway.txt
+      - run: python manage.py check --settings=config.settings_test_mysql
+      - run: python manage.py makemigrations --check --dry-run --settings=config.settings_test_mysql
+      - run: python manage.py test seguridad accounts.tests config.tests --settings=config.settings_test_mysql --noinput

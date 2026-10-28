@@ -28,7 +28,7 @@ Scroll nativo, nubes visibles desde el inicio y capas independientes con desplaz
 
 La marca del formulario se escribe completa como **Little Paws Net**, en una línea. En móvil, la tarjeta de propósito incorpora un encuadre del paisaje y el distintivo «Cuidar nos une»; mantiene la tipografía y el relieve del escritorio.
 
-El original `paisaje.png` tiene 768 × 1376 px. `prepare-landscape.py` requiere Pillow y genera ampliaciones convencionales con Lanczos, contraste 0.88, saturación 0.84 y brillo 1.035, sin generación de imágenes ni recuperación de detalle inexistente. Crea WebP de 768, 1536 y 2304 px de ancho para `srcset`, un PNG de 2304 × 4128 para Figma y recortes `escena-*` sin el cielo transparente para el fondo del acceso. El PNG grande es un recurso de trabajo; la web utiliza WebP adaptado a la pantalla.
+Los PNG y WebP del paisaje anterior y su ampliador se retiraron en la auditoría final: el acceso actual usa únicamente los dos fondos vectoriales originales. No se mantienen duplicados de exportación que el navegador ya no carga.
 
 La portada adopta la jerarquía de la referencia de vídeo: antetítulo, titular monoespaciado, frase principal manuscrita, descripción y botón. Se incluye JetBrains Mono localmente con su licencia OFL. Las nubes 1, 5 y 6 tienen borde plano derecho; las 2, 3 y 4 se anclan al lado izquierdo. Entran desde ese lado con el scroll y conservan su posición al completar la entrada. El progreso se acumula: no hay tramo de salida ni retroceso al subir la página. La altura se recalcula al redimensionar y se respeta la preferencia de movimiento reducido.
 
