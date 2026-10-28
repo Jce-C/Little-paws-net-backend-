@@ -5,7 +5,7 @@ El panel funcional de Django ofrece español e inglés, disponibles desde **Idio
 ## Uso
 
 - Seleccionar Español o English y pulsar Cambiar idioma. Se aplica también a formularios, errores de seguridad y controles/tablas generados por JavaScript.
-- Elegir tamaño Normal, Grande o Más grande; contraste Original o Reforzado; y movimiento según el dispositivo o Reducir movimiento. Pulsar Guardar preferencias.
+- Elegir tema Claro, Oscuro o Según el dispositivo; tamaño Normal, Grande o Más grande; contraste Original o Reforzado; y movimiento según el dispositivo o Reducir movimiento. Pulsar Guardar preferencias.
 - Restablecer vista recupera los valores visuales originales; conserva el idioma seleccionado.
 
 Las preferencias se guardan un año en cookies del navegador, sin modificar cuentas ni permisos. Los valores se validan contra una lista cerrada; no se ejecuta CSS o código recibido del navegador. Las cookies usan SameSite Lax, HttpOnly y Secure en producción. Los formularios requieren POST y CSRF y no permiten redirigir a un sitio ajeno. Funcionan sin JavaScript. Si se bloquean las cookies, la selección puede no persistir entre visitas.
@@ -42,3 +42,13 @@ Commit de los .po y .mo juntos. CI recompila y comprueba que no haya diferencias
 Se comprobaron tamaños 320, 390, 768, 1366 y 2560 px, idioma, contraste, texto mayor, reducción de movimiento, teclado, editores, retorno a español y funcionamiento sin JavaScript. Axe-core revisó siete estados con reglas WCAG 2/2.1/2.2 A/AA. Una revisión automática sin hallazgos no equivale a certificación WCAG completa.
 
 Siguen siendo necesarias pruebas manuales con lectores de pantalla (por ejemplo NVDA/VoiceOver), usuarios con distintas necesidades, zoom del navegador al 200–400 % y revisión lingüística independiente. Las nuevas pantallas y reglas deben añadirse a la misma revisión.
+
+## Tema oscuro
+
+El menú incluye Tema → Claro / Oscuro / Según el dispositivo. La elección se guarda como lpn_tema con la misma validación, seguridad y duración de las preferencias existentes. Por defecto sigue al dispositivo; Restablecer vista recupera ese modo automático. El contraste reforzado es independiente y funciona también en oscuro.
+
+El servidor entrega la elección en data-theme y en meta color-scheme antes de las hojas de estilo. tema.css utiliza color-scheme y light-dark para adaptar los colores nativos de controles y los componentes, sin invertir toda la página ni depender de un script inicial. En modo automático, un cambio del sistema se refleja sin recargar. Se requiere un navegador moderno con soporte de light-dark; versiones antiguas pueden conservar los colores claros.
+
+La paleta nocturna usa carbón cálido, verde salvia y texto marfil. Las ilustraciones mantienen composición y colores, reduciendo brillo; únicamente el logo monocromo cambia de luminosidad para conservar visibilidad. Las tarjetas, filas alternadas, estados, errores, selectores, diálogos y scroll tienen sus propios colores. El modo claro continúa disponible y no se promete que el oscuro sea más cómodo para todas las personas.
+
+Verificación ampliada: 124 pruebas Django; 12 comprobaciones de navegador (persistencia, modo automático, elección explícita, 320–2560 px y funcionamiento sin JavaScript); nueve estados revisados con axe-core A/AA sin infracciones detectadas. Esto no reemplaza las pruebas manuales y con usuarios indicadas anteriormente.
