@@ -41,3 +41,7 @@ Login auténtico con suma dinámica; administración de usuarios, roles, recurso
 ## Actualización del equipo
 
 Seguir [actualizar-equipo.md](actualizar-equipo.md). Entrar a la web publicada no requiere instalar herramientas ni conocer la contraseña SQL. Las credenciales individuales se comparten por separado y se sustituyen al primer ingreso.
+
+## Ampliación: idioma y accesibilidad
+
+Se incorporaron español/inglés mediante los catálogos de Django y preferencias de texto, contraste y movimiento. La validación ampliada comprende 122 pruebas Django y 18 comprobaciones de navegador, sin errores detectados. Axe-core revisó siete estados A/AA sin infracciones detectadas. El proceso y los límites, incluidas las pruebas manuales aún necesarias, se documentan en [idiomas-y-accesibilidad.md](../diseno/idiomas-y-accesibilidad.md). No equivale a una certificación WCAG.

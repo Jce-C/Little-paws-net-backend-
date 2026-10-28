@@ -1,0 +1,332 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Little Paws Net\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Abrir"
+msgstr "Open"
+
+msgid "Acciones"
+msgstr "Actions"
+
+msgid "Acción"
+msgstr "Action"
+
+msgid "Aceptación"
+msgstr "Acceptance"
+
+msgid "Activo"
+msgstr "Active"
+
+msgid "Actor"
+msgstr "Actor"
+
+msgid "Actualizando…"
+msgstr "Refreshing…"
+
+msgid "Alcance"
+msgstr "Scope"
+
+msgid "Anotación"
+msgstr "Note"
+
+msgid "Anuncio"
+msgstr "Ad"
+
+msgid "Asignar o revocar un rol global"
+msgstr "Assign or revoke a global role"
+
+msgid "Autorización hasta"
+msgstr "Authorized until"
+
+msgid "Banco"
+msgstr "Bank"
+
+msgid "Cambios de respuestas"
+msgstr "Response changes"
+
+msgid "Comprobando acceso…"
+msgstr "Checking access…"
+
+msgid "Confirmaciones"
+msgstr "Confirmations"
+
+msgid "Contenido"
+msgstr "Content"
+
+msgid "Contraseña inicial"
+msgstr "Initial password"
+
+msgid "Correo"
+msgstr "Email"
+
+msgid "Correo electrónico"
+msgstr "Email address"
+
+msgid "Crear permiso"
+msgstr "Create permission"
+
+msgid "Crear recurso"
+msgstr "Create resource"
+
+msgid "Crear rol"
+msgstr "Create role"
+
+msgid "Crear usuario"
+msgstr "Create user"
+
+msgid "Cuenta activa"
+msgstr "Active account"
+
+msgid "Código"
+msgstr "Code"
+
+msgid "Código del recurso"
+msgstr "Resource code"
+
+msgid "Código del rol"
+msgstr "Role code"
+
+msgid "Declaraciones"
+msgstr "Declarations"
+
+msgid "Delegable dentro de la organización"
+msgstr "Delegable within the organization"
+
+msgid "Descripción"
+msgstr "Description"
+
+msgid "Destino"
+msgstr "Destination"
+
+msgid "Detalle"
+msgstr "Details"
+
+msgid "Detalle autorizado"
+msgstr "Authorized details"
+
+msgid "Documentos"
+msgstr "Documents"
+
+msgid "Editar"
+msgstr "Edit"
+
+msgid "Editar permiso"
+msgstr "Edit permission"
+
+msgid "Editar recurso"
+msgstr "Edit resource"
+
+msgid "Editar rol"
+msgstr "Edit role"
+
+msgid "Editar usuario"
+msgstr "Edit user"
+
+msgid "Enmiendas"
+msgstr "Amendments"
+
+msgid "Estado"
+msgstr "Status"
+
+msgid "Estado de producto"
+msgstr "Product status"
+
+msgid "Existencias"
+msgstr "Stock"
+
+msgid "Fecha"
+msgstr "Date"
+
+msgid "Fin"
+msgstr "End"
+
+msgid "Formato"
+msgstr "Format"
+
+msgid "Inactivo"
+msgstr "Inactive"
+
+msgid "Iniciar sesión ↗"
+msgstr "Sign in ↗"
+
+msgid "Inicio"
+msgstr "Start"
+
+msgid "La acción y su alcance están definidos por el servidor."
+msgstr "The action and its scope are defined by the server."
+
+msgid "La dirección de la operación no es válida."
+msgstr "The operation address is invalid."
+
+msgid ""
+"Las acciones y los alcances se validan al guardar. Los roles del sistema "
+"conservan sus límites."
+msgstr ""
+"Actions and scopes are validated on save. System roles retain their "
+"restrictions."
+
+msgid "Mascota"
+msgstr "Pet"
+
+msgid "Mostrando solo los registros disponibles para tu cuenta."
+msgstr "Showing only records available to your account."
+
+msgid "Mostrar contraseña"
+msgstr "Show password"
+
+msgid "Motivo"
+msgstr "Reason"
+
+msgid "No"
+msgstr "No"
+
+msgid "No hay registros disponibles en este ámbito."
+msgstr "No records are available within this scope."
+
+msgid "No pudimos completar la operación. Actualiza la página."
+msgstr "We couldn't complete the operation. Refresh the page."
+
+msgid "Nombre"
+msgstr "Name"
+
+msgid "Nombre completo"
+msgstr "Full name"
+
+msgid "Nombre del recurso"
+msgstr "Resource name"
+
+msgid "Nombre del rol"
+msgstr "Role name"
+
+msgid "Número de cuenta"
+msgstr "Account number"
+
+msgid "Observaciones"
+msgstr "Observations"
+
+msgid "Observación"
+msgstr "Observation"
+
+msgid "Ocultar"
+msgstr "Hide"
+
+msgid "Ocultar contraseña"
+msgstr "Hide password"
+
+msgid "Organización"
+msgstr "Organization"
+
+msgid "Permiso activo"
+msgstr "Active permission"
+
+msgid "Permisos"
+msgstr "Permissions"
+
+#, python-format
+msgid "Permisos de %(nombre)s"
+msgstr "Permissions for %(nombre)s"
+
+msgid "Plataforma"
+msgstr "Platform"
+
+msgid "Precio"
+msgstr "Price"
+
+msgid "Preparado por"
+msgstr "Prepared by"
+
+msgid "Principal"
+msgstr "Primary"
+
+msgid "Productos"
+msgstr "Products"
+
+msgid "Propuesta de cuenta"
+msgstr "Account proposal"
+
+msgid "Recurso"
+msgstr "Resource"
+
+msgid "Recurso activo"
+msgstr "Active resource"
+
+msgid "Registro"
+msgstr "Record"
+
+msgid "Respuestas"
+msgstr "Responses"
+
+msgid "Revocar este rol"
+msgstr "Revoke this role"
+
+msgid "Rol activo"
+msgstr "Active role"
+
+msgid "Rol global"
+msgstr "Global role"
+
+msgid "Roles"
+msgstr "Roles"
+
+msgid "Solicitud #"
+msgstr "Request #"
+
+msgid "Sí"
+msgstr "Yes"
+
+msgid "Tamaño"
+msgstr "Size"
+
+msgid "Teléfono"
+msgstr "Phone"
+
+msgid "Terminación"
+msgstr "Last digits"
+
+msgid "Tipo"
+msgstr "Type"
+
+msgid "Titular"
+msgstr "Holder"
+
+msgid "Todavía no tienes solicitudes asignadas en este módulo."
+msgstr "You have no assigned requests in this module yet."
+
+msgid "Todo en orden por aquí."
+msgstr "Everything is in order here."
+
+msgid "Tomar solicitud"
+msgstr "Claim request"
+
+msgid "Tu sesión terminó. Inicia sesión nuevamente."
+msgstr "Your session has ended. Sign in again."
+
+msgid "Título"
+msgstr "Title"
+
+msgid "Una organización"
+msgstr "One organization"
+
+msgid "Usuario"
+msgstr "User"
+
+msgid "Ver"
+msgstr "Show"
+
+msgid "Ver propuesta"
+msgstr "View proposal"
+
+msgid "Ámbito"
+msgstr "Scope"
+
+msgid "Cambios guardados."
+msgstr "Changes saved."
+
+msgid "Solicitud asignada a tu cuenta."
+msgstr "Request assigned to your account."

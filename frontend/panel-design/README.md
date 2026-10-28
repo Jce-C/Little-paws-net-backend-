@@ -50,8 +50,12 @@ La revisión móvil incorpora `fondo-movil.svg`, copia íntegra del original `im
 
 ## Verificación
 
-La presentación de acceso también se conecta al formulario real de Django mediante `python frontend/panel-design/build-login-django.py`. Genera el HTML de acceso, copia únicamente los SVG/fuentes necesarios y reutiliza las entradas de las nubes. No copia datos de ejemplo ni valida contraseñas en el navegador: Django conserva la suma, CSRF, sesión y autorización. Ejecutarlo tras modificar la presentación de la bienvenida. La web pública de diseño sigue siendo una demo independiente.
+La presentación de acceso también se conecta al formulario real de Django mediante `python frontend/panel-design/build-login-django.py`. Sincroniza únicamente CSS, SVG y fuentes. El HTML del formulario y entrada.js se mantienen en backend-panel para conservar traducciones y preferencias de accesibilidad; no se sobrescriben con la demo. No copia datos de ejemplo ni valida contraseñas en el navegador: Django conserva la suma, CSRF, sesión y autorización. Ejecutarlo tras modificar la presentación de la bienvenida. La web pública de diseño sigue siendo una demo independiente.
 
 Los informes y capturas de esta revisión se guardan en `output/identidad-acceso/`. Las 13 combinaciones de texto/acento para botones y encabezados comprobadas superan 4.5:1. Los estados semánticos de éxito/error conservan su paleta y no adoptan los colores de perfil. Las tarjetas de resumen y módulos usan crema, radio de 24 px, borde claro y sombra cálida; el relieve no reemplaza el foco ni la legibilidad.
 
 La corrección de adaptación se revisó en 10 tamaños (320 × 640 a 2560 × 1350), incluyendo 1280 × 640 y 1366 × 650. Se comprobaron las 33 vistas en móvil, portátil y 2K, además del recorrido del formulario y la entrada unidireccional de las nubes: 121 comprobaciones sin errores detectados. Capturas e informe: `output/responsive-panel/`.
+
+## Idiomas y accesibilidad del panel funcional
+
+La implementación vigente está en [esta guía](../../docs/diseno/idiomas-y-accesibilidad.md). Los catálogos y preferencias pertenecen al panel Django; la demo estática es una referencia separada. No reemplazar plantillas gettext ni entrada.js con archivos del formulario ficticio.

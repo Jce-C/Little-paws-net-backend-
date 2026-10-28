@@ -10,6 +10,7 @@ from django.contrib.auth import logout
 from django.db import transaction
 from django.utils import timezone
 from django.utils.crypto import constant_time_compare, salted_hmac
+from django.utils.translation import gettext
 from django.http import JsonResponse
 from django.shortcuts import redirect
 
@@ -87,8 +88,8 @@ class SesionWebMiddleware:
             logout(request)
         if request.user.is_authenticated and request.user.debe_cambiar_clave:
             if request.path.startswith("/api/"):
-                return JsonResponse({"detail": "Cambia tu contraseña temporal desde el panel."}, status=403)
-            if request.path.startswith("/panel/") and request.path not in ("/panel/cambiar-clave/", "/panel/logout/"):
+                return JsonResponse({"detail": gettext("Cambia tu contraseña temporal desde el panel.")}, status=403)
+            if request.path.startswith("/panel/") and request.path not in ("/panel/cambiar-clave/", "/panel/logout/", "/panel/preferencias/"):
                 return redirect("panel:cambiar_clave")
         respuesta = self.get_response(request)
         if request.path.startswith(("/panel/", "/api/seguridad/")):

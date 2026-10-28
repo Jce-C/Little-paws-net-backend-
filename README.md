@@ -45,3 +45,7 @@ La configuración privada del panel en Railway utiliza la base nueva, un usuario
 GitHub Actions comprueba configuración, ausencia de migraciones pendientes y pruebas en MySQL 8.4 aislado. Las pruebas no se ejecutan sobre la base de Railway. Consulte [CONTRIBUTING.md](CONTRIBUTING.md) para reproducirlas.
 
 La suma del login se combina con límites de intentos, CSRF y sesión: no es una protección completa frente a DDoS. La administración de seguridad está implementada; algunos procesos operativos aún tienen API/listado y boceto, sin formulario web completo. Consulte la auditoría antes de prometer esas funciones.
+
+## Idioma y accesibilidad
+
+El panel ofrece español/inglés y preferencias de texto, contraste y movimiento desde el menú «Idioma y accesibilidad». Se conservan en el navegador y funcionan sin JavaScript. Ver [uso y mantenimiento](docs/diseno/idiomas-y-accesibilidad.md). Los nombres y datos de personas no se traducen automáticamente.
