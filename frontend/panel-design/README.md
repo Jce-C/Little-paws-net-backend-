@@ -4,7 +4,7 @@ Los perfiles se definen en `profiles.json`: cada uno tiene un acento oscuro y un
 
 ## Iconos
 
-Se instaló **lucide-static 1.62.0** mediante npm, con versión exacta y licencia ISC. Se generan 34 símbolos SVG locales; no se descarga la biblioteca completa en el navegador ni se usa una CDN.
+Se instaló **lucide-static 1.62.0** mediante npm, con versión exacta y licencia ISC. Se generan 35 símbolos SVG locales; no se descarga la biblioteca completa en el navegador ni se usa una CDN.
 
 ```powershell
 cd frontend/panel-design
