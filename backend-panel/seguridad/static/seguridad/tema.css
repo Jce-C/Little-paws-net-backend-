@@ -40,7 +40,7 @@ input[type=checkbox]{accent-color:var(--lpn-theme-action)}
 .boton.primario:hover:not(:disabled){background:light-dark(var(--lpn-primary-hover),#d0dfc0);border-color:var(--lpn-theme-action)}
 .boton.secundario,.salir,.cerrar-dialogo,.menu-movil{background:var(--lpn-paper);color:var(--lpn-ink);border-color:var(--lpn-input)}
 .boton:disabled,.boton:disabled:hover{background:light-dark(#e9e4d9,#373d32);color:light-dark(#756e61,#b8c1b1);border-color:var(--lpn-stone)}
-.preferencias{background:light-dark(#fff9f1,#20261f);color:var(--lpn-ink);border-color:var(--lpn-stone)}
+.preferencias{background:transparent;color:var(--lpn-ink);border:0}
 .preferencias summary,.preferencias-contenido,.preferencias select,.preferencias button{background:var(--lpn-paper);color:var(--lpn-ink);border-color:var(--lpn-input)}
 .preferencias form+form{border-color:var(--lpn-stone)}
 :where(a,button,input,select,summary,[tabindex]):focus-visible{outline-color:var(--lpn-focus)!important}

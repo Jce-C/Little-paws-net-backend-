@@ -52,3 +52,9 @@ El servidor entrega la elección en data-theme y en meta color-scheme antes de l
 La paleta nocturna usa carbón cálido, verde salvia y texto marfil. Las ilustraciones mantienen composición y colores, reduciendo brillo; únicamente el logo monocromo cambia de luminosidad para conservar visibilidad. Las tarjetas, filas alternadas, estados, errores, selectores, diálogos y scroll tienen sus propios colores. El modo claro continúa disponible y no se promete que el oscuro sea más cómodo para todas las personas.
 
 Verificación ampliada: 124 pruebas Django; 12 comprobaciones de navegador (persistencia, modo automático, elección explícita, 320–2560 px y funcionamiento sin JavaScript); nueve estados revisados con axe-core A/AA sin infracciones detectadas. Esto no reemplaza las pruebas manuales y con usuarios indicadas anteriormente.
+
+## Cabecera compacta
+
+Las preferencias se abren desde el botón con icono Lucide de ajustes: junto a «Acceso al equipo» en el login y a la izquierda de «Salir» en la cabecera del panel. El nombre accesible y el tooltip siguen siendo «Idioma y accesibilidad». No hay una franja independiente. En móvil el desplegable se ancla al viewport para conservar todos sus controles dentro de la pantalla; mantiene teclado, Escape y formularios sin JavaScript.
+
+El scroll conserva 12 px de ancho y 3 px de margen interior tanto en contraste normal como reforzado. El modo reforzado modifica el color/opacidad, no el grosor. El fallback estándar usa el mismo ancho nativo fino en ambos modos; los colores forzados del sistema conservan su adaptación nativa.
