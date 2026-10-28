@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.http import JsonResponse
 from django.urls import include, path
+from django.views.generic import RedirectView
 
 
 def health(request):
@@ -8,6 +9,7 @@ def health(request):
 
 
 urlpatterns = [
+    path("", RedirectView.as_view(pattern_name="panel:login", permanent=False)),
     path("panel/", include("seguridad.web.urls")),
     path("admin/", admin.site.urls),
     path("api/health/", health, name="health"),

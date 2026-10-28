@@ -84,4 +84,3 @@ td .boton:hover{background:var(--lpn-secondary-hover)}
 .detalle-fila{padding:14px 12px;border-radius:8px}
 @media(max-width:800px){td,th{padding-left:16px;padding-right:16px}.tabla-ayuda{display:block;padding:12px 16px;margin:0;background:var(--lpn-row-alt);color:var(--lpn-muted);font-size:12px}.menu-movil{border-color:var(--lpn-input);color:var(--lpn-table-ink)}.contexto-organizacion select{font-size:16px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
-
