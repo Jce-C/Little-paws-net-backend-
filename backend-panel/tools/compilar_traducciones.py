@@ -10,8 +10,9 @@ def main():
         if catalog.fuzzy_entries() or catalog.untranslated_entries():
             raise SystemExit(f"Catálogo incompleto: {source}")
         for entry in catalog:
-            if set(re.findall(r"%\(\w+\)[sdf]", entry.msgid)) != set(re.findall(r"%\(\w+\)[sdf]", entry.msgstr)):
-                raise SystemExit(f"Variables de traducción diferentes: {entry.msgid}")
+            for translated in entry.msgstr_plural.values() if entry.msgid_plural else [entry.msgstr]:
+                if set(re.findall(r"%\(\w+\)[sdf]", entry.msgid)) != set(re.findall(r"%\(\w+\)[sdf]", translated)):
+                    raise SystemExit(f"Variables de traducción diferentes: {entry.msgid}")
         catalog.save_as_mofile(str(source.with_suffix(".mo")))
         print(source.relative_to(Path(__file__).resolve().parents[1]))
 

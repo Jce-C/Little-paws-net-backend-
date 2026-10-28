@@ -1432,3 +1432,9 @@ msgstr "Veterinarian does not exist"
 #, python-format
 msgid "El campo %(campo)s de un rol es estable"
 msgstr "The %(campo)s field of a role is permanent"
+
+#, python-format
+msgid "%(total)s módulo"
+msgid_plural "%(total)s módulos"
+msgstr[0] "%(total)s module"
+msgstr[1] "%(total)s modules"
