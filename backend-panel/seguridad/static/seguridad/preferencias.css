@@ -27,10 +27,10 @@ html[data-motion=reduce] :is(.reveal,.hero-copy>*,.wordmark,.entry .reveal){opac
 @media(max-width:600px){.preferencias-contenido{right:8px;max-height:70dvh}.preferencias{padding:8px 12px}.preferencias summary{font-size:.9rem}.panel .topbar{height:auto;min-height:76px;flex-wrap:wrap;gap:10px}.panel .topbar-derecha{flex-wrap:wrap}.panel .contenido{min-width:0}.panel .usuario strong{overflow-wrap:anywhere}}
 
 /* Scroll nativo con acabado translúcido; conserva rueda, teclado y arrastre. */
-:root{--lpn-scroll-thumb:rgba(79,102,85,.82);--lpn-scroll-hover:rgba(64,86,68,.94);--lpn-scroll-track:rgba(221,197,171,.12)}
-*::-webkit-scrollbar{width:14px;height:14px}
+:root{--lpn-scroll-thumb:rgba(60,83,65,.68);--lpn-scroll-hover:rgba(64,86,68,.94);--lpn-scroll-track:rgba(221,197,171,.04)}
+*::-webkit-scrollbar{width:12px;height:12px}
 *::-webkit-scrollbar-track{background:var(--lpn-scroll-track);border-radius:999px}
-*::-webkit-scrollbar-thumb{background:linear-gradient(105deg,rgba(255,253,247,.08),rgba(255,253,247,0) 65%),var(--lpn-scroll-thumb);border:3px solid transparent;background-clip:padding-box;border-radius:999px;box-shadow:inset 0 0 0 1px rgba(255,253,247,.4)}
+*::-webkit-scrollbar-thumb{background:linear-gradient(105deg,rgba(255,253,247,.06),rgba(255,253,247,0) 65%),var(--lpn-scroll-thumb);border:3px solid transparent;background-clip:padding-box;border-radius:999px;box-shadow:inset 0 0 0 1px rgba(255,253,247,.4)}
 *::-webkit-scrollbar-thumb:hover,*::-webkit-scrollbar-thumb:active{background-color:var(--lpn-scroll-hover)}
 *::-webkit-scrollbar-corner{background:transparent}
 @supports not selector(::-webkit-scrollbar){*{scrollbar-color:var(--lpn-scroll-thumb) transparent;scrollbar-width:auto}}
