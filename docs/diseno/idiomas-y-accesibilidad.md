@@ -45,7 +45,7 @@ Siguen siendo necesarias pruebas manuales con lectores de pantalla (por ejemplo 
 
 ## Tema oscuro
 
-El menú incluye Tema → Claro / Oscuro / Según el dispositivo. La elección se guarda como lpn_tema con la misma validación, seguridad y duración de las preferencias existentes. Por defecto sigue al dispositivo; Restablecer vista recupera ese modo automático. El contraste reforzado es independiente y funciona también en oscuro.
+El menú incluye Tema → Claro / Oscuro / Según el dispositivo. La elección se guarda como lpn_tema con la misma validación, seguridad y duración de las preferencias existentes. Por defecto utiliza Claro; Restablecer vista recupera ese modo. Las elecciones válidas ya guardadas se conservan. El contraste reforzado es independiente y funciona también en oscuro.
 
 El servidor entrega la elección en data-theme y en meta color-scheme antes de las hojas de estilo. tema.css utiliza color-scheme y light-dark para adaptar los colores nativos de controles y los componentes, sin invertir toda la página ni depender de un script inicial. En modo automático, un cambio del sistema se refleja sin recargar. Se requiere un navegador moderno con soporte de light-dark; versiones antiguas pueden conservar los colores claros.
 

@@ -9,7 +9,7 @@ from django.views.decorators.http import require_POST
 
 
 OPCIONES = {
-    "tema": ("system", "light", "dark"),
+    "tema": ("light", "dark", "system"),
     "texto": ("normal", "large", "largest"),
     "contraste": ("normal", "strong"),
     "movimiento": ("system", "reduce"),
