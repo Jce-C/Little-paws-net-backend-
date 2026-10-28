@@ -1,63 +1,47 @@
-# Railway · conexión y plan de actualización
+# Panel publicado en Railway
 
-## Destinos comprobados
+## Servicio vigente
 
-Proyecto: `little-paws-net-demo`, ID `fd2429ee-8ee5-454d-9bdc-91c595d80547`.
+- Entrada: https://little-paws-panel-production.up.railway.app/panel/login/
+- Estado de proceso: https://little-paws-panel-production.up.railway.app/api/health/
+- Proyecto: `fd2429ee-8ee5-454d-9bdc-91c595d80547`.
+- Servicio panel: `830362dc-fcb3-40c6-9850-c9dac01941e5`.
+- MySQL existente: `d929907f-99e2-433f-80c1-640ebbae9930`.
+- Esquema exclusivo del panel: `little_paws_panel_v2`.
+- Volumen privado del panel: `/data`; `LPN_PRIVATE_ROOT=/data/private`.
 
-- MySQL: `d929907f-99e2-433f-80c1-640ebbae9930`.
-- API: `580ffc4f-afaa-441c-a0c8-d90ddd15a81f`; `https://little-paws-api-production.up.railway.app/`.
-- La interfaz de Railway mostraba ambos servicios Online y un despliegue anterior de la API desde GitHub.
-- Conexión SQL verificada **solo a `little_paws_net_eval`**, usando la configuración existente de la copia local cloud, sin copiar ni publicar sus claves. Se consultaron metadatos en una transacción de solo lectura. No se afirma haber inspeccionado todos los datos de la base de producción.
+El backend antiguo conserva su servicio, sus bases y su Dockerfile raíz. El nuevo no aplica sus migraciones sobre los esquemas anteriores. El endpoint health es de liveness: comprueba que el proceso responde, no es monitoreo completo de MySQL.
 
-El `backend-panel/.env` de este repositorio sigue apuntando a MySQL local. No se sustituyó silenciosamente por la base de Railway.
+## Configuración privada
 
-## Por qué no ejecutar migrate directamente
+El servicio consume `DJANGO_SETTINGS_MODULE=config.settings_railway`, `DJANGO_SECRET_KEY`, `LPN_DATA_KEY`, `DJANGO_ALLOWED_HOSTS`, `DJANGO_CSRF_TRUSTED_ORIGINS`, `MYSQL_DATABASE`, `MYSQL_USER`, `MYSQL_PASSWORD`, `MYSQL_HOST`, `MYSQL_PORT`, `MYSQL_SSL_MODE=REQUIRED`, `LPN_PRIVATE_ROOT` y `PORT`. Las variables están en Railway; no en el repositorio. MySQL usa la red privada y el usuario limitado al esquema nuevo. Las herramientas locales autorizadas usan un endpoint externo con TLS; no distribuir esas claves al equipo para simplemente entrar a la web.
 
-La comparación de esquemas figura en `output/auditoria-entrega/comparacion-esquemas.json`. Faltan 25 tablas y 22 columnas respecto a la versión local; entre ellas `Recurso`, auditoría, asignaciones, responsabilidad principal, transferencias, captcha y límites. `Rol` necesita `activo`, `delegable` y `sistema`; `Permiso` necesita relación al recurso, acción, alcance y estado; las membresías necesitan revocación. También hay diferencias anteriores al módulo de seguridad, por ejemplo claves de detalle de pedido y campos de fondos. El nombre de la aplicación de adopciones y el historial de migraciones difieren.
+Conservar la clave Fernet de bases existentes. Cambiarla sin migrar los datos impide descifrar documentos/referencias protegidos. Las contraseñas de personas se almacenan como hashes de Django y no son credenciales SQL.
 
-Una migración de seguridad no resuelve automáticamente todas esas diferencias. Tampoco es correcto marcar migraciones como aplicadas para evitar errores de tablas existentes.
+Railway termina HTTPS en el edge. Solo `settings_railway` confía en `X-Real-IP`, documentado por Railway, para los límites por cliente; el desarrollo ignora cabeceras enviadas por el navegador. No ejecutar esa configuración detrás de otro proxy sin revisar qué cabeceras sobrescribe. El host `healthcheck.railway.app` y la excepción HTTP de `/api/health/` permiten la sonda interna; el resto fuerza HTTPS y cookies seguras.
 
-## Alternativa aprobada para la entrega
+## Construcción y despliegue
 
-Preparar un esquema nuevo y separado para **esta versión completa** dentro del destino de Railway acordado, conservando la demo anterior. Usar un usuario SQL exclusivo de ese esquema y variables privadas del servicio; después aplicar su historial de migraciones desde cero. No recrear cuentas activas a partir de contraseñas demo ni sobrescribir la clave de cifrado de datos existentes.
+Directorio raíz del panel: `backend-panel/`. Dockerfile de dos etapas, compilación de wheels separada y runtime sin compilador. El entrypoint prepara únicamente el directorio privado del volumen y baja al usuario `app` antes de Gunicorn. WhiteNoise sirve los recursos públicos con nombres versionados. `railway.toml` configura healthcheck y reinicios limitados.
 
-El propietario aprobó preparar la base nueva y conservar la anterior, y autorizó Railway CLI. El destino preparado es `little_paws_panel_v2`, con un usuario exclusivo `lpn_panel_v2` limitado a ese esquema, en el servicio MySQL existente. La creación y migración se verifican en `output/auditoria-entrega/railway-nueva-base.json`; solo `migrated: true` confirma el proceso completo. No se crean servicios de cómputo adicionales ni se despliega el backend antiguo sobre el esquema nuevo.
+La publicación inicial auditada se hizo mediante CLI desde el directorio del panel. No asumir autodeploy desde GitHub hasta conectar explícitamente el servicio nuevo, rama y raíz correctos. El servicio antiguo sigue con su configuración anterior.
 
-**Resultado verificado:** creación y migraciones completas, 91 tablas, 13 roles activos, 20 recursos, 51 permisos y cero usuarios. `panel_railway.ps1 -Accion check` terminó sin incidencias. Las bases `little_paws_net_demo` y `little_paws_net_eval` conservaron sus 66 tablas cada una. No se cambió el servicio de la API anterior. El alta del propietario permanece pendiente de su contraseña privada.
-
-La configuración privada queda en `backend-panel/.env.railway`, excluida de Git y de los paquetes; su ACL local limita lectura al propietario y SYSTEM. `MYSQL_SSL_MODE=REQUIRED` exige transporte cifrado en el acceso externo comprobado. Esto no configura por sí solo verificación de identidad con una CA propia. `LPN_ENV_FILE` selecciona explícitamente este archivo; el `.env` habitual sigue apuntando al MySQL local.
-
-Desde la raíz del repositorio, para comprobar la conexión:
-
-```powershell
-.\backend\panel_railway.ps1 -Accion check
-```
-
-Para crear tu administrador con una contraseña solicitada de forma oculta:
+Para un despliegue manual autorizado, desde `backend-panel`:
 
 ```powershell
-.\backend\panel_railway.ps1 -Accion iniciar_seguridad -Email TU_CORREO -Nombre "Tu nombre"
+railway up . --path-as-root --project fd2429ee-8ee5-454d-9bdc-91c595d80547 --service 830362dc-fcb3-40c6-9850-c9dac01941e5 --environment production --detach
 ```
 
-Para probar el panel real en tu computador usando la base nueva:
+`--detach` inicia el despliegue: comprobar después estado SUCCESS, logs y login. No imprimir variables privadas ni incluir .env en archivos de construcción.
 
-```powershell
-.\backend\panel_railway.ps1 -Accion runserver
-```
+Las migraciones no se ejecutan automáticamente en el Dockerfile. Antes de una nueva versión, revisar el plan y aplicar únicamente a la base nueva, con respaldo cuando cambie datos. La auditoría aplicó `accounts.0002_usuario_debe_cambiar_clave`; los seis bloques iniciales ya estaban migrados. No usar `--fake` para ocultar diferencias ni ejecutar seeds de demo en producción.
 
-Abrir `http://127.0.0.1:8000/panel/login/`. El servidor escucha solo en loopback; no equivale a un despliegue público. Cada integrante necesita su configuración privada autorizada: no distribuir el archivo con contraseña en los ZIP.
+## Acceso del equipo
 
-Tras preparar el destino:
+José, Sally y Majo tienen cuentas individuales con rol `ADMIN_SEGURIDAD`, por decisión del propietario. No son superusuarios técnicos de Django. Las cuentas nuevas de Sally y Majo requieren cambiar su clave temporal antes de entrar al panel o usar la API. La contraseña previa de José se conserva. Credenciales entregadas por separado, nunca en Git ni en documentación. Desde el panel se puede cambiar la contraseña y revocar roles o desactivar usuarios conservando auditoría.
 
-1. Guardar el esquema, host, puerto, usuario y contraseña en Secrets/variables de entorno, nunca en Git. Esta copia espera `MYSQL_DATABASE`, `MYSQL_HOST`, `MYSQL_PORT`, `MYSQL_USER` y `MYSQL_PASSWORD`. Mapear explícitamente los nombres de Railway (`MYSQLDATABASE`, `MYSQLHOST`, etc.) a los que consume Django.
-2. Usar red privada entre servicios de Railway. Para herramientas locales, usar el acceso externo/túnel permitido por el proyecto; no confundir el host interno con el proxy TCP.
-3. Para un futuro servicio nuevo de panel, seleccionar `backend-panel/` como directorio raíz y su Dockerfile; usar `DJANGO_SETTINGS_MODULE=config.settings_railway`. Instalar `requirements-railway.txt`; configurar `DJANGO_SECRET_KEY`, `LPN_DATA_KEY`, `DJANGO_ALLOWED_HOSTS`, `DJANGO_CSRF_TRUSTED_ORIGINS` y un volumen privado con `LPN_PRIVATE_ROOT` apuntando a él. Gunicorn y WhiteNoise sirven la aplicación y los recursos; el Dockerfile no ejecuta migraciones ni crea cuentas automáticamente. `collectstatic` se verificó localmente; la imagen necesita verificación Linux antes de desplegar. Los secretos nuevos no se reutilizan en el servicio anterior.
-4. Revisar `showmigrations --plan`, aplicar `migrate` en el esquema nuevo y comprobar los conteos del catálogo. No usar una importación SQL como sustituto de las migraciones.
-5. Inicializar al propietario con `python manage.py iniciar_seguridad --email TU_CORREO --nombre "Tu nombre"`; la contraseña se solicita oculta.
-6. Probar login y RBAC real desde el dominio publicado antes de cambiar el enlace de entrega.
+## Antes de una explotación real
 
-## Alternativa para conservar el backend cloud como fuente oficial
+Configurar y ensayar respaldos/restauración de MySQL y del volumen privado; definir retención, alertas y mantenimiento de sesiones/límites. Configurar correo transaccional y recuperación verificada; evaluar MFA para administradores. Completar los formularios operativos pendientes y probar accesibilidad/carga con objetivos acordados. El captcha aritmético y el límite de intentos no sustituyen medidas contra DDoS.
 
-Crear una rama local de integración sobre esa copia, portar `seguridad` y adaptar imports/modelos (`adoptions`, no `adoption`). Generar migraciones **nuevas a partir de su historial**, ensayarlas sobre una copia restaurable y conservar PK/FK, titulares, responsables, asignaciones y datos cifrados. Verificar traducciones y API existentes. Solo después programar el cambio sobre la base elegida. Los parches de esta entrega no son directamente aplicables a esa copia distinta.
-
-Referencias oficiales: [MySQL en Railway](https://docs.railway.com/databases/mysql), [proxy TCP](https://docs.railway.com/networking/tcp-proxy), [Django en Railway](https://docs.railway.com/guides/django). Las instrucciones de PostgreSQL del tutorial de Django no cambian el motor MySQL requerido por este proyecto.
+Referencias: [Django en Railway](https://docs.railway.com/guides/django), [healthchecks](https://docs.railway.com/deployments/healthchecks), [cabeceras del edge](https://docs.railway.com/networking/public-networking/specs-and-limits), [volúmenes](https://docs.railway.com/cli/volume).

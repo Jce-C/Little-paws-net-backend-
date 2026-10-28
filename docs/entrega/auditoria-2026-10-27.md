@@ -1,3 +1,5 @@
+> Documento histórico. Los seis bloques ya se integraron. Estado vigente: [auditoría final](auditoria-final.md) y [actualización del equipo](actualizar-equipo.md).
+
 # Auditoría de entrega · 27 de octubre de 2026
 
 Estado: **todavía no presentar como entrega integrada publicada**. El backend RBAC y el panel inicial funcionan en MySQL local; la demo visual pública y el backend antiguo de Railway son piezas distintas.

@@ -1,3 +1,5 @@
+> Documento histórico. Los seis bloques ya se integraron. Estado vigente: [auditoría final](auditoria-final.md) y [actualización del equipo](actualizar-equipo.md).
+
 # Entrega del panel · repositorio oficial y ramas
 
 Repositorio: https://github.com/Jce-C/Little-paws-net-backend- (el guion final forma parte del nombre).

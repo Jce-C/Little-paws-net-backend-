@@ -131,4 +131,3 @@ py -3 -m http.server 8091 --bind 127.0.0.1 --directory demo
 Luego abrir http://127.0.0.1:8091/. No requiere npm, compilación, base de datos ni login.
 
 Las capturas muestran estados de la versión actual. Para entender el movimiento hay que probar la demo o revisar el video de referencia, no solo una imagen fija.
-
