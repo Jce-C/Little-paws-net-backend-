@@ -1,0 +1,80 @@
+[
+  {
+    "id": "admin_seguridad",
+    "name": "Administrador de seguridad",
+    "accent": "#4F6655",
+    "soft": "#E2E9DA"
+  },
+  {
+    "id": "moderador",
+    "name": "Moderador de plataforma",
+    "accent": "#47656C",
+    "soft": "#E0E9EA"
+  },
+  {
+    "id": "responsable_principal",
+    "name": "Responsable principal",
+    "accent": "#624A36",
+    "soft": "#EBDDCC"
+  },
+  {
+    "id": "responsable_secundario",
+    "name": "Responsable secundario",
+    "accent": "#8F4D2D",
+    "soft": "#F1DDCC"
+  },
+  {
+    "id": "gestor_rescates",
+    "name": "Gestor de rescates",
+    "accent": "#795B20",
+    "soft": "#F2E6BF"
+  },
+  {
+    "id": "gestor_adopciones",
+    "name": "Gestor de adopciones",
+    "accent": "#6E642B",
+    "soft": "#EBE8C7"
+  },
+  {
+    "id": "gestor_aportes",
+    "name": "Gestor de aportes",
+    "accent": "#7B5921",
+    "soft": "#F3E4C5"
+  },
+  {
+    "id": "gestor_catalogo",
+    "name": "Gestor de catálogo",
+    "accent": "#725D3C",
+    "soft": "#EDE4CF"
+  },
+  {
+    "id": "gestor_pedidos",
+    "name": "Gestor de pedidos",
+    "accent": "#80552E",
+    "soft": "#F0DEC3"
+  },
+  {
+    "id": "gestor_fondo",
+    "name": "Gestor de fondo",
+    "accent": "#62633A",
+    "soft": "#E8E6CF"
+  },
+  {
+    "id": "gestor_publicidad",
+    "name": "Gestor de publicidad",
+    "accent": "#756016",
+    "soft": "#F2E9BC"
+  },
+  {
+    "id": "veterinario",
+    "name": "Veterinario verificado",
+    "accent": "#456D61",
+    "soft": "#DDEAE2"
+  },
+  {
+    "id": "preparador_cuentas",
+    "name": "Preparador delegado de cuentas",
+    "accent": "#74604F",
+    "soft": "#ECE2D8"
+  }
+]

@@ -1,0 +1,59 @@
+{
+  "perfiles": [
+    {
+      "code": "admin_seguridad",
+      "name": "Administrador de seguridad"
+    },
+    {
+      "code": "moderador",
+      "name": "Moderador de plataforma"
+    },
+    {
+      "code": "responsable_principal",
+      "name": "Responsable principal"
+    },
+    {
+      "code": "responsable_secundario",
+      "name": "Responsable secundario"
+    },
+    {
+      "code": "gestor_rescates",
+      "name": "Gestor de rescates"
+    },
+    {
+      "code": "gestor_adopciones",
+      "name": "Gestor de adopciones"
+    },
+    {
+      "code": "gestor_aportes",
+      "name": "Gestor de aportes"
+    },
+    {
+      "code": "gestor_catalogo",
+      "name": "Gestor de catálogo"
+    },
+    {
+      "code": "gestor_pedidos",
+      "name": "Gestor de pedidos"
+    },
+    {
+      "code": "gestor_fondo",
+      "name": "Gestor de fondo"
+    },
+    {
+      "code": "gestor_publicidad",
+      "name": "Gestor de publicidad"
+    },
+    {
+      "code": "veterinario",
+      "name": "Veterinario verificado"
+    },
+    {
+      "code": "preparador_cuentas",
+      "name": "Preparador delegado de cuentas"
+    }
+  ],
+  "vistas_panel": 33,
+  "estados": 3,
+  "tipo": "Datos sintéticos; sin autenticación ni escritura de datos"
+}
