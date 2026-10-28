@@ -1,0 +1,12 @@
+{
+  "name": "little-paws-panel-design",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Recursos visuales compartidos para las plantillas Django y la demo del panel",
+  "scripts": {
+    "build:icons": "node build-icons.mjs"
+  },
+  "devDependencies": {
+    "lucide-static": "1.62.0"
+  }
+}
