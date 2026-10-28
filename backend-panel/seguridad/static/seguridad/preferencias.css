@@ -1,0 +1,27 @@
+.preferencias{position:relative;z-index:40;font-family:Inter,system-ui,sans-serif;color:#3b3024;margin:0 0 16px;display:flex;justify-content:flex-end;padding:12px clamp(12px,3vw,40px);background:#fff9f1;border-bottom:1px solid #d8cbb8}
+.preferencias summary{cursor:pointer;padding:10px 16px;min-height:44px;border:1px solid #85715a;border-radius:24px;font-size:1rem;font-weight:600;background:#fffdf7;list-style-position:inside}
+.preferencias-contenido{position:absolute;right:12px;top:100%;width:min(370px,calc(100vw - 24px));max-height:75dvh;overflow:auto;padding:20px;border:1px solid #85715a;border-radius:18px;background:#fffdf7;box-shadow:0 10px 32px #42322226}
+.preferencias h2{font:600 1.15rem/1.4 Inter,system-ui,sans-serif;margin:0 0 16px}
+.preferencias form+form{border-top:1px solid #d8cbb8;padding-top:16px;margin-top:16px}
+.preferencias label{display:block;margin:12px 0 6px;font-size:1rem;font-weight:600}
+.preferencias select,.preferencias button{font:inherit;color:#3b3024;background:#fff9f1;border:1px solid #85715a;border-radius:10px;min-height:44px;padding:8px 12px;max-width:100%}
+.preferencias select{width:100%}.preferencias button{cursor:pointer;white-space:normal}
+.pantalla-estado{flex-direction:column;gap:20px}.pantalla-estado>.preferencias{width:100%}
+.preferencias-fila,.preferencias-acciones{display:flex;gap:10px;flex-wrap:wrap}.preferencias-fila select{flex:1;min-width:120px}.preferencias p{font-size:.875rem;line-height:1.6}.preferencias-acciones button{flex:1}
+:where(a,button,input,select,summary,[tabindex]):focus-visible{outline:3px solid #705035!important;outline-offset:3px!important}
+html[data-text-size=large]{font-size:112.5%}html[data-text-size=largest]{font-size:125%}
+html:not([data-text-size=normal]) :is(.panel,.pantalla-estado) :is(p,td,th,label,input,select,button,small,.nav-item,.breadcrumb,.pill,.badge,.estado-tag){font-size:1rem;line-height:1.6}
+html:not([data-text-size=normal]) :is(.panel,.pantalla-estado) h1{font-size:2rem;line-height:1.3}
+html:not([data-text-size=normal]) :is(.panel,.pantalla-estado) h2{font-size:1.5rem;line-height:1.4}
+html:not([data-text-size=normal]) .journey :is(label,input,button,.text-button,.captcha-help,.login-subtitle,.access-help,.journey-footer){font-size:1rem;line-height:1.6}
+html:not([data-text-size=normal]) .journey :is(.subtitle,.purpose-copy p){font-size:1.25rem;line-height:1.6}
+html[data-contrast=strong] body{--lpn-ink:#30271e;--lpn-body:#3b3024;--lpn-muted:#4c3d2d;--lpn-caption:#4c3d2d;--lpn-input:#6b5842;--lpn-primary:#354b3b;--lpn-primary-hover:#263b2b;--lpn-stone:#85715a;--lpn-row-alt:#f0e8db;--lpn-table-head:#e2e9da;color:#30271e}
+html[data-contrast=strong] :is(.sidebar,.tabla-panel,.modulo-card,.resumen,.login-card,.purpose,.estado-card,dialog,.preferencias-contenido){color:#30271e!important;background:#fff9ef!important;backdrop-filter:none!important;border-color:#85715a!important}
+html[data-contrast=strong] :is(p,label,small,td,th,.nav-item,.breadcrumb,.tabla-ayuda,.estado-tag,.login-subtitle,.access-help){color:#30271e!important}
+html[data-contrast=strong] :is(input,select,textarea){background:#fffdf7!important;color:#30271e!important;border-color:#6b5842!important}
+html[data-contrast=strong] input::placeholder{color:#5c4a37!important}
+html[data-contrast=strong] :is(a,.text-button){text-decoration:underline;text-underline-offset:3px}
+html[data-motion=reduce] *,html[data-motion=reduce] *::before,html[data-motion=reduce] *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+html[data-motion=reduce] :is(.reveal,.hero-copy>*,.wordmark,.entry .reveal){opacity:1!important;transform:none!important;filter:none!important}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}.reveal{opacity:1!important;transform:none!important;filter:none!important}}
+@media(max-width:600px){.preferencias-contenido{right:8px;max-height:70dvh}.preferencias{padding:8px 12px}.preferencias summary{font-size:.9rem}.panel .topbar{height:auto;min-height:76px;flex-wrap:wrap;gap:10px}.panel .topbar-derecha{flex-wrap:wrap}.panel .contenido{min-width:0}.panel .usuario strong{overflow-wrap:anywhere}}

@@ -1,4 +1,4 @@
-{% load static %}<a class="marca" href="{% url 'panel:inicio' %}" aria-label="Little Paws Net, inicio">
+{% load static i18n %}<a class="marca" href="{% url 'panel:inicio' %}" aria-label="{% translate 'Little Paws Net, inicio' %}">
   <span class="marca-icono"><img src="{% static 'seguridad/logo.svg' %}" alt="" width="44" height="48"></span>
-  <span class="marca-copy"><span class="marca-nombre">Little Paws Net</span><span class="marca-sub">PANEL DE GESTIÓN</span></span>
+  <span class="marca-copy"><span class="marca-nombre">Little Paws Net</span><span class="marca-sub">{% translate "PANEL DE GESTIÓN" %}</span></span>
 </a>

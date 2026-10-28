@@ -2,6 +2,8 @@ from django.contrib import admin
 from django.http import JsonResponse
 from django.urls import include, path
 from django.views.generic import RedirectView
+from django.views.i18n import JavaScriptCatalog
+from django.views.decorators.cache import never_cache
 
 
 def health(request):
@@ -9,6 +11,8 @@ def health(request):
 
 
 urlpatterns = [
+    path("i18n/", include("django.conf.urls.i18n")),
+    path("jsi18n/", never_cache(JavaScriptCatalog.as_view(packages=["seguridad"])), name="javascript-catalog"),
     path("", RedirectView.as_view(pattern_name="panel:login", permanent=False)),
     path("panel/", include("seguridad.web.urls")),
     path("admin/", admin.site.urls),

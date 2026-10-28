@@ -1,5 +1,6 @@
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError as DjangoValidationError
+from django.utils.translation import gettext
 from rest_framework import serializers
 
 from accounts.models import Usuario
@@ -100,7 +101,7 @@ class RolSerializer(EntradaEstricta, serializers.ModelSerializer):
         if self.instance:
             for campo in ("codigo", "ambito"):
                 if attrs.get(campo, getattr(self.instance, campo)) != getattr(self.instance, campo):
-                    raise serializers.ValidationError(f"El {campo} de un rol es estable")
+                    raise serializers.ValidationError(gettext("El campo %(campo)s de un rol es estable") % {"campo": campo})
             if self.instance.sistema and attrs.get("delegable", self.instance.delegable) != self.instance.delegable:
                 raise serializers.ValidationError("La delegación del rol del sistema está definida por la política")
             if self.instance.codigo in ("ADMIN_SEGURIDAD", "RESPONSABLE_PRINCIPAL", "RESPONSABLE_SECUNDARIO") and attrs.get("activo") is False:

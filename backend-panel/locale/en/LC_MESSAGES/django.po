@@ -1,0 +1,1434 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Little Paws Net\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid ""
+". Este espacio está destinado a los equipos de gestión. Contacta al "
+"responsable de tu organización para que revise tus funciones."
+msgstr ""
+". This space is for management teams. Contact your organization's "
+"administrator to review your access."
+
+msgid "Abrir"
+msgstr "Open"
+
+msgid "Abrir navegación"
+msgstr "Open navigation"
+
+msgid "Acceso al equipo"
+msgstr "Team access"
+
+msgid "Acceso al panel"
+msgstr "Panel access"
+
+msgid "Acceso pendiente · Little Paws Net"
+msgstr "Access pending · Little Paws Net"
+
+msgid "Accesos actualizados"
+msgstr "Access up to date"
+
+msgid "Acciones"
+msgstr "Actions"
+
+msgid "Acciones reconocidas y su alcance"
+msgstr "Supported actions and their scope"
+
+msgid "Acción"
+msgstr "Action"
+
+msgid "Acción inválida"
+msgstr "Invalid action"
+
+msgid "Aceptación"
+msgstr "Acceptance"
+
+msgid "Activa la cuenta antes de asignar un rol"
+msgstr "Activate the account before assigning a role"
+
+msgid "Activo"
+msgstr "Active"
+
+msgid "Actor"
+msgstr "Actor"
+
+msgid "Actualizando…"
+msgstr "Refreshing…"
+
+msgid "Administrador de seguridad"
+msgstr "Security administrator"
+
+msgid "Adopciones"
+msgstr "Adoptions"
+
+msgid "Alcance"
+msgstr "Scope"
+
+msgid "Animaciones"
+msgstr "Animations"
+
+msgid "Anotación"
+msgstr "Note"
+
+msgid "Anuncio"
+msgstr "Ad"
+
+msgid "Anuncio de otra entidad"
+msgstr "Ad belongs to another organization"
+
+msgid "Anuncios y versiones de tu entidad"
+msgstr "Your organization's ads and versions"
+
+msgid "Aportes"
+msgstr "Contributions"
+
+msgid "Archivo demasiado grande"
+msgstr "File is too large"
+
+msgid "Archivo no disponible"
+msgstr "File is unavailable"
+
+msgid "Asignar o revocar un rol global"
+msgstr "Assign or revoke a global role"
+
+msgid "Atención veterinaria"
+msgstr "Veterinary care"
+
+msgid "Auditoría"
+msgstr "Audit log"
+
+msgid "Autorización hasta"
+msgstr "Authorized until"
+
+msgid "Banco"
+msgstr "Bank"
+
+msgid "Bienvenido a tu espacio"
+msgstr "Welcome to your space"
+
+msgid "CUENTA IDENTIFICADA"
+msgstr "ACCOUNT IDENTIFIED"
+
+msgid "Cada cuidado empieza con un buen equipo."
+msgstr "Good care starts with a good team."
+
+msgid "Cada gestión puede abrir una nueva oportunidad."
+msgstr "Every action can open a new opportunity."
+
+msgid "Cada persona, con lo que necesita para cuidar."
+msgstr "Everyone has what they need to care."
+
+msgid "Cambia tu contraseña temporal desde el panel."
+msgstr "Change your temporary password from the panel."
+
+msgid "Cambiar"
+msgstr "Switch"
+
+msgid "Cambiar idioma"
+msgstr "Change language"
+
+msgid "Cambiar mi contraseña"
+msgstr "Change my password"
+
+msgid "Cambios de respuestas"
+msgstr "Response changes"
+
+msgid "Cambios guardados."
+msgstr "Changes saved."
+
+msgid "Campo no permitido"
+msgstr "Field is not allowed"
+
+msgid "Campos de reporte inválidos"
+msgstr "Invalid report fields"
+
+msgid "Campos no permitidos o incompletos"
+msgstr "Fields are not allowed or incomplete"
+
+msgid "Cancelar"
+msgstr "Cancel"
+
+msgid "Cargando los registros de tu ámbito…"
+msgstr "Loading records within your scope…"
+
+msgid "Casos de rescate"
+msgstr "Rescue cases"
+
+msgid "Casos de tu fundación"
+msgstr "Your foundation's cases"
+
+msgid "Categoría o tipo no válido"
+msgstr "Invalid category or type"
+
+msgid "Catálogo"
+msgstr "Catalog"
+
+msgid "Cerrar sesión"
+msgstr "Sign out"
+
+msgid "Cerrar ventana"
+msgstr "Close window"
+
+msgid "Completa la suma para continuar. Válida por 5 minutos."
+msgstr "Complete the sum to continue. Valid for 5 minutes."
+
+msgid "Comprobando acceso…"
+msgstr "Checking access…"
+
+msgid "Conectamos a las personas que hacen posible una segunda oportunidad."
+msgstr "Connecting the people who make second chances possible."
+
+msgid "Confirma el cierre"
+msgstr "Confirm closure"
+
+msgid "Confirma la retirada"
+msgstr "Confirm removal"
+
+msgid "Confirmaciones"
+msgstr "Confirmations"
+
+msgid ""
+"Contacta al responsable de tu organización para revisar tu cuenta. Esta "
+"página no envía correos de recuperación ni cambia contraseñas."
+msgstr ""
+"Contact your organization's administrator to review your account. This page "
+"does not send recovery emails or reset passwords."
+
+msgid "Contenido"
+msgstr "Content"
+
+msgid "Contenido de archivo no disponible"
+msgstr "File content is unavailable"
+
+msgid "Contenido pendiente de aprobación"
+msgstr "Content awaiting approval"
+
+msgid "Contraseña"
+msgstr "Password"
+
+msgid "Contraseña inicial"
+msgstr "Initial password"
+
+msgid "Contraste"
+msgstr "Contrast"
+
+msgid "Corrección inválida"
+msgstr "Invalid correction"
+
+msgid "Correo"
+msgstr "Email"
+
+msgid "Correo electrónico"
+msgstr "Email address"
+
+msgid "Crear permiso"
+msgstr "Create permission"
+
+msgid "Crear recurso"
+msgstr "Create resource"
+
+msgid "Crear rol"
+msgstr "Create role"
+
+msgid "Crear usuario"
+msgstr "Create user"
+
+msgid "Cuenta activa"
+msgstr "Active account"
+
+msgid "Cuenta inactiva"
+msgstr "Inactive account"
+
+msgid "Cuentas receptoras"
+msgstr "Receiving accounts"
+
+msgid "Cuidar mejor,"
+msgstr "Better care,"
+
+msgid "Cuidar nos une"
+msgstr "Care brings us together"
+
+msgid "Código"
+msgstr "Code"
+
+msgid "Código del recurso"
+msgstr "Resource code"
+
+msgid "Código del rol"
+msgstr "Role code"
+
+msgid "Datos de cuenta inválidos"
+msgstr "Invalid account details"
+
+msgid "Declaraciones"
+msgstr "Declarations"
+
+msgid "Delegable dentro de la organización"
+msgstr "Delegable within the organization"
+
+msgid "Descripción"
+msgstr "Description"
+
+msgid "Descubrir el recorrido"
+msgstr "Discover the journey"
+
+msgid "Desliza la tabla para ver todas las columnas →"
+msgstr "Scroll the table to see every column →"
+
+msgid "Destino"
+msgstr "Destination"
+
+msgid "Detalle"
+msgstr "Details"
+
+msgid "Detalle autorizado"
+msgstr "Authorized details"
+
+msgid ""
+"Detrás de cada nueva vida hay alguien que decidió cuidar. Esta es su "
+"historia."
+msgstr ""
+"Behind every new life is someone who chose to care. This is their story."
+
+msgid "Documentos"
+msgstr "Documents"
+
+msgid "ESPACIO DE TRABAJO"
+msgstr "WORKSPACE"
+
+msgid "Editar"
+msgstr "Edit"
+
+msgid "Editar permiso"
+msgstr "Edit permission"
+
+msgid "Editar recurso"
+msgstr "Edit resource"
+
+msgid "Editar rol"
+msgstr "Edit role"
+
+msgid "Editar usuario"
+msgstr "Edit user"
+
+msgid "El archivo debe ocupar entre 1 byte y 10 MB"
+msgstr "The file must be between 1 byte and 10 MB"
+
+msgid "El autor debe solicitar revisión"
+msgstr "The author must request a review"
+
+msgid "El cambio de contraseña utiliza un proceso separado"
+msgstr "Password changes use a separate process"
+
+msgid "El cargo principal no es un nombramiento ordinario"
+msgstr "The primary lead role is not an ordinary appointment"
+
+msgid "El correo es obligatorio"
+msgstr "Email is required"
+
+msgid "El correo ya está registrado"
+msgstr "This email is already registered"
+
+msgid "El código del permiso no puede cambiar"
+msgstr "The permission code cannot be changed"
+
+msgid "El código es estable; no puede renombrarse"
+msgstr "The code is permanent and cannot be renamed"
+
+msgid "El destinatario debe coincidir con el reclamante revisado"
+msgstr "The recipient must match the reviewed claimant"
+
+msgid "El permiso requiere un rol y contexto de entidad"
+msgstr "This permission requires a role and an organization context"
+
+msgid "El principal debe transferir antes de salir de la entidad"
+msgstr ""
+"The primary lead must transfer responsibility before leaving the "
+"organization"
+
+msgid "El principal saliente ya no está vigente; requiere recuperación"
+msgstr "The outgoing primary lead is no longer active; recovery is required"
+
+msgid "El registro ya no admite devolución"
+msgstr "This record can no longer be returned"
+
+msgid "El registro ya no admite revisión"
+msgstr "This record can no longer be reviewed"
+
+msgid "El registro ya tiene una asignación vigente"
+msgstr "This record already has an active assignment"
+
+msgid "El reporte cambió; prepara una nueva corrección"
+msgstr "The report has changed; prepare a new correction"
+
+msgid "El retiro de fondos corresponde a sus responsables"
+msgstr "Fund removal must be performed by its responsible leads"
+
+msgid "El revisor no puede ser parte del conflicto"
+msgstr "The reviewer cannot be a party to the dispute"
+
+msgid "El servidor no reconoce alguna de las acciones"
+msgstr "The server does not recognize one of the actions"
+
+msgid "El sucesor debe ser otro responsable vigente de la misma entidad"
+msgstr "The successor must be another current lead of the same organization"
+
+msgid "Enmiendas"
+msgstr "Amendments"
+
+msgid "Entidad inválida"
+msgstr "Invalid organization"
+
+msgid "Equipo autorizado"
+msgstr "Authorized team"
+
+msgid "Equipo y responsables"
+msgstr "Team and leads"
+
+msgid "Esta acción no admite datos de estado o solicitante"
+msgstr "This action does not accept status or applicant data"
+
+msgid "Esta operación no acepta entidad o usuario del cliente"
+msgstr ""
+"This operation does not accept an organization or user from the client"
+
+msgid "Estado"
+msgstr "Status"
+
+msgid "Estado de producto"
+msgstr "Product status"
+
+msgid "Estado o revisor no permitido"
+msgstr "Status or reviewer is not allowed"
+
+msgid "Estas son las herramientas disponibles para tu cuenta."
+msgstr "These are the tools available to your account."
+
+msgid "Este documento no es un soporte del dueño"
+msgstr "This document is not owner evidence"
+
+msgid "Este módulo no está disponible"
+msgstr "This module is unavailable"
+
+msgid "Este recorrido corresponde a reportes aceptados"
+msgstr "This process applies to accepted reports"
+
+msgid "Este recurso no tiene operaciones de asignación implementadas"
+msgstr "Assignment operations are not implemented for this resource"
+
+msgid "Estás trabajando en"
+msgstr "You are working in"
+
+msgid "Existencias"
+msgstr "Stock"
+
+msgid "Expedientes autorizados"
+msgstr "Authorized records"
+
+msgid "Faltan nombre, precio, categoría o tipo"
+msgstr "Name, price, category or type is missing"
+
+msgid "Fecha"
+msgstr "Date"
+
+msgid "Fin"
+msgstr "End"
+
+msgid "Fondos asignados"
+msgstr "Assigned funds"
+
+msgid "Fondos en los que puedes trabajar"
+msgstr "Funds you can work with"
+
+msgid "Formato"
+msgstr "Format"
+
+msgid "Funciones según tu responsabilidad"
+msgstr "Features based on your responsibility"
+
+msgid "GESTIONAR TAMBIÉN ES CUIDAR"
+msgstr "MANAGEMENT IS ALSO CARE"
+
+msgid "Gestión con propósito."
+msgstr "Management with purpose."
+
+msgid "Gestor de adopciones"
+msgstr "Adoption manager"
+
+msgid "Gestor de aportes"
+msgstr "Contribution manager"
+
+msgid "Gestor de catálogo"
+msgstr "Catalog manager"
+
+msgid "Gestor de fondo"
+msgstr "Fund manager"
+
+msgid "Gestor de pedidos"
+msgstr "Order manager"
+
+msgid "Gestor de publicidad"
+msgstr "Advertising manager"
+
+msgid "Gestor de rescates"
+msgstr "Rescue manager"
+
+msgid "Gracias por estar del lado de quienes cuidan."
+msgstr "Thank you for supporting those who care."
+
+msgid "Grande"
+msgstr "Large"
+
+msgid "Grandes historias."
+msgstr "Great stories."
+
+msgid "Guardar"
+msgstr "Save"
+
+msgid "Guardar contraseña"
+msgstr "Save password"
+
+msgid "Guardar preferencias"
+msgstr "Save preferences"
+
+msgid "Hagamos una pausa"
+msgstr "Let's take a break"
+
+msgid "Hola,"
+msgstr "Hello,"
+
+msgid "Idioma"
+msgstr "Language"
+
+msgid "Idioma y accesibilidad"
+msgstr "Language and accessibility"
+
+msgid "Inactivo"
+msgstr "Inactive"
+
+msgid "Indica un motivo de hasta 500 caracteres"
+msgstr "Provide a reason of up to 500 characters"
+
+msgid "Ingresa tu contraseña"
+msgstr "Enter your password"
+
+msgid "Iniciar sesión"
+msgstr "Sign in"
+
+msgid "Iniciar sesión no asigna cargos automáticamente."
+msgstr "Signing in does not automatically assign roles."
+
+msgid "Iniciar sesión · Little Paws Net"
+msgstr "Sign in · Little Paws Net"
+
+msgid "Iniciar sesión ↗"
+msgstr "Sign in ↗"
+
+msgid "Inicio"
+msgstr "Start"
+
+msgid "Integrantes y responsabilidades de tu entidad"
+msgstr "Your organization's members and responsibilities"
+
+msgid "Ir al contenido"
+msgstr "Skip to content"
+
+msgid "Ir al formulario"
+msgstr "Skip to the form"
+
+msgid "LITTLE PAWS NET · ACCESO"
+msgstr "LITTLE PAWS NET · ACCESS"
+
+msgid ""
+"La acción no está reconocida por el servidor; registrar un permiso no "
+"implementa una operación"
+msgstr ""
+"The server does not recognize this action; registering a permission does not"
+" implement an operation"
+
+msgid "La acción y su alcance están definidos por el servidor."
+msgstr "The action and its scope are defined by the server."
+
+msgid ""
+"La cola muestra información mínima. Tomar una solicitud habilita su "
+"revisión, siempre que conserves el permiso."
+msgstr ""
+"The queue shows minimal information. Claiming a request enables its review "
+"while you retain permission."
+
+msgid "La corrección ya fue resuelta"
+msgstr "This correction has already been resolved"
+
+msgid "La cuenta cambió; prepara una propuesta actualizada"
+msgstr "The account has changed; prepare an updated proposal"
+
+msgid "La cuenta destinataria está inactiva"
+msgstr "The recipient account is inactive"
+
+msgid ""
+"La custodia de una fundación requiere su procedimiento de adopción o entrega"
+msgstr "Foundation custody requires its adoption or handover process"
+
+msgid "La delegación del preparador ya no está vigente"
+msgstr "The preparer's delegation is no longer active"
+
+msgid "La delegación del rol del sistema está definida por la política"
+msgstr "System role delegation is defined by policy"
+
+msgid "La dirección de la operación no es válida."
+msgstr "The operation address is invalid."
+
+msgid "La entidad no está verificada"
+msgstr "The organization is not verified"
+
+msgid "La entidad ya tiene principal: utiliza transferencia o recuperación"
+msgstr "The organization already has a primary lead: use transfer or recovery"
+
+msgid "La fecha de nacimiento no puede estar en el futuro"
+msgstr "The birth date cannot be in the future"
+
+msgid "La ficha presenta un conflicto de custodia"
+msgstr "This record has a custody dispute"
+
+msgid "La operación requiere responsabilidad vigente en esta entidad"
+msgstr "This operation requires a current responsibility in this organization"
+
+msgid "La persona debe tener membresía vigente"
+msgstr "The person must have current membership"
+
+msgid "La persona no tiene el rol operativo para este fondo"
+msgstr "The person does not have the operational role for this fund"
+
+msgid "La preparación y aprobación requieren personas diferentes"
+msgstr "Preparation and approval require different people"
+
+msgid "La reclamación ya está asignada o resuelta"
+msgstr "This claim is already assigned or resolved"
+
+msgid "La solicitud ya no está pendiente"
+msgstr "This request is no longer pending"
+
+msgid "La titularidad cambió desde la revisión; requiere revisar de nuevo"
+msgstr "Ownership has changed since the review; another review is required"
+
+msgid "La toma no admite elegir revisor"
+msgstr "Claiming a request does not allow selecting a reviewer"
+
+msgid "La transferencia ya no está pendiente"
+msgstr "This transfer is no longer pending"
+
+msgid "La versión ya fue revisada"
+msgstr "This version has already been reviewed"
+
+msgid ""
+"Las acciones y los alcances se validan al guardar. Los roles del sistema "
+"conservan sus límites."
+msgstr ""
+"Actions and scopes are validated on save. System roles retain their "
+"restrictions."
+
+msgid "Las asignaciones se comprueban de nuevo al abrir cada registro."
+msgstr "Assignments are checked again when each record is opened."
+
+msgid "Little Paws Net · Gestión con propósito."
+msgstr "Little Paws Net · Management with purpose."
+
+msgid "Little Paws Net, bienvenida"
+msgstr "Little Paws Net, welcome"
+
+msgid "Little Paws Net, inicio"
+msgstr "Little Paws Net, home"
+
+msgid "Los fondos se asignan por sus responsables, no desde una cola"
+msgstr "Funds are assigned by their leads, not from a queue"
+
+msgid "Los permisos estructurales del rol deben conservarse"
+msgstr "The role's structural permissions must be preserved"
+
+msgid "Mascota"
+msgstr "Pet"
+
+msgid "Mascotas con autorización vigente"
+msgstr "Pets with current authorization"
+
+msgid "Mi espacio"
+msgstr "My space"
+
+msgid "Mi organización"
+msgstr "My organization"
+
+msgid "Mi trabajo asignado"
+msgstr "My assigned work"
+
+msgid "Miembro no vigente en esta entidad"
+msgstr "Membership is not active in this organization"
+
+msgid "Moderación"
+msgstr "Moderation"
+
+msgid "Moderador de plataforma"
+msgstr "Platform moderator"
+
+msgid "Mostrando solo los registros disponibles para tu cuenta."
+msgstr "Showing only records available to your account."
+
+msgid "Mostrar contraseña"
+msgstr "Show password"
+
+msgid "Motivo"
+msgstr "Reason"
+
+msgid "Más grande"
+msgstr "Extra large"
+
+msgid "Módulos autorizados"
+msgstr "Authorized modules"
+
+msgid "Módulos disponibles"
+msgstr "Available modules"
+
+msgid "Módulos protegidos de la plataforma"
+msgstr "Protected platform modules"
+
+msgid "Navegación del panel"
+msgstr "Panel navigation"
+
+msgid "No"
+msgstr "No"
+
+msgid "No existe esa asignación"
+msgstr "That assignment does not exist"
+
+msgid "No hay registros disponibles en este ámbito."
+msgstr "No records are available within this scope."
+
+msgid "No pudimos completar la operación. Actualiza la página."
+msgstr "We couldn't complete the operation. Refresh the page."
+
+msgid ""
+"No pudimos iniciar sesión. Revisa tu correo, contraseña y la nueva suma."
+msgstr "We couldn't sign you in. Check your email, password and the new sum."
+
+msgid "No puedes adjuntar documentos a este registro"
+msgstr "You cannot attach documents to this record"
+
+msgid "No puedes revisar tu propia solicitud"
+msgstr "You cannot review your own request"
+
+msgid "No puedes revisar tu propia versión"
+msgstr "You cannot review your own version"
+
+msgid "No se puede desactivar este rol estructural"
+msgstr "This structural role cannot be deactivated"
+
+msgid "No se puede desactivar un permiso de seguridad esencial"
+msgstr "An essential security permission cannot be deactivated"
+
+msgid "No se puede desactivar un recurso de seguridad esencial"
+msgstr "An essential security resource cannot be deactivated"
+
+msgid "No se puede retirar el último Administrador de seguridad activo"
+msgstr "The last active security administrator cannot be removed"
+
+msgid "No se pueden ampliar las responsabilidades del rol del sistema"
+msgstr "System role responsibilities cannot be expanded"
+
+msgid "No tienes acceso a este registro"
+msgstr "You do not have access to this record"
+
+msgid "No tienes autoridad para revocar este acceso"
+msgstr "You do not have authority to revoke this access"
+
+msgid "No tienes permiso para esta operación en ese ámbito"
+msgstr "You do not have permission for this operation within that scope"
+
+msgid "Nombre"
+msgstr "Name"
+
+msgid "Nombre completo"
+msgstr "Full name"
+
+msgid "Nombre del recurso"
+msgstr "Resource name"
+
+msgid "Nombre del rol"
+msgstr "Role name"
+
+msgid "Normal"
+msgstr "Normal"
+
+msgid "Nuevo recurso"
+msgstr "New resource"
+
+msgid "Nuevo rol"
+msgstr "New role"
+
+msgid "Nuevo usuario"
+msgstr "New user"
+
+msgid "Número de cuenta"
+msgstr "Account number"
+
+msgid "Número de cuenta inválido"
+msgstr "Invalid account number"
+
+msgid "Observaciones"
+msgstr "Observations"
+
+msgid "Observación"
+msgstr "Observation"
+
+msgid "Obtener otra suma"
+msgstr "Get another sum"
+
+msgid "Ocultar"
+msgstr "Hide"
+
+msgid "Ocultar contraseña"
+msgstr "Hide password"
+
+msgid "Operación"
+msgstr "Operations"
+
+msgid "Organizaciones vinculadas"
+msgstr "Linked organizations"
+
+msgid "Organización"
+msgstr "Organization"
+
+msgid "Organización activa"
+msgstr "Active organization"
+
+msgid "Original"
+msgstr "Original"
+
+msgid "Otra suma ↻"
+msgstr "Another sum ↻"
+
+msgid "PANEL DE GESTIÓN"
+msgstr "MANAGEMENT PANEL"
+
+msgid "PEQUEÑAS HUELLAS. GRANDES CAMBIOS."
+msgstr "SMALL PAW PRINTS. BIG CHANGES."
+
+msgid "Panel de gestión"
+msgstr "Management panel"
+
+msgid "Pedidos"
+msgstr "Orders"
+
+msgid "Pequeñas patas."
+msgstr "Little paws."
+
+msgid "Permiso activo"
+msgstr "Active permission"
+
+msgid "Permisos"
+msgstr "Permissions"
+
+#, python-format
+msgid "Permisos de %(nombre)s"
+msgstr "Permissions for %(nombre)s"
+
+msgid "Permisos duplicados, inactivos o inexistentes"
+msgstr "Permissions are duplicated, inactive or do not exist"
+
+msgid "Personas y estado de sus cuentas"
+msgstr "People and their account status"
+
+msgid "Plataforma"
+msgstr "Platform"
+
+msgid "Precio"
+msgstr "Price"
+
+msgid "Preparado por"
+msgstr "Prepared by"
+
+msgid "Preparador delegado de cuentas"
+msgstr "Delegated account preparer"
+
+msgid "Principal"
+msgstr "Primary"
+
+msgid "Productos"
+msgstr "Products"
+
+msgid "Productos, precios y disponibilidad"
+msgstr "Products, prices and availability"
+
+msgid "Propuesta de cuenta"
+msgstr "Account proposal"
+
+msgid "Propuesta no disponible"
+msgstr "Proposal is unavailable"
+
+msgid "Propuesta resuelta o autoaprobación no permitida"
+msgstr "Proposal is resolved or self-approval is not allowed"
+
+msgid "Propuestas y aprobación de cambios"
+msgstr "Change proposals and approvals"
+
+msgid "Publicidad"
+msgstr "Advertising"
+
+msgid ""
+"Puedes desplazarte al formulario e iniciar sesión sin activar JavaScript. La"
+" animación es opcional."
+msgstr ""
+"You can scroll to the form and sign in without JavaScript. Animation is "
+"optional."
+
+msgid "Reclamaciones"
+msgstr "Ownership claims"
+
+msgid "Recupera tu acceso"
+msgstr "Recover your access"
+
+msgid "Recurso"
+msgstr "Resource"
+
+msgid "Recurso activo"
+msgstr "Active resource"
+
+msgid "Recurso privado no admitido"
+msgstr "Private resource is not supported"
+
+msgid "Recurso sin cola de revisión"
+msgstr "Resource has no review queue"
+
+msgid "Recursos"
+msgstr "Resources"
+
+msgid "Reducir movimiento"
+msgstr "Reduce motion"
+
+msgid "Reforzado"
+msgstr "Enhanced"
+
+msgid "Registro"
+msgstr "Record"
+
+msgid "Registro de acciones administrativas"
+msgstr "Administrative action log"
+
+msgid "Registro no disponible"
+msgstr "Record is unavailable"
+
+msgid "Registros disponibles"
+msgstr "Available records"
+
+msgid "Reporte no disponible"
+msgstr "Report is unavailable"
+
+msgid "Responsabilidades y acciones permitidas"
+msgstr "Responsibilities and permitted actions"
+
+msgid "Responsable principal"
+msgstr "Primary lead"
+
+msgid "Responsable secundario"
+msgstr "Secondary lead"
+
+msgid "Respuestas"
+msgstr "Responses"
+
+msgid "Respuestas inválidas; no se aceptan campos internos"
+msgstr "Invalid responses; internal fields are not accepted"
+
+msgid "Restablecer vista"
+msgstr "Reset appearance"
+
+msgid "Resumen de accesos"
+msgstr "Access overview"
+
+msgid "Revisiones disponibles, sin ejecutar pagos"
+msgstr "Available reviews, without executing payments"
+
+msgid "Revisión de anuncios"
+msgstr "Ad review"
+
+msgid "Revisión de titularidad en dos pasos"
+msgstr "Two-step ownership review"
+
+msgid "Revocar este rol"
+msgstr "Revoke this role"
+
+msgid "Rol activo"
+msgstr "Active role"
+
+msgid "Rol global"
+msgstr "Global role"
+
+msgid "Rol histórico sustituido; no se reactiva desde el panel"
+msgstr ""
+"This historical role has been replaced and cannot be reactivated from the "
+"panel"
+
+msgid "Roles"
+msgstr "Roles"
+
+msgid "Roles y permisos"
+msgstr "Roles and permissions"
+
+msgid "Salir ↗"
+msgstr "Sign out ↗"
+
+msgid "Se alcanzó el límite de intentos. Intenta nuevamente en 15 minutos."
+msgstr "The attempt limit has been reached. Try again in 15 minutes."
+
+msgid "Se guarda en este navegador. El zoom del navegador sigue disponible."
+msgstr "Saved in this browser. Browser zoom remains available."
+
+msgid "Se requiere decisión favorable del revisor asignado"
+msgstr "Approval from the assigned reviewer is required"
+
+msgid "Se requiere otra persona con autoridad sobre el dato"
+msgstr "Another person with authority over the data is required"
+
+msgid "Se requiere un objeto JSON"
+msgstr "A JSON object is required"
+
+msgid "Se requiere un revisor sin conflicto de titularidad"
+msgstr "A reviewer without an ownership conflict is required"
+
+msgid "Se requiere una contraseña inicial"
+msgstr "An initial password is required"
+
+msgid "Se requiere únicamente el archivo"
+msgstr "Only the file is required"
+
+msgid "Se requieren documentos privados de verificación"
+msgstr "Private verification documents are required"
+
+msgid "Se requieren soportes de la reclamación"
+msgstr "Claim evidence is required"
+
+msgid "Seguir mi dispositivo"
+msgstr "Follow my device"
+
+msgid "Seguridad"
+msgstr "Security"
+
+msgid "Seguridad y moderación deben permanecer en roles separados"
+msgstr "Security and moderation must remain separate roles"
+
+msgid "Selecciona un registro privado concreto"
+msgstr "Select a specific private record"
+
+msgid ""
+"Si cambia tu responsabilidad o tu organización, también cambian las "
+"funciones disponibles."
+msgstr ""
+"When your responsibility or organization changes, your available features "
+"change too."
+
+msgid ""
+"Si recibiste una clave temporal, cámbiala antes de entrar. Utiliza una "
+"contraseña única y guárdala en tu gestor de contraseñas."
+msgstr ""
+"If you received a temporary password, change it before entering. Use a "
+"unique password and save it in your password manager."
+
+msgid "Siguiente →"
+msgstr "Next →"
+
+msgid "Solicitud #"
+msgstr "Request #"
+
+msgid "Solicitud asignada a tu cuenta."
+msgstr "Request assigned to your account."
+
+msgid "Solicitud resuelta o duración fuera de 1 a 24 horas"
+msgstr "Request is resolved or duration is outside 1 to 24 hours"
+
+msgid "Solicitudes disponibles para revisión"
+msgstr "Requests available for review"
+
+msgid "Solicitudes pendientes de asignación"
+msgstr "Requests awaiting assignment"
+
+msgid "Solo el autor de un reporte oculto"
+msgstr "Only the author of a hidden report"
+
+msgid "Solo el principal puede iniciar la transferencia"
+msgstr "Only the primary lead can start the transfer"
+
+msgid "Solo el profesional autor puede enmendar su anotación"
+msgstr "Only the professional who wrote the note can amend it"
+
+msgid "Solo el reportante registrado"
+msgstr "Only the registered reporter"
+
+msgid "Solo el responsable principal vigente"
+msgstr "Only the current primary lead"
+
+msgid "Solo el revisor asignado de una reclamación pendiente"
+msgstr "Only the assigned reviewer of a pending claim"
+
+msgid "Solo el solicitante puede reenviar una solicitud en corrección"
+msgstr "Only the applicant can resubmit a request under correction"
+
+msgid "Solo el sucesor que continúa autorizado puede aceptar"
+msgstr "Only the successor who remains authorized can accept"
+
+msgid "Solo el titular o custodio competente puede revocar"
+msgstr "Only the authorized owner or custodian can revoke"
+
+msgid "Solo la persona solicitante"
+msgstr "Only the applicant"
+
+msgid "Solo las personas participantes pueden cancelar"
+msgstr "Only the participating people can cancel"
+
+msgid "Solo principal o persona delegada de esta entidad"
+msgstr "Only the primary lead or a delegate of this organization"
+
+msgid "Solo se admiten documentos PDF e imágenes PNG/JPEG"
+msgstr "Only PDF documents and PNG/JPEG images are accepted"
+
+msgid "Solo un caso en atención admite cierre o cancelación"
+msgstr "Only a case in progress can be closed or cancelled"
+
+msgid "Solo una persona delegada distinta del principal prepara cambios"
+msgstr "Only a delegate other than the primary lead can prepare changes"
+
+msgid "Solo verás las funciones autorizadas para tu cuenta."
+msgstr "You will only see the features authorized for your account."
+
+msgid "Soporte o resultado no admitido"
+msgstr "Evidence or result is not supported"
+
+msgid "Sí"
+msgstr "Yes"
+
+msgid "TU ESPACIO DE TRABAJO"
+msgstr "YOUR WORKSPACE"
+
+msgid "Tabla de registros"
+msgstr "Records table"
+
+msgid "Tamaño"
+msgstr "Size"
+
+msgid "Tamaño del texto"
+msgstr "Text size"
+
+msgid "Teléfono"
+msgstr "Phone"
+
+msgid "Terminación"
+msgstr "Last digits"
+
+msgid "Tipo"
+msgstr "Type"
+
+msgid "Titular"
+msgstr "Holder"
+
+msgid "Todavía no tienes solicitudes asignadas en este módulo."
+msgstr "You have no assigned requests in this module yet."
+
+msgid "Todo en orden por aquí."
+msgstr "Everything is in order here."
+
+msgid "Tomar solicitud"
+msgstr "Claim request"
+
+msgid "Trabajo disponible de tu tienda"
+msgstr "Available work for your store"
+
+msgid ""
+"Transfiere o recupera la responsabilidad principal antes de esta baja "
+"ordinaria"
+msgstr ""
+"Transfer or recover primary responsibility before this ordinary removal"
+
+msgid "Transición de pedido no permitida"
+msgstr "Order transition is not allowed"
+
+msgid "Tu acceso, a tu medida"
+msgstr "Access tailored to you"
+
+msgid "Tu contraseña · Little Paws Net"
+msgstr "Your password · Little Paws Net"
+
+msgid "Tu cuenta necesita una autorización para este panel."
+msgstr "Your account needs authorization to access this panel."
+
+msgid ""
+"Tu cuenta no tiene permiso en este ámbito. Puedes volver al inicio para ver "
+"tus accesos actuales."
+msgstr ""
+"Your account does not have permission within this scope. Return home to see "
+"your current access."
+
+msgid "Tu forma de ver el panel"
+msgstr "Your view of the panel"
+
+msgid "Tu formulario necesita actualizarse"
+msgstr "Your form needs refreshing"
+
+msgid "Tu respuesta"
+msgstr "Your answer"
+
+msgid "Tu sesión terminó. Inicia sesión nuevamente."
+msgstr "Your session has ended. Sign in again."
+
+msgid "Título"
+msgstr "Title"
+
+msgid "UNA RED PARA LAS SEGUNDAS OPORTUNIDADES"
+msgstr "A NETWORK FOR SECOND CHANCES"
+
+msgid "Un equipo. Muchas segundas oportunidades."
+msgstr "One team. Many second chances."
+
+msgid ""
+"Un espacio para coordinar a tu equipo y acompañar cada historia, con las "
+"responsabilidades claras."
+msgstr ""
+"A place to coordinate your team and support every story, with clear "
+"responsibilities."
+
+msgid "Un espacio pensado para trabajar con confianza."
+msgstr "A space designed for working with confidence."
+
+msgid "Un reporte aceptado requiere una solicitud de corrección"
+msgstr "An accepted report requires a correction request"
+
+msgid "Un rol de entidad no puede recibir permisos globales"
+msgstr "An organization role cannot receive global permissions"
+
+msgid "Un rol global no puede delegarse desde una entidad"
+msgstr "A global role cannot be delegated by an organization"
+
+msgid "Un superusuario requiere is_staff=True"
+msgstr "A superuser requires is_staff=True"
+
+msgid "Un superusuario requiere is_superuser=True"
+msgstr "A superuser requires is_superuser=True"
+
+msgid "Una contraseña solo tuya"
+msgstr "A password just for you"
+
+msgid "Una organización"
+msgstr "One organization"
+
+msgid "Usuario"
+msgstr "User"
+
+msgid "Usuarios"
+msgstr "Users"
+
+msgid "Ver"
+msgstr "Show"
+
+msgid "Ver propuesta"
+msgstr "View proposal"
+
+msgid "Verificaciones"
+msgstr "Verifications"
+
+msgid "Veterinario verificado"
+msgstr "Verified veterinarian"
+
+msgid "Vigencia inválida o destino sin HTTPS"
+msgstr "Invalid validity period or destination without HTTPS"
+
+msgid "Volver a mi espacio →"
+msgstr "Back to my space →"
+
+msgid "Volver al acceso"
+msgstr "Back to sign in"
+
+msgid ""
+"Vuelve a abrir la página e intenta nuevamente. No se realizó la operación."
+msgstr "Reopen the page and try again. The operation was not performed."
+
+msgid "Ya fue aprobada una versión posterior"
+msgstr "A later version has already been approved"
+
+msgid "Ya hay una solicitud abierta"
+msgstr "There is already an open request"
+
+msgid "Ya hay una transferencia pendiente"
+msgstr "There is already a pending transfer"
+
+msgid "Ya tienes una reclamación abierta"
+msgstr "You already have an open claim"
+
+msgid "juntos"
+msgstr "together"
+
+msgid "módulos"
+msgstr "modules"
+
+msgid "· Little Paws Net"
+msgstr "· Little Paws Net"
+
+msgid "¿Cuánto es"
+msgstr "What is"
+
+msgid "¿La olvidaste?"
+msgstr "Forgot it?"
+
+msgid "¿Necesitas acceso? Consulta al responsable de tu organización."
+msgstr "Need access? Contact your organization's administrator."
+
+msgid "¿Por dónde empezamos?"
+msgstr "Where shall we start?"
+
+msgid "Ámbito"
+msgstr "Scope"
+
+msgid "← Anterior"
+msgstr "← Previous"
+
+msgid "↻ Actualizar"
+msgstr "↻ Refresh"
+
+msgid "Apadrinamiento inexistente"
+msgstr "Sponsorship does not exist"
+
+msgid "Cantidad inválida o superior a existencias"
+msgstr "Quantity is invalid or exceeds available stock"
+
+msgid "Código QR inválido"
+msgstr "Invalid QR code"
+
+msgid "El QR debe durar entre 1 y 720 horas"
+msgstr "The QR code must be valid for 1 to 720 hours"
+
+msgid "El compromiso no admite confirmaciones"
+msgstr "This pledge does not accept confirmations"
+
+msgid "El monto debe ser positivo"
+msgstr "The amount must be positive"
+
+msgid "El pedido necesita al menos un producto"
+msgstr "The order requires at least one product"
+
+msgid "El reporte aún no fue aceptado por una fundación"
+msgstr "The report has not yet been accepted by a foundation"
+
+msgid "El reporte está fuera de la cobertura geográfica declarada"
+msgstr "The report is outside the declared geographical coverage"
+
+msgid "El reporte no tiene fundación receptora"
+msgstr "The report has no receiving foundation"
+
+msgid "El usuario no es un veterinario registrado"
+msgstr "The user is not a registered veterinarian"
+
+msgid "El usuario no puede generar el QR"
+msgstr "The user cannot generate the QR code"
+
+msgid "El usuario no tiene derecho a autorizar esta mascota"
+msgstr "The user is not entitled to authorize this pet"
+
+msgid "El veterinario no está verificado"
+msgstr "The veterinarian is not verified"
+
+msgid "El veterinario no tiene verificación vigente"
+msgstr "The veterinarian has no current verification"
+
+msgid "Este reporte ya tiene un caso de rescate"
+msgstr "This report already has a rescue case"
+
+msgid "Hay productos inexistentes"
+msgstr "Some products do not exist"
+
+msgid "Hay productos no disponibles"
+msgstr "Some products are unavailable"
+
+msgid "Indique un cambio o solicite cerrar el reporte"
+msgstr "Specify a change or request report closure"
+
+msgid "La atención no puede fecharse en el futuro"
+msgstr "The care date cannot be in the future"
+
+msgid "La autorización debe durar entre 1 y 720 horas"
+msgstr "Authorization must last 1 to 720 hours"
+
+msgid "La custodia presenta un conflicto"
+msgstr "There is a custody dispute"
+
+msgid "La fundación aún no publicó una cuenta de transferencia"
+msgstr "The foundation has not yet published a bank transfer account"
+
+msgid "La fundación debe estar verificada"
+msgstr "The foundation must be verified"
+
+msgid "La fundación no está verificada"
+msgstr "The foundation is not verified"
+
+msgid "La fundación no tiene la custodia vigente"
+msgstr "The foundation does not have current custody"
+
+msgid "La mascota no está disponible para adopción"
+msgstr "The pet is not available for adoption"
+
+msgid "La solicitud ya fue resuelta"
+msgstr "The request has already been resolved"
+
+msgid "La suma confirmada supera el compromiso"
+msgstr "The confirmed total exceeds the pledge"
+
+msgid "La tienda no está verificada"
+msgstr "The store is not verified"
+
+msgid "Mascota inexistente"
+msgstr "Pet does not exist"
+
+msgid "No corresponde a un tipo de reporte"
+msgstr "This does not match a report type"
+
+msgid "No hay autorización vigente para esta mascota"
+msgstr "There is no current authorization for this pet"
+
+msgid "No hay permiso profesional y autorización vigente para esta mascota"
+msgstr ""
+"Current professional permission and authorization are required for this pet"
+
+msgid "No puedes resolver tu propia solicitud de adopción"
+msgstr "You cannot resolve your own adoption request"
+
+msgid "QR inexistente, vencido o revocado"
+msgstr "QR code does not exist, has expired or has been revoked"
+
+msgid "Reporte, fundación o capacidad inexistente"
+msgstr "Report, foundation or capacity does not exist"
+
+msgid "Sin cupos disponibles: registre una justificación de emergencia"
+msgstr "No capacity available: record an emergency justification"
+
+msgid "Solicitud inexistente"
+msgstr "Request does not exist"
+
+msgid "Solo el padrino puede consultar la cuenta"
+msgstr "Only the sponsor can view the account"
+
+msgid "Solo la fundación receptora puede confirmar el aporte"
+msgstr "Only the receiving foundation can confirm the contribution"
+
+msgid "Solo se puede aceptar un reporte pendiente"
+msgstr "Only a pending report can be accepted"
+
+msgid "Todos los productos deben pertenecer a la misma tienda"
+msgstr "All products must belong to the same store"
+
+msgid "Un producto no debe repetirse en el pedido"
+msgstr "A product cannot appear twice in an order"
+
+msgid "Veterinario inexistente"
+msgstr "Veterinarian does not exist"
+
+#, python-format
+msgid "El campo %(campo)s de un rol es estable"
+msgstr "The %(campo)s field of a role is permanent"

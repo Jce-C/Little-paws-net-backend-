@@ -21,6 +21,7 @@ SECURE_HSTS_INCLUDE_SUBDOMAINS = False
 SECURE_HSTS_PRELOAD = False
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
+LANGUAGE_COOKIE_SECURE = True
 if "healthcheck.railway.app" not in ALLOWED_HOSTS:  # noqa: F405
     ALLOWED_HOSTS = [*ALLOWED_HOSTS, "healthcheck.railway.app"]  # noqa: F405
 DATABASES["default"]["CONN_MAX_AGE"] = 60  # noqa: F405
