@@ -1,0 +1,36 @@
+{% load static %}<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#fff9f1"><title>Iniciar sesión · Little Paws Net</title><link rel="stylesheet" href="{% static 'seguridad/tokens.css' %}"><link rel="stylesheet" href="{% static 'acceso/acceso.css' %}?v=mobile-svg-8"><script src="{% static 'acceso/entrada.js' %}?v=django-1" data-assets="{% static 'acceso/' %}" data-icons="{% static 'seguridad/icons.svg' %}" defer></script></head>
+<body data-form-active="{% if error or request.method == 'POST' or request.GET.next %}true{% else %}false{% endif %}">
+<a class="skip" href="#ingreso">Ir al formulario</a>
+<main class="journey">
+ <div class="journey-scenes">
+ <img class="desktop-landscape" src="{% static 'acceso/fondo-escritorio.svg' %}" width="3840" height="4574" alt="" fetchpriority="high">
+ <header class="brandbar"><a href="{% url 'panel:login' %}" aria-label="Little Paws Net, bienvenida"><img src="{% static 'acceso/logo.svg' %}" alt="" width="48" height="54"><span>LITTLE PAWS NET</span></a><span class="demo-label">Acceso al equipo</span></header>
+ <section class="hero" aria-labelledby="welcome-title">
+  <div class="clouds" aria-hidden="true"></div>
+  <div class="hero-copy"><p class="hero-eyebrow"><span aria-hidden="true"></span>UNA RED PARA LAS SEGUNDAS OPORTUNIDADES</p><p class="intro">Pequeñas patas.</p><h1 id="welcome-title">Grandes historias.</h1><p class="subtitle">Detrás de cada nueva vida hay alguien que decidió cuidar. Esta es su historia.</p><a class="scroll-cue" href="#ingreso">Descubrir el recorrido <span aria-hidden="true">↘</span></a></div>
+  <p class="wordmark reveal" aria-hidden="true">little paws</p>
+ </section>
+ <section class="access-section" id="ingreso" tabindex="-1" aria-label="Acceso al panel">
+  <img class="landscape" src="{% static 'acceso/fondo-movil.svg' %}" width="1461" height="2560" alt="" loading="lazy">
+  <div class="entry">
+  <article class="purpose reveal"><div class="mobile-scene" aria-hidden="true"><img src="{% static 'acceso/fondo-movil.svg' %}" width="1461" height="2560" alt="" loading="lazy"><span class="scene-badge"><svg viewBox="0 0 24 24"><use href="{% static 'seguridad/icons.svg' %}#paw-print"></use></svg>Cuidar nos une</span></div><div class="purpose-copy"><span class="eyebrow">PEQUEÑAS HUELLAS. GRANDES CAMBIOS.</span><h2>Cuidar mejor,<br> juntos</h2><p>Conectamos a las personas que hacen posible una segunda oportunidad.</p><div class="purpose-foot"><svg aria-hidden="true" viewBox="0 0 24 24"><use href="{% static 'seguridad/icons.svg' %}#paw-print"></use></svg><span>Un equipo. Muchas segundas oportunidades.</span></div></div></article>
+  <section class="login-card reveal" aria-labelledby="login-title">
+   <div class="login-brand" aria-label="Little Paws Net">Little Paws Net</div><h2 id="login-title">Bienvenido a tu espacio</h2><p class="login-subtitle">Gracias por estar del lado de quienes cuidan.</p>
+   {% if error %}<p id="form-feedback" class="feedback" role="alert">{{ error }}</p>{% endif %}
+   <form id="login-form" method="post" action="{% url 'panel:login' %}" novalidate>{% csrf_token %}<input type="hidden" name="next" value="{{ next }}">{{ form.captcha_token }}
+    <label for="id_email">Correo electrónico</label>{{ form.email }}
+    <div class="label-row"><label for="id_password">Contraseña</label><button class="text-button" type="button" data-access-help>¿La olvidaste?</button></div>
+    <div class="password-wrap">{{ form.password }}<button id="show-password" type="button" aria-label="Mostrar contraseña" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 24 24"><use href="{% static 'seguridad/icons.svg' %}#eye"></use></svg></button></div>
+    <div class="label-row"><label for="id_captcha">¿Cuánto es <b>{{ desafio.suma }}</b>?</label><a class="text-button" href="{% url 'panel:login' %}?next={{ next|urlencode }}#ingreso" aria-label="Obtener otra suma">Otra suma ↻</a></div>{{ form.captcha }}<small class="captcha-help">Completa la suma para continuar. Válida por 5 minutos.</small>
+    <button class="primary" id="submit-login" type="submit">Iniciar sesión <span aria-hidden="true">↗</span></button>
+   </form>
+   <p class="access-help">¿Necesitas acceso? Consulta al responsable de tu organización.</p>
+  </section>
+  </div>
+ </section>
+ </div>
+ <footer class="journey-footer"><span>Little Paws Net · Gestión con propósito.</span><span>Solo verás las funciones autorizadas para tu cuenta.</span></footer>
+</main>
+<dialog id="access-help" aria-labelledby="help-title" aria-describedby="help-copy"><button class="close" type="button" data-close-help aria-label="Cerrar ventana">×</button><p class="eyebrow">LITTLE PAWS NET · ACCESO</p><h2 id="help-title">Recupera tu acceso</h2><p id="help-copy">Contacta al responsable de tu organización para revisar tu cuenta. Esta página no envía correos de recuperación ni cambia contraseñas.</p><button class="primary" type="button" data-close-help>Volver al acceso</button></dialog>
+<noscript><p class="no-js">Puedes desplazarte al formulario e iniciar sesión sin activar JavaScript. La animación es opcional.</p></noscript></body></html>
