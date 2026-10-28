@@ -1438,3 +1438,15 @@ msgid "%(total)s módulo"
 msgid_plural "%(total)s módulos"
 msgstr[0] "%(total)s module"
 msgstr[1] "%(total)s modules"
+
+msgid "Tema"
+msgstr "Theme"
+
+msgid "Según el dispositivo"
+msgstr "Follow device"
+
+msgid "Claro"
+msgstr "Light"
+
+msgid "Oscuro"
+msgstr "Dark"

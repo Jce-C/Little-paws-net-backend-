@@ -8,6 +8,32 @@ from .tests import BaseRBAC
 
 @override_settings(SESSION_COOKIE_SECURE=False, CSRF_COOKIE_SECURE=False)
 class IdiomaVistaTests(BaseRBAC):
+    def test_dark_theme_is_validated_and_rendered_before_styles(self):
+        browser = Client()
+        response = browser.post("/panel/preferencias/", {"tema": "dark", "next": "/panel/login/"})
+        self.assertEqual(response.cookies["lpn_tema"].value, "dark")
+        self.assertTrue(response.cookies["lpn_tema"]["httponly"])
+        page = browser.get("/panel/login/")
+        self.assertContains(page, 'data-theme="dark"')
+        self.assertContains(page, '<meta name="color-scheme" content="dark">')
+        self.assertContains(page, "seguridad/tema.css")
+        html = page.content.decode()
+        self.assertLess(html.index('data-theme="dark"'), html.index('rel="stylesheet"'))
+        browser.cookies["lpn_tema"] = "unsupported"
+        self.assertContains(browser.get("/panel/login/"), 'data-theme="system"')
+
+    def test_theme_switch_and_reset_preserve_permissions(self):
+        browser = Client()
+        browser.force_login(self.admin)
+        roles = list(self.admin.usuariorol_set.values_list("rol_id", flat=True))
+        browser.post("/panel/preferencias/", {"tema": "dark", "contraste": "strong", "next": "/panel/"})
+        page = browser.get("/panel/")
+        self.assertContains(page, 'data-theme="dark"')
+        self.assertContains(page, 'data-contrast="strong"')
+        browser.post("/panel/preferencias/", {"restablecer": "1"})
+        self.assertContains(browser.get("/panel/"), 'data-theme="system"')
+        self.assertEqual(roles, list(self.admin.usuariorol_set.values_list("rol_id", flat=True)))
+
     def test_login_english_and_translated_validation(self):
         browser = Client()
         browser.cookies["lpn_language"] = "en"

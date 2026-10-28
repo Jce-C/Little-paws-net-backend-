@@ -45,3 +45,7 @@ Seguir [actualizar-equipo.md](actualizar-equipo.md). Entrar a la web publicada n
 ## Ampliación: idioma y accesibilidad
 
 Se incorporaron español/inglés mediante los catálogos de Django y preferencias de texto, contraste y movimiento. La validación ampliada comprende 122 pruebas Django y 18 comprobaciones de navegador, sin errores detectados. Axe-core revisó siete estados A/AA sin infracciones detectadas. El proceso y los límites, incluidas las pruebas manuales aún necesarias, se documentan en [idiomas-y-accesibilidad.md](../diseno/idiomas-y-accesibilidad.md). No equivale a una certificación WCAG.
+
+## Ampliación: tema oscuro
+
+Se añadieron Claro/Oscuro/Según el dispositivo con persistencia y soporte sin JavaScript. Se conservó la identidad y se verificaron los colores de controles, tablas, estados y contraste reforzado. Resultado: 124 pruebas Django aprobadas, 12 comprobaciones de comportamiento y nueve estados axe-core sin infracciones detectadas. Ver la guía de idiomas y accesibilidad para límites y mantenimiento.
