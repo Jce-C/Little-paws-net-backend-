@@ -52,3 +52,23 @@ Las pruebas utilizan una base SQLite temporal y no modifican el MySQL de Railway
 Railway construye la API con el `Dockerfile`: instala Python y dependencias, reúne los archivos estáticos del Admin y ejecuta Gunicorn. El profesor **no necesita Docker** para usar `runserver`. Las variables privadas de Railway configuran la instancia publicada sobre `little_paws_net_demo`. El `.env` público conecta la copia descargada a `little_paws_net_eval`, una base separada con los mismos datos iniciales; los cambios del profesor no aparecerán en la API publicada. `.dockerignore` evita incorporar ese `.env` a la imagen desplegada.
 
 Los registros son ficticios. Un acceso SQL publicado permite conexiones de terceros y no debe reutilizarse para datos reales. Tras la evaluación deben revocarse sus credenciales. Para colaboración y cambios, consulte [CONTRIBUTING.md](CONTRIBUTING.md).
+
+
+## Panel web y backend V2 en este repositorio
+
+El repositorio oficial es https://github.com/Jce-C/Little-paws-net-backend- (con guion final).
+La versión nueva se incorpora temporalmente en `backend-panel/`, con su propio historial
+de migraciones y el esquema Railway `little_paws_panel_v2`. `backend/` y el Dockerfile
+de la demostración anterior permanecen intactos. Son dos servicios durante la transición;
+no comparten autorización ni se deben conectar al mismo esquema. Consolidar el backend
+queda para una migración posterior explícita, no para una copia de archivos entre ambos.
+
+La rama de integración prevista es `entrega-panel`. Seguir
+[el reparto y las instrucciones](docs/entrega/reparto-y-commits.md).
+El panel nuevo requiere Python 3.14, sus dependencias y variables privadas propias.
+La apariencia de bienvenida ya usa el formulario auténtico de Django, no el acceso
+ficticio de la demo. `demos/panel-editorial/` conserva la referencia visual aislada.
+
+Las credenciales de evaluación publicadas por la versión anterior no se reutilizan
+para el panel nuevo. Que permanezcan en el historial anterior no las convierte en
+seguras; su revocación es un trabajo independiente pendiente.

@@ -1,0 +1,1164 @@
+{
+  "proyecto": "Little Paws Net",
+  "fecha": "2026-10-27",
+  "fileKey": "Kv2Na4SBOxyGoQ4tC8CMxR",
+  "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR",
+  "indice": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=16-2",
+  "alcance": "Panel web para administración y equipo autorizado; incluye cuatro adaptaciones móviles del panel",
+  "pantallas": 120,
+  "ventanas": 55,
+  "perfilesDeInicio": 13,
+  "textosEditables": "Más de 3983; incluye los cuatro nuevos estados del acceso",
+  "fuente": "Inter + Leckerli One",
+  "paginas": [
+    {
+      "nombre": "01 · Acceso y estados",
+      "nodeId": "4:63",
+      "pantallas": [
+        {
+          "codigo": "A01",
+          "titulo": "Login",
+          "tipo": "login",
+          "actor": null,
+          "nodeId": "5:2",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=5-2",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "A02",
+          "titulo": "Datos o suma incorrectos",
+          "tipo": "login",
+          "actor": null,
+          "nodeId": "5:3",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=5-3",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "A03",
+          "titulo": "Validando acceso",
+          "tipo": "login",
+          "actor": null,
+          "nodeId": "5:4",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=5-4",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "A04",
+          "titulo": "Demasiados intentos",
+          "tipo": "state",
+          "actor": null,
+          "nodeId": "5:5",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=5-5",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "A05",
+          "titulo": "Autorización pendiente",
+          "tipo": "state",
+          "actor": null,
+          "nodeId": "5:6",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=5-6",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "A06",
+          "titulo": "Tu sesión terminó",
+          "tipo": "state",
+          "actor": null,
+          "nodeId": "5:7",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=5-7",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "A07",
+          "titulo": "Sin permiso para este módulo",
+          "tipo": "state",
+          "actor": null,
+          "nodeId": "5:8",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=5-8",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "A08",
+          "titulo": "No pudimos cargar la información",
+          "tipo": "state",
+          "actor": null,
+          "nodeId": "5:9",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=5-9",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "A09",
+          "titulo": "Recuperación de acceso",
+          "tipo": "state",
+          "actor": null,
+          "nodeId": "120:357",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=120-357",
+          "estado": "Diseño editable; demostración visual sin autenticación real"
+        },
+        {
+          "codigo": "A10",
+          "titulo": "Sesión cerrada",
+          "tipo": "state",
+          "actor": null,
+          "nodeId": "120:391",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=120-391",
+          "estado": "Diseño editable; demostración visual sin autenticación real"
+        }
+      ]
+    },
+    {
+      "nombre": "02 · Administración",
+      "nodeId": "4:64",
+      "pantallas": [
+        {
+          "codigo": "B01",
+          "titulo": "Hola, Ana.",
+          "tipo": "dashboard",
+          "actor": "Administrador de seguridad",
+          "nodeId": "8:2",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=8-2",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "B02",
+          "titulo": "Usuarios",
+          "tipo": "table",
+          "actor": "Administrador de seguridad",
+          "nodeId": "8:3",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=8-3",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "B03",
+          "titulo": "Roles y permisos",
+          "tipo": "table",
+          "actor": "Administrador de seguridad",
+          "nodeId": "8:4",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=8-4",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "B04",
+          "titulo": "Permisos · Administrador de seguridad",
+          "tipo": "matrix",
+          "actor": "Administrador de seguridad",
+          "nodeId": "8:5",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=8-5",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "B05",
+          "titulo": "Recursos",
+          "tipo": "table",
+          "actor": "Administrador de seguridad",
+          "nodeId": "8:6",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=8-6",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "B06",
+          "titulo": "Permisos",
+          "tipo": "table",
+          "actor": "Administrador de seguridad",
+          "nodeId": "8:7",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=8-7",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "B07",
+          "titulo": "Organizaciones y principales",
+          "tipo": "table",
+          "actor": "Administrador de seguridad",
+          "nodeId": "8:8",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=8-8",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "B08",
+          "titulo": "Auditoría",
+          "tipo": "table",
+          "actor": "Administrador de seguridad",
+          "nodeId": "8:9",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=8-9",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "B09",
+          "titulo": "Crear usuario",
+          "tipo": "modal",
+          "actor": "Administrador de seguridad",
+          "nodeId": "8:10",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=8-10",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "B10",
+          "titulo": "Editar usuario",
+          "tipo": "modal",
+          "actor": "Administrador de seguridad",
+          "nodeId": "8:11",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=8-11",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "B11",
+          "titulo": "Desactivar cuenta",
+          "tipo": "modal",
+          "actor": "Administrador de seguridad",
+          "nodeId": "8:12",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=8-12",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "B12",
+          "titulo": "Asignar un rol global",
+          "tipo": "modal",
+          "actor": "Administrador de seguridad",
+          "nodeId": "8:13",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=8-13",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "B13",
+          "titulo": "Crear rol",
+          "tipo": "modal",
+          "actor": "Administrador de seguridad",
+          "nodeId": "8:14",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=8-14",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "B14",
+          "titulo": "Registrar recurso",
+          "tipo": "modal",
+          "actor": "Administrador de seguridad",
+          "nodeId": "8:15",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=8-15",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "B15",
+          "titulo": "Designar primer principal",
+          "tipo": "modal",
+          "actor": "Administrador de seguridad",
+          "nodeId": "8:16",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=8-16",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "B16",
+          "titulo": "Recuperar responsabilidad principal",
+          "tipo": "modal",
+          "actor": "Administrador de seguridad",
+          "nodeId": "8:17",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=8-17",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "B17",
+          "titulo": "Permisos · Gestor de adopciones",
+          "tipo": "matrix",
+          "actor": "Administrador de seguridad",
+          "nodeId": "18:394",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=18-394",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        }
+      ]
+    },
+    {
+      "nombre": "03 · Organización",
+      "nodeId": "4:65",
+      "pantallas": [
+        {
+          "codigo": "C01",
+          "titulo": "Hola, Ana.",
+          "tipo": "dashboard",
+          "actor": "Responsable principal",
+          "nodeId": "12:2",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=12-2",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "C02",
+          "titulo": "Hola, Carlos.",
+          "tipo": "dashboard",
+          "actor": "Responsable secundario",
+          "nodeId": "12:3",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=12-3",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "C03",
+          "titulo": "Equipo y responsables",
+          "tipo": "table",
+          "actor": "Responsable principal",
+          "nodeId": "12:4",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=12-4",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "C04",
+          "titulo": "Roles de mi entidad",
+          "tipo": "table",
+          "actor": "Responsable principal",
+          "nodeId": "12:5",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=12-5",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "C05",
+          "titulo": "Transferencias",
+          "tipo": "table",
+          "actor": "Responsable principal",
+          "nodeId": "12:6",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=12-6",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "C06",
+          "titulo": "Cuentas receptoras",
+          "tipo": "table",
+          "actor": "Responsable principal",
+          "nodeId": "12:7",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=12-7",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "C07",
+          "titulo": "Hola, Elena.",
+          "tipo": "dashboard",
+          "actor": "Preparador delegado de cuentas",
+          "nodeId": "12:8",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=12-8",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "C08",
+          "titulo": "Incorporar integrante",
+          "tipo": "modal",
+          "actor": "Responsable principal",
+          "nodeId": "12:9",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=12-9",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "C09",
+          "titulo": "Gestionar roles del integrante",
+          "tipo": "modal",
+          "actor": "Responsable principal",
+          "nodeId": "12:10",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=12-10",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "C10",
+          "titulo": "Nombrar responsable secundario",
+          "tipo": "modal",
+          "actor": "Responsable principal",
+          "nodeId": "12:11",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=12-11",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "C11",
+          "titulo": "Retirar integrante",
+          "tipo": "modal",
+          "actor": "Responsable secundario",
+          "nodeId": "12:12",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=12-12",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "C12",
+          "titulo": "Transferir responsabilidad principal",
+          "tipo": "modal",
+          "actor": "Responsable principal",
+          "nodeId": "12:13",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=12-13",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "C13",
+          "titulo": "Aceptar responsabilidad principal",
+          "tipo": "modal",
+          "actor": "Responsable secundario",
+          "nodeId": "12:14",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=12-14",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "C14",
+          "titulo": "Delegar preparación de cuentas",
+          "tipo": "modal",
+          "actor": "Responsable principal",
+          "nodeId": "12:15",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=12-15",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "C15",
+          "titulo": "Preparar cambio de cuenta",
+          "tipo": "modal",
+          "actor": "Preparador delegado de cuentas",
+          "nodeId": "12:16",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=12-16",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "C16",
+          "titulo": "Revisar propuesta de cuenta",
+          "tipo": "modal",
+          "actor": "Responsable principal",
+          "nodeId": "12:17",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=12-17",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "C17",
+          "titulo": "Rechazar propuesta de cuenta",
+          "tipo": "modal",
+          "actor": "Responsable principal",
+          "nodeId": "12:18",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=12-18",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "C18",
+          "titulo": "Cancelar transferencia pendiente",
+          "tipo": "modal",
+          "actor": "Responsable principal",
+          "nodeId": "13:346",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=13-346",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "C19",
+          "titulo": "Revocar preparación de cuentas",
+          "tipo": "modal",
+          "actor": "Responsable principal",
+          "nodeId": "13:347",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=13-347",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "C20",
+          "titulo": "Mis propuestas de cuenta",
+          "tipo": "table",
+          "actor": "Preparador delegado de cuentas",
+          "nodeId": "15:393",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=15-393",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "C21",
+          "titulo": "Equipo y responsables",
+          "tipo": "table",
+          "actor": "Responsable secundario",
+          "nodeId": "15:394",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=15-394",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "C22",
+          "titulo": "Roles de mi entidad",
+          "tipo": "table",
+          "actor": "Responsable secundario",
+          "nodeId": "15:395",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=15-395",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "C23",
+          "titulo": "Transferencias",
+          "tipo": "table",
+          "actor": "Responsable secundario",
+          "nodeId": "15:396",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=15-396",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "C24",
+          "titulo": "Verificación de mi entidad",
+          "tipo": "table",
+          "actor": "Responsable principal",
+          "nodeId": "17:453",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=17-453",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "C25",
+          "titulo": "Adjuntar documentos y reenviar",
+          "tipo": "modal",
+          "actor": "Responsable principal",
+          "nodeId": "17:454",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=17-454",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        }
+      ]
+    },
+    {
+      "nombre": "04 · Moderación",
+      "nodeId": "4:66",
+      "pantallas": [
+        {
+          "codigo": "D01",
+          "titulo": "Hola, Laura.",
+          "tipo": "dashboard",
+          "actor": "Moderador de plataforma",
+          "nodeId": "12:1752",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=12-1752",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "D02",
+          "titulo": "Verificaciones",
+          "tipo": "table",
+          "actor": "Moderador de plataforma",
+          "nodeId": "12:1753",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=12-1753",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "D03",
+          "titulo": "Verificación asignada",
+          "tipo": "table",
+          "actor": "Moderador de plataforma",
+          "nodeId": "12:1754",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=12-1754",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "D04",
+          "titulo": "Pedir correcciones",
+          "tipo": "modal",
+          "actor": "Moderador de plataforma",
+          "nodeId": "12:1755",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=12-1755",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "D05",
+          "titulo": "Aprobar verificación",
+          "tipo": "modal",
+          "actor": "Moderador de plataforma",
+          "nodeId": "12:1756",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=12-1756",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "D06",
+          "titulo": "Devolver revisión a la cola",
+          "tipo": "modal",
+          "actor": "Moderador de plataforma",
+          "nodeId": "12:1757",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=12-1757",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "D07",
+          "titulo": "Reclamaciones",
+          "tipo": "table",
+          "actor": "Moderador de plataforma",
+          "nodeId": "12:1758",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=12-1758",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "D08",
+          "titulo": "Reclamación asignada",
+          "tipo": "table",
+          "actor": "Moderador de plataforma",
+          "nodeId": "12:1759",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=12-1759",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "D09",
+          "titulo": "Registrar decisión de reclamación",
+          "tipo": "modal",
+          "actor": "Moderador de plataforma",
+          "nodeId": "12:1760",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=12-1760",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "D10",
+          "titulo": "Ejecutar cambio de titularidad",
+          "tipo": "modal",
+          "actor": "Moderador de plataforma",
+          "nodeId": "12:1761",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=12-1761",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "D11",
+          "titulo": "Revisión de anuncios",
+          "tipo": "table",
+          "actor": "Moderador de plataforma",
+          "nodeId": "12:1762",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=12-1762",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "D12",
+          "titulo": "Revisar versión de anuncio",
+          "tipo": "modal",
+          "actor": "Moderador de plataforma",
+          "nodeId": "12:1763",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=12-1763",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "D13",
+          "titulo": "Contenido público",
+          "tipo": "table",
+          "actor": "Moderador de plataforma",
+          "nodeId": "12:1764",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=12-1764",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "D14",
+          "titulo": "Ocultar contenido público",
+          "tipo": "modal",
+          "actor": "Moderador de plataforma",
+          "nodeId": "12:1765",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=12-1765",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "D15",
+          "titulo": "Aprobar republicación",
+          "tipo": "modal",
+          "actor": "Moderador de plataforma",
+          "nodeId": "12:1766",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=12-1766",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "D16",
+          "titulo": "Rechazar verificación",
+          "tipo": "modal",
+          "actor": "Moderador de plataforma",
+          "nodeId": "13:890",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=13-890",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        }
+      ]
+    },
+    {
+      "nombre": "05 · Operación",
+      "nodeId": "4:67",
+      "pantallas": [
+        {
+          "codigo": "E01",
+          "titulo": "Hola, Miguel.",
+          "tipo": "dashboard",
+          "actor": "Gestor de rescates",
+          "nodeId": "13:998",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=13-998",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "E02",
+          "titulo": "Hola, Elena.",
+          "tipo": "dashboard",
+          "actor": "Gestor de adopciones",
+          "nodeId": "13:999",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=13-999",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "E03",
+          "titulo": "Hola, Sofía.",
+          "tipo": "dashboard",
+          "actor": "Gestor de aportes",
+          "nodeId": "13:1000",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=13-1000",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "E04",
+          "titulo": "Hola, Pablo.",
+          "tipo": "dashboard",
+          "actor": "Gestor de catálogo",
+          "nodeId": "13:1001",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=13-1001",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "E05",
+          "titulo": "Hola, Marta.",
+          "tipo": "dashboard",
+          "actor": "Gestor de pedidos",
+          "nodeId": "13:1002",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=13-1002",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "E06",
+          "titulo": "Hola, Andrés.",
+          "tipo": "dashboard",
+          "actor": "Gestor de fondo",
+          "nodeId": "13:1003",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=13-1003",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "E07",
+          "titulo": "Hola, Valeria.",
+          "tipo": "dashboard",
+          "actor": "Gestor de publicidad",
+          "nodeId": "13:1004",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=13-1004",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "E08",
+          "titulo": "Casos de rescate",
+          "tipo": "table",
+          "actor": "Gestor de rescates",
+          "nodeId": "13:1005",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=13-1005",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "E09",
+          "titulo": "Detalle del rescate",
+          "tipo": "table",
+          "actor": "Gestor de rescates",
+          "nodeId": "13:1006",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=13-1006",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "E10",
+          "titulo": "Aceptar reporte de rescate",
+          "tipo": "modal",
+          "actor": "Gestor de rescates",
+          "nodeId": "13:1007",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=13-1007",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "E11",
+          "titulo": "Cerrar o cancelar caso",
+          "tipo": "modal",
+          "actor": "Gestor de rescates",
+          "nodeId": "13:1008",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=13-1008",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "E12",
+          "titulo": "Adopciones",
+          "tipo": "table",
+          "actor": "Gestor de adopciones",
+          "nodeId": "13:1009",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=13-1009",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "E13",
+          "titulo": "Solicitud de adopción #041",
+          "tipo": "modal",
+          "actor": "Gestor de adopciones",
+          "nodeId": "13:1010",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=13-1010",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "E14",
+          "titulo": "Resolver solicitud de adopción",
+          "tipo": "modal",
+          "actor": "Gestor de adopciones",
+          "nodeId": "13:1011",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=13-1011",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "E15",
+          "titulo": "Devolver solicitud de adopción",
+          "tipo": "modal",
+          "actor": "Gestor de adopciones",
+          "nodeId": "13:1012",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=13-1012",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "E16",
+          "titulo": "Aportes",
+          "tipo": "table",
+          "actor": "Gestor de aportes",
+          "nodeId": "13:1013",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=13-1013",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "E17",
+          "titulo": "Revisar aporte #081",
+          "tipo": "modal",
+          "actor": "Gestor de aportes",
+          "nodeId": "13:1014",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=13-1014",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "E18",
+          "titulo": "Confirmar recepción de aporte",
+          "tipo": "modal",
+          "actor": "Gestor de aportes",
+          "nodeId": "13:1015",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=13-1015",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "E19",
+          "titulo": "Catálogo",
+          "tipo": "table",
+          "actor": "Gestor de catálogo",
+          "nodeId": "13:1016",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=13-1016",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "E20",
+          "titulo": "Crear o editar producto",
+          "tipo": "modal",
+          "actor": "Gestor de catálogo",
+          "nodeId": "13:1017",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=13-1017",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "E21",
+          "titulo": "Pedidos",
+          "tipo": "table",
+          "actor": "Gestor de pedidos",
+          "nodeId": "13:1018",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=13-1018",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "E22",
+          "titulo": "Pedido #051",
+          "tipo": "modal",
+          "actor": "Gestor de pedidos",
+          "nodeId": "13:1019",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=13-1019",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "E23",
+          "titulo": "Actualizar estado del pedido",
+          "tipo": "modal",
+          "actor": "Gestor de pedidos",
+          "nodeId": "13:1020",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=13-1020",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "E24",
+          "titulo": "Fondos asignados",
+          "tipo": "table",
+          "actor": "Gestor de fondo",
+          "nodeId": "13:1021",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=13-1021",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "E25",
+          "titulo": "Registrar distribución informativa",
+          "tipo": "modal",
+          "actor": "Gestor de fondo",
+          "nodeId": "13:1022",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=13-1022",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "E26",
+          "titulo": "Publicidad",
+          "tipo": "table",
+          "actor": "Gestor de publicidad",
+          "nodeId": "13:1023",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=13-1023",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "E27",
+          "titulo": "Preparar versión de anuncio",
+          "tipo": "modal",
+          "actor": "Gestor de publicidad",
+          "nodeId": "13:1024",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=13-1024",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "E28",
+          "titulo": "Resolver corrección de reporte",
+          "tipo": "modal",
+          "actor": "Gestor de rescates",
+          "nodeId": "13:1025",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=13-1025",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "E29",
+          "titulo": "Devolver revisión de aporte",
+          "tipo": "modal",
+          "actor": "Gestor de aportes",
+          "nodeId": "13:1026",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=13-1026",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "E30",
+          "titulo": "Devolver pedido a la cola",
+          "tipo": "modal",
+          "actor": "Gestor de pedidos",
+          "nodeId": "13:1027",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=13-1027",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        }
+      ]
+    },
+    {
+      "nombre": "06 · Expediente y excepciones",
+      "nodeId": "4:68",
+      "pantallas": [
+        {
+          "codigo": "F01",
+          "titulo": "Hola, doctora Laura.",
+          "tipo": "dashboard",
+          "actor": "Veterinario autorizado",
+          "nodeId": "13:3871",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=13-3871",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "F02",
+          "titulo": "Expedientes autorizados",
+          "tipo": "table",
+          "actor": "Veterinario autorizado",
+          "nodeId": "13:3872",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=13-3872",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "F03",
+          "titulo": "Expediente · Luna",
+          "tipo": "table",
+          "actor": "Veterinario autorizado",
+          "nodeId": "13:3873",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=13-3873",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "F04",
+          "titulo": "Registrar anotación profesional",
+          "tipo": "modal",
+          "actor": "Veterinario autorizado",
+          "nodeId": "13:3874",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=13-3874",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "F05",
+          "titulo": "Enmendar anotación propia",
+          "tipo": "modal",
+          "actor": "Veterinario autorizado",
+          "nodeId": "13:3875",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=13-3875",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "F06",
+          "titulo": "Revisar soporte del dueño",
+          "tipo": "modal",
+          "actor": "Veterinario autorizado",
+          "nodeId": "13:3876",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=13-3876",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "F07",
+          "titulo": "Autorizar atención veterinaria",
+          "tipo": "modal",
+          "actor": "Responsable principal",
+          "nodeId": "13:3877",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=13-3877",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "F08",
+          "titulo": "Accesos excepcionales",
+          "tipo": "table",
+          "actor": "Responsable principal",
+          "nodeId": "13:3878",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=13-3878",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "F09",
+          "titulo": "Solicitar acceso excepcional",
+          "tipo": "modal",
+          "actor": "Gestor de adopciones",
+          "nodeId": "13:3879",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=13-3879",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "F10",
+          "titulo": "Resolver acceso excepcional",
+          "tipo": "modal",
+          "actor": "Responsable principal",
+          "nodeId": "13:3880",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=13-3880",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "F11",
+          "titulo": "Revocar acceso temporal",
+          "tipo": "modal",
+          "actor": "Responsable principal",
+          "nodeId": "13:3881",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=13-3881",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "F12",
+          "titulo": "Revocar autorización veterinaria",
+          "tipo": "modal",
+          "actor": "Responsable principal",
+          "nodeId": "13:3882",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=13-3882",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "F13",
+          "titulo": "Asignar gestor a un fondo",
+          "tipo": "modal",
+          "actor": "Responsable principal",
+          "nodeId": "13:3883",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=13-3883",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "F14",
+          "titulo": "Documento privado",
+          "tipo": "modal",
+          "actor": "Veterinario autorizado",
+          "nodeId": "13:3884",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=13-3884",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        }
+      ]
+    },
+    {
+      "nombre": "07 · Móvil",
+      "nodeId": "4:69",
+      "pantallas": [
+        {
+          "codigo": "G01",
+          "titulo": "Login móvil",
+          "tipo": "mobile-login",
+          "actor": null,
+          "nodeId": "13:5408",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=13-5408",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "G02",
+          "titulo": "Mi trabajo",
+          "tipo": "mobile-dashboard",
+          "actor": "Gestor de adopciones",
+          "nodeId": "13:5409",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=13-5409",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "G03",
+          "titulo": "Solicitud de adopción #041",
+          "tipo": "mobile-form",
+          "actor": "Gestor de adopciones",
+          "nodeId": "13:5410",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=13-5410",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        },
+        {
+          "codigo": "G04",
+          "titulo": "Transferir responsabilidad",
+          "tipo": "mobile-form",
+          "actor": "Responsable principal",
+          "nodeId": "13:5411",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=13-5411",
+          "estado": "Boceto editable; no implica implementación del formulario web"
+        }
+      ]
+    },
+    {
+      "nombre": "08 · Acceso animado y recursos",
+      "nodeId": "70:3",
+      "pantallas": [
+        {
+          "codigo": "L01",
+          "titulo": "Portada · nubes desde el inicio",
+          "tipo": "estado-acceso",
+          "actor": null,
+          "nodeId": "72:22",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=72-22",
+          "estado": "Estado editable; el scroll funcional está en demos/login-entrada"
+        },
+        {
+          "codigo": "L02",
+          "titulo": "Entran las nubes · posición final",
+          "tipo": "estado-acceso",
+          "actor": null,
+          "nodeId": "72:45",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=72-45",
+          "estado": "Estado editable; el scroll funcional está en demos/login-entrada"
+        },
+        {
+          "codigo": "L03",
+          "titulo": "Login · estado final",
+          "tipo": "estado-acceso",
+          "actor": null,
+          "nodeId": "72:56",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=72-56",
+          "estado": "Estado editable; el scroll funcional está en demos/login-entrada"
+        },
+        {
+          "codigo": "L04",
+          "titulo": "Login móvil · estado final",
+          "tipo": "estado-acceso",
+          "actor": null,
+          "nodeId": "72:100",
+          "url": "https://www.figma.com/design/Kv2Na4SBOxyGoQ4tC8CMxR?node-id=72-100",
+          "estado": "Estado editable; el scroll funcional está en demos/login-entrada"
+        }
+      ]
+    }
+  ],
+  "verificacion": {
+    "pantallasRevisadas": 118,
+    "textosFueraDelMarco": 0,
+    "ventanasConFondoTranslucido": true
+  },
+  "nota": "Los ejemplos son ficticios. El archivo no contiene datos de la base local ni credenciales. La etapa 3 implementa acceso y panel inicial; el boceto define también formularios posteriores.",
+  "estilo": "STYLE.md · editorial cálido adaptado a la identidad móvil",
+  "identidadPorPerfil": {
+    "cantidad": 13,
+    "fuente": "frontend/panel-design/profiles.json",
+    "iconos": "lucide-static 1.62.0 · 34 símbolos SVG locales",
+    "figmaGuia": "116:492"
+  },
+  "adaptacionAcceso": {
+    "fuenteCSS": "frontend/panel-design/acceso.css",
+    "anchoCompleto": true,
+    "entradaNubes": "solo entrada; sin salida",
+    "tamanosRevisados": 10,
+    "vistasPanelRevisadas": 33,
+    "informe": "output/responsive-panel/revision.json"
+  }
+}

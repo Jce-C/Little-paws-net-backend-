@@ -18,3 +18,14 @@ Las contribuciones deben mantener la coherencia entre modelos, migraciones, vali
 5. Antes de integrar, comprobar el comportamiento en MySQL cuando el cambio dependa de funciones específicas de ese motor, como tipos espaciales o claves foráneas compuestas.
 
 No incluir contraseñas privadas, tokens, claves de producción ni datos personales reales. La única excepción es `backend/.env`, preparado expresamente para una base de evaluación desechable y separada de la API publicada; permite cambios de datos únicamente allí y no debe reutilizarse en otros entornos. Las pruebas deben usar información ficticia. Las traducciones deben conservar estables las rutas, claves JSON y reglas de autorización; véase [IDIOMAS.md](backend/IDIOMAS.md).
+
+
+## Integración del panel nuevo
+
+Trabajar contra `entrega-panel`, con ramas `dominio-rbac`, `sally-panel-web`,
+`majo-identidad`, `integracion-api`, `sally-demo` y `majo-documentacion`.
+Los bloques se integran en orden y requieren revisión antes de avanzar.
+No aplicar las migraciones de `backend-panel/` a las bases de la API anterior.
+Los archivos `.env` y `.env.railway` del panel son privados y no tienen excepción
+de publicación. Cada persona debe revisar y explicar su implementación antes de
+registrar su propio commit. No publicar automáticamente una rama incompleta.
