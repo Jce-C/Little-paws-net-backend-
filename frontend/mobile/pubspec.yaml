@@ -1,0 +1,56 @@
+name: little_paws_net
+description: Aplicación ciudadana de Little Paws Net.
+publish_to: none
+version: 0.1.0+1
+environment:
+  sdk: ^3.13.0
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  flutter_secure_storage: ^11.2.0
+  flutter_svg: ^2.2.4
+  http: ^1.6.0
+  image_picker: 1.2.4
+  qr_flutter: ^4.1.0
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  integration_test:
+    sdk: flutter
+flutter:
+  uses-material-design: true
+  fonts:
+    - family: JetBrains Mono
+      fonts:
+        - asset: assets/fonts/JetBrainsMono.ttf
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Inter.ttf
+    - family: LPN Script
+      fonts:
+        - asset: assets/fonts/LeckerliOne.ttf
+  assets:
+    - assets/access/
+    - assets/rescue-category.webp
+    - assets/adopt-category.webp
+    - assets/request-banner.webp
+    - assets/profile-avatar.png
+    - assets/brand.svg
+    - assets/pet-age.png
+    - assets/pet-size.png
+    - assets/history-paw.png
+    - assets/history-dot.png
+    - assets/brand-header.svg
+    - assets/brand-navigation.svg
+    - assets/brand-organic.svg
+    - assets/welcome-brand.svg
+    - assets/login-brand.svg
+    - assets/fonts/JetBrainsMono-OFL.txt
+    - assets/home-pets.webp
+    - assets/adoption-banner.webp
+    - assets/rescue-banner.webp
+    - assets/fonts/Inter-OFL.txt
+    - assets/fonts/LeckerliOne-OFL.txt

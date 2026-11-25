@@ -1,0 +1,5 @@
+# Copiar como key.properties, completar SOLO en tu computadora y mantenerlo fuera de Git.
+storeFile=C:/ruta/privada/little-paws-upload.jks
+storePassword=CAMBIAR_LOCALMENTE
+keyAlias=upload
+keyPassword=CAMBIAR_LOCALMENTE
