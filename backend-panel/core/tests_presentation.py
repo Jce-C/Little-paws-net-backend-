@@ -39,6 +39,7 @@ class PresentationTests(TestCase):
         self.assertTrue(Usuario.objects.get(pk=existing.pk).check_password('original-only-for-test'))
         self.assertEqual(Usuario.objects.count(), 1)
 
+    @override_settings(SECURE_SSL_REDIRECT=True, SECURE_PROXY_SSL_HEADER=('HTTP_X_FORWARDED_PROTO', 'https'))
     def test_fresh_presentation_and_reversible_http_checks(self):
         environment = {'LPN_ALLOW_DEMO_SEED': '1', 'LPN_DEMO_PASSWORD': 'only-for-isolated-tests-29!', 'LPN_DATA_KEY': Fernet.generate_key().decode()}
         # The isolated test runner owns its test schema; production guard is tested above.
