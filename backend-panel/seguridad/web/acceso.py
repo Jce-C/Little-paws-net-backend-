@@ -21,6 +21,13 @@ def ip_cliente(request):
     # Solo el servicio detrás del edge de Railway confía en X-Real-IP.
     # En desarrollo u otro servidor, una cabecera enviada por el cliente se ignora.
     remoto = request.META.get("REMOTE_ADDR", "sin-ip")
+    # Northflank reemplaza esta cabecera en su ingress público; no confiar en XFF.
+    # Activar solo en el servicio expuesto mediante ese ingress, no en un origen directo.
+    if getattr(settings, "LPN_TRUST_NORTHFLANK_PROXY", False):
+        try:
+            return str(ip_address(request.META.get("HTTP_X_ENVOY_EXTERNAL_ADDRESS", "")))
+        except ValueError:
+            return remoto
     if getattr(settings, "LPN_TRUST_RAILWAY_PROXY", False):
         try:
             return str(ip_address(request.META.get("HTTP_X_REAL_IP", "")))
