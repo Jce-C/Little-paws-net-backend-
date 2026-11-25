@@ -26,7 +26,8 @@ class Command(BaseCommand):
         clave = os.getenv("LPN_DEMO_PASSWORD")
         if not clave:
             raise CommandError("Configure LPN_DEMO_PASSWORD para probar las cuentas demo")
-        cliente = APIClient(HTTP_HOST="localhost")
+        # El cliente interno representa el mismo ingress HTTPS que producción.
+        cliente = APIClient(HTTP_HOST="localhost", HTTP_X_FORWARDED_PROTO="https")
         pruebas = 0
         tokens = {}
         reportes_antes = Reporte.objects.count()
@@ -34,7 +35,8 @@ class Command(BaseCommand):
         def comprobar(respuesta, esperado, etiqueta):
             nonlocal pruebas
             if respuesta.status_code != esperado:
-                raise CommandError(f"{etiqueta}: HTTP {respuesta.status_code}; {respuesta.data}")
+                detalle = getattr(respuesta, "data", respuesta.reason_phrase)
+                raise CommandError(f"{etiqueta}: HTTP {respuesta.status_code}; {detalle}")
             pruebas += 1
             return respuesta.data
 
