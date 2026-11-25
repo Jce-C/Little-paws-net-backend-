@@ -1,0 +1,49 @@
+name: Contenedor del panel
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'backend-panel/**'
+      - 'scripts/verificar_contenedor.py'
+      - '.github/workflows/contenedor.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'backend-panel/**'
+      - 'scripts/verificar_contenedor.py'
+      - '.github/workflows/contenedor.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: contenedor-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Construir la imagen vigente sin secretos
+        run: docker build --pull --tag little-paws-panel:ci backend-panel
+      - name: Arrancar sin base de datos ni volumen externo
+        run: |
+          docker run --detach --name lpn-panel-ci \
+            --publish 127.0.0.1:18000:8000 \
+            --memory 512m --cpus 0.5 \
+            --env DJANGO_SECRET_KEY=isolated-container-acceptance-only-2026-not-for-production-9a8b7c6d5e \
+            --env DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1 \
+            --env LPN_PRIVATE_ROOT=/tmp/lpn-private \
+            little-paws-panel:ci
+      - name: Verificar arranque, permisos y HTTP
+        run: python3 scripts/verificar_contenedor.py
+      - name: Mostrar diagnóstico si falla
+        if: failure()
+        run: docker logs --tail 100 lpn-panel-ci
+      - name: Retirar el contenedor efímero
+        if: always()
+        run: docker rm --force lpn-panel-ci || true
