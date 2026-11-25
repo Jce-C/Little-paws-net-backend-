@@ -6,9 +6,11 @@ Plataforma de protección animal que conecta a ciudadanos con organizaciones. Re
 
 La integración del [Pull Request #24](https://github.com/Jce-C/Little-paws-net-backend-/pull/24) ya está incorporada en `main`, conservando los commits del equipo. Publicar código en GitHub no configura por sí solo un alojamiento.
 
-La base técnica se verificó con **479 pruebas Django en MySQL aislado**, pruebas del cliente y aceptación real en Android Emulator y navegador. El recorrido comprobado incluye solicitud de adopción desde Android, resolución desde el panel y consulta del resultado en la app. También se comprobó conceder y revocar permisos, y renombrar un recurso con otra sesión abierta.
+La base técnica se verificó con **481 pruebas Django en MySQL aislado**, pruebas del cliente y aceptación real en Android Emulator y navegador. El recorrido comprobado incluye solicitud de adopción desde Android, resolución desde el panel y consulta del resultado en la app. También se comprobó conceder y revocar permisos, y renombrar un recurso con otra sesión abierta.
 
-Es una versión de demostración e integración. Antes de ofrecerla públicamente faltan la revisión final de privacidad, licencias y seguridad, pruebas en teléfono físico, configuración del alojamiento y su presupuesto, y firma de distribución Android. Los precios son referenciales: los pedidos no realizan cobros y los aportes son compromisos, sin pasarela de pago.
+Está disponible el [panel de demostración en Northflank](https://p01--little-paws-panel--mbdslkhqlqj9.code.run/panel/login/), con una base nueva ficticia y almacenamiento persistente. Consultar la [configuración, verificaciones y límites del alojamiento](docs/entrega/northflank.md). Los accesos se entregan de forma privada.
+
+Es una versión de demostración e integración. Antes de usar datos reales faltan la revisión final de privacidad, licencias y seguridad, pruebas en teléfono físico, presupuesto y operaciones de producción, y firma de distribución Android. Los precios son referenciales: los pedidos no realizan cobros y los aportes son compromisos, sin pasarela de pago.
 
 ## Funcionalidades principales
 
