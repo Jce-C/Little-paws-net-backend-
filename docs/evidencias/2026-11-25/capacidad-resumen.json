@@ -1,0 +1,57 @@
+{
+  "fecha": "2026-11-25",
+  "guia": 91,
+  "estado_global": {
+    "cerrados": 49,
+    "total": 57,
+    "porcentaje": 86.0
+  },
+  "alcance": "Servidor de referencia local, no capacidad de producción. Q03 parcial.",
+  "dataset": {
+    "available_pets": 1000,
+    "products": 500,
+    "community_posts_at_start": 250,
+    "actors": 8,
+    "owned_pets": 80
+  },
+  "request_counts": {
+    "business": 312,
+    "authentication": 3,
+    "marker": 7,
+    "total": 322
+  },
+  "business_writes_verified": 104,
+  "unexpected_responses": 0,
+  "tests_tools_passed": 7,
+  "business_code_changed": false,
+  "prior_evidence_reused": {
+    "backend_tests": 468,
+    "client_tests": 363
+  },
+  "sources": [
+    {
+      "path": "scripts/medir_capacidad_local.py",
+      "sha256": "95c589bc9f32f41bfedb6636d3dcfe6178c88d6514a7217a235f17096ed1f3d5"
+    },
+    {
+      "path": "scripts/servidor_capacidad_qa.py",
+      "sha256": "3cdb4d88d1988dd8dde58a1ccb57deeff02797a6244e717a5d564b178cff82c4"
+    },
+    {
+      "path": "scripts/estimar_trafico_local.py",
+      "sha256": "746c56374c739cf2e28dba351922850807d226ba782b12ebf8cd164d10f19808"
+    },
+    {
+      "path": "scripts/test_medir_capacidad_local.py",
+      "sha256": "98909a2301df57ade6f1b5432d896a890b3b52e88b3bdd4719f82f0ff90e88ac"
+    }
+  ],
+  "pendientes_q03": [
+    "Perfil móvil representativo",
+    "Transferencia en red real/caché y fotos",
+    "Carga sostenida y métricas/presupuesto del alojamiento"
+  ],
+  "finding": "Catálogo de productos limitado a cien filas sin cursor; paginación pendiente para catálogos mayores.",
+  "commits": 0,
+  "published": false
+}

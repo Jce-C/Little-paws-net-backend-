@@ -1,0 +1,88 @@
+{
+  "scope": "presentacion local y preparacion de commits; sin despliegue",
+  "backend_tests": 479,
+  "focused_presentation_and_rbac_tests": 25,
+  "database": "lpn_presentacion_20261125_demo",
+  "backup_restore": {
+    "backup_restored": true,
+    "all_table_counts_match": true,
+    "tables_verified": 105,
+    "previous_database_preserved": true,
+    "scratch_restore_database_removed": true
+  },
+  "http": {
+    "http_checks": [
+      {
+        "check": "login document",
+        "status": 200
+      },
+      {
+        "check": "real HTTP login",
+        "account": "demo20@example.invalid",
+        "status": 200
+      },
+      {
+        "check": "paginated catalog",
+        "products": 15,
+        "bytes": 6766
+      },
+      {
+        "check": "public product WebP",
+        "bytes": 7354,
+        "status": 200
+      },
+      {
+        "check": "adoption catalog and public pet WebP",
+        "available": 5,
+        "bytes": 9032,
+        "status": 200
+      },
+      {
+        "check": "citizen denied security users",
+        "status": 403
+      },
+      {
+        "check": "real HTTP login",
+        "account": "demo01@example.invalid",
+        "status": 200
+      },
+      {
+        "check": "real HTTP login",
+        "account": "administracion@example.invalid",
+        "status": 200
+      }
+    ],
+    "same_database_app_and_panel": "lpn_presentacion_20261125_demo",
+    "server_stopped_after_check": true,
+    "no_mutating_business_requests": true
+  },
+  "data": {
+    "database": "lpn_presentacion_20261125_demo",
+    "host": "127.0.0.1",
+    "previous_database_preserved": true,
+    "backup_created": true,
+    "backup_sha256": "2a616420a1e68cc16bc3719f43a57aed6aafc4e2e3f05d75eb05bf4046ed723f",
+    "credentials_in_repository": false,
+    "password_hashing": "Django default PBKDF2 (no QA MD5)",
+    "commands_ok": [
+      "migrate",
+      "preparar_presentacion",
+      "check",
+      "makemigrations --check --dry-run"
+    ],
+    "photos_published": true,
+    "illustrations_count": 20,
+    "people": 21,
+    "pets": 20,
+    "available_for_adoption": 5,
+    "products": 15
+  },
+  "source_main": "016415b3a70ccf6173dd2d39cf284b6c898fa305",
+  "commits_created": 0,
+  "pushed": false,
+  "remaining": [
+    "aceptacion visual app real y telefono",
+    "privacidad licencias seguridad",
+    "HTTPS alojamiento costes firma y CI remoto"
+  ]
+}

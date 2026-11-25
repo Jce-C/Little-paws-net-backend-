@@ -1,0 +1,34 @@
+{
+  "provider_selected": false,
+  "paid_services_authorized": false,
+  "price_assumed": null,
+  "scenarios": [
+    {
+      "active_users_assumption": 100,
+      "journeys_per_user_per_day_assumption": 1,
+      "days": 30,
+      "measured_response_bytes_per_journey": 36679.2,
+      "api_requests_per_month": 18000,
+      "api_response_gb": 0.11,
+      "cold_web_gb_assumption": 1.0,
+      "media_gb_assumption": 0.6,
+      "total_response_gb_estimate": 1.71,
+      "currency_cost": null,
+      "limits": "Decimal GB; one cold web download per user/month is assumed. Excludes uploads, headers/TLS, retransmissions, background services, backups, storage, CPU and provider minimum charges. Not a concurrency/capacity promise."
+    },
+    {
+      "active_users_assumption": 500,
+      "journeys_per_user_per_day_assumption": 3,
+      "days": 30,
+      "measured_response_bytes_per_journey": 36679.2,
+      "api_requests_per_month": 270000,
+      "api_response_gb": 1.651,
+      "cold_web_gb_assumption": 5.0,
+      "media_gb_assumption": 9.0,
+      "total_response_gb_estimate": 15.651,
+      "currency_cost": null,
+      "limits": "Decimal GB; one cold web download per user/month is assumed. Excludes uploads, headers/TLS, retransmissions, background services, backups, storage, CPU and provider minimum charges. Not a concurrency/capacity promise."
+    }
+  ],
+  "warning": "Use measured transferred bytes from the target deployment before budgeting money; compression/cache/provider quotas are not inferred."
+}

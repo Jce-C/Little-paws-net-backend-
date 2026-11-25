@@ -1,0 +1,25 @@
+{
+  "fecha_local": "2026-11-25",
+  "id": "V02",
+  "archivos": [
+    "lib/auth/account_screen.dart",
+    "lib/design/access_reference.dart",
+    "test/access_persistent_labels_test.dart"
+  ],
+  "pruebas_cliente": 308,
+  "opcionales_omitidas": 9,
+  "focales_cliente": 20,
+  "focales_demo": 14,
+  "focales_web": 14,
+  "nombre_semantico_nativo_conservado": true,
+  "etiquetas_visuales_persistentes": true,
+  "escala_normal_y_200": true,
+  "accion_fuera_teclado_simulado_200px": true,
+  "consultas_antes_envio": 0,
+  "contraste_etiqueta_y_texto_minimo": 4.5,
+  "analisis_tres_copias": "sin observaciones",
+  "android_debug": "compilado",
+  "web_release": "compilado, advertencia CupertinoIcons previa pendiente",
+  "backend_sin_cambios": true,
+  "capturas": "renderizados Flutter; no dispositivo físico"
+}

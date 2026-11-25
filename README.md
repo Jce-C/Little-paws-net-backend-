@@ -1,54 +1,59 @@
-# Little Paws Net — backend
+# Little Paws Net
 
-API de Little Paws Net desarrollada con Django 5.2, Django REST Framework y MySQL 8. La base de datos de demostración y el servidor público están alojados en Railway. Este repositorio no contiene un frontend.
+Little Paws Net conecta a ciudadanos y organizaciones de protección animal. Incluye un panel web con Django, Django REST Framework y MySQL, y un cliente Android en Flutter para consultar mascotas y gestionar solicitudes de adopción.
 
-## Abrir la copia en otro computador
+**Base local para integrar:** [estado, paquetes y orden de entrega](docs/entrega/base-solida-local.md). Incluye tienda paginada y comprobaciones completas. Los commits, la versión y el despliegue se preparan después de revisar esta base; no se anuncia como publicación comercial.
 
-Requisitos: Python 3.12, Git y acceso a Internet. En PowerShell, desde la carpeta clonada:
+## Qué ejecutar
 
-```powershell
-cd backend
-py -3.12 -m venv .venv
-.\.venv\Scripts\Activate.ps1
-python -m pip install -r requirements.txt
-```
+| Carpeta | Responsabilidad |
+| --- | --- |
+| `backend-panel/` | Aplicación vigente: login, usuarios, roles, recursos, permisos y auditoría; dominio y API V2. |
+| `frontend/mobile/` | Aplicación ciudadana Android. Incluye catálogo, acceso, solicitud y seguimiento de adopción. |
+| `frontend/panel-design/` | Fuentes visuales y generadores de iconos/plantillas. No es otro servidor frontend. |
+| `demos/panel-editorial/` | Demostración estática con datos ficticios. No autentica ni conecta a Railway. |
+| `docs/` y `DIAGRAMAS/` | Reglas, arquitectura, diagramas y guías. |
+| `backend/` y `Dockerfile` raíz | API anterior conservada por compatibilidad. Usa otras migraciones y otra base. |
 
-El archivo `backend/.env` de esta demostración académica ya apunta a una **copia de evaluación en Railway** con una cuenta SQL que permite trabajar desde Django Admin. No hay que instalar ni crear MySQL en el computador. El equipo entrega la contraseña de Django Admin por separado.
+El servicio nuevo se despliega desde **backend-panel**, con su Dockerfile. La base autorizada es `little_paws_panel_v2`; no aplicar estas migraciones a las bases anteriores. El Dockerfile raíz sigue perteneciendo al servicio antiguo.
 
-```powershell
-python manage.py check --database default
-python manage.py runserver
-```
+## Desarrollo local
 
-Abra [Django Admin local](http://127.0.0.1:8000/admin/) e inicie sesión con la cuenta temporal de evaluación. Podrá consultar, añadir y editar los recursos que el Admin permite, con las restricciones de cada proceso. Los datos iniciales proceden de Railway. `runserver` sirve solo para la demostración en el computador; no reemplaza el despliegue de Railway. No ejecute `migrate` ni `seed_demo_rescue` al abrir la copia: la base ya tiene tablas y más de 100 registros ficticios.
-
-## Demostración publicada
-
-- [Entrada de la API](https://little-paws-api-production.up.railway.app/)
-- [Estado del servicio](https://little-paws-api-production.up.railway.app/api/health/)
-- [Conteos de datos ficticios](https://little-paws-api-production.up.railway.app/api/demo/resumen/)
-- [Catálogos](https://little-paws-api-production.up.railway.app/api/catalogos/)
-- [Django Admin publicado](https://little-paws-api-production.up.railway.app/admin/)
-
-## Idiomas
-
-La API responde en español por defecto. En la mayoría de las rutas, el cliente cambia al inglés enviando `Accept-Language: en`; para volver al español, `Accept-Language: es`. Los mensajes cambian, pero las rutas y nombres de campos JSON permanecen estables. Para verlo rápidamente desde un navegador, abra [español](https://little-paws-api-production.up.railway.app/api/idiomas/?lang=es) e [inglés](https://little-paws-api-production.up.railway.app/api/idiomas/?lang=en). El propio Django Admin adapta sus textos estándar al idioma preferido del navegador; los nombres propios del modelo permanecen en español. Véase [IDIOMAS.md](backend/IDIOMAS.md).
-
-## Estructura
-
-`backend/config/` contiene configuración y rutas generales. Las aplicaciones `accounts`, `core`, `rescue`, `animals`, `adoptions`, `funds` y `commerce` separan modelos, serializadores, servicios, vistas, URLs, migraciones y pruebas. El Admin sirve para consulta, carga supervisada de catálogos, usuarios y reportes; las transiciones delicadas siguen pasando por las APIs y servicios. Véase [ADMIN.md](backend/ADMIN.md).
-
-## Comprobación automatizada
+Requisitos: Python 3.14, Git y una instancia MySQL autorizada. Desde la raíz:
 
 ```powershell
-python manage.py makemigrations --check --dry-run
-python manage.py test --settings=config.test_settings
+cd backend-panel
+py -3.14 -m venv .venv
+.venv/Scripts/python.exe -m pip install -r requirements-railway.txt
+Copy-Item .env.example .env
 ```
 
-Las pruebas utilizan una base SQLite temporal y no modifican el MySQL de Railway. Las rutas completas se encuentran en [config/urls.py](backend/config/urls.py) y los `urls.py` de cada módulo.
+Completar `.env` con claves y una base local propia, o recibir configuración privada del propietario. No hay credenciales en el repositorio y no se distribuyen en ZIP. Las claves de cifrado de bases existentes se conservan; no generar una diferente para datos ya cifrados.
 
-## Despliegue
+```powershell
+.venv/Scripts/python.exe manage.py check --database default
+.venv/Scripts/python.exe -m uvicorn config.asgi:application --host 127.0.0.1 --port 8000 --reload
+```
 
-Railway construye la API con el `Dockerfile`: instala Python y dependencias, reúne los archivos estáticos del Admin y ejecuta Gunicorn. El profesor **no necesita Docker** para usar `runserver`. Las variables privadas de Railway configuran la instancia publicada sobre `little_paws_net_demo`. El `.env` público conecta la copia descargada a `little_paws_net_eval`, una base separada con los mismos datos iniciales; los cambios del profesor no aparecerán en la API publicada. `.dockerignore` evita incorporar ese `.env` a la imagen desplegada.
+Abrir http://127.0.0.1:8000/panel/login/. Uvicorn ejecuta ASGI para sincronizar las sesiones; `--reload` solo se usa en desarrollo. Para crear una base local nueva, ejecutar `migrate` sobre esa base vacía y después `iniciar_seguridad --email TU_CORREO`; no inicializar datos demo en la base compartida.
 
-Los registros son ficticios. Un acceso SQL publicado permite conexiones de terceros y no debe reutilizarse para datos reales. Tras la evaluación deben revocarse sus credenciales. Para colaboración y cambios, consulte [CONTRIBUTING.md](CONTRIBUTING.md).
+## Railway y acceso del equipo
+
+Para ejecutar Android en un emulador o celular, sigue la [guía de ejecución de la app](frontend/mobile/README.md). La [entrega de Semana 15](docs/entrega/semana-15-evolucion.md) registra deudas, responsables y trazabilidad.
+
+La configuración privada del panel en Railway utiliza la base nueva, un usuario SQL limitado a ese esquema y almacenamiento privado persistente. Ver [despliegue](docs/entrega/railway.md). Cada persona entra con su cuenta del panel: el rol se asigna desde Django y se valida en el servidor. El color o el perfil de la demo no concede acceso.
+
+[Actualizar las PCs del equipo](docs/entrega/actualizar-equipo.md) · [Auditoría final](docs/entrega/auditoria-final.md) · [Reglas de acceso](docs/rbac/01-definicion-de-accesos.md) · [Identidad visual](STYLE.md).
+
+## Calidad
+
+GitHub Actions comprueba configuración, ausencia de migraciones pendientes y pruebas en MySQL 8.4 aislado. Las pruebas no se ejecutan sobre la base de Railway. Consulte [CONTRIBUTING.md](CONTRIBUTING.md) para reproducirlas.
+
+La suma del login se combina con límites de intentos, CSRF y sesión: no es una protección completa frente a DDoS. La administración de seguridad está implementada; algunos procesos operativos aún tienen API/listado y boceto, sin formulario web completo. Consulte la auditoría antes de prometer esas funciones.
+
+## Idioma y accesibilidad
+
+El panel ofrece español/inglés y preferencias de texto, contraste y movimiento desde el menú «Idioma y accesibilidad». Se conservan en el navegador y funcionan sin JavaScript. Ver [uso y mantenimiento](docs/diseno/idiomas-y-accesibilidad.md). Los nombres y datos de personas no se traducen automáticamente.
+
+
+La revisión móvil más reciente sigue la referencia Stitch y conserva Flutter/Django. Incluye galería autorizada, red verificada, comunidad y ayudas por organización; no procesa pagos. Consulte [implementación y límites](docs/diseno/48-redisenio-integral-stitch.md). Los cambios permanecen locales hasta que el equipo revise e integre sus bloques.

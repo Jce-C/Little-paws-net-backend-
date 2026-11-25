@@ -1,0 +1,55 @@
+{
+  "fecha": "2026-11-25",
+  "guia": 88,
+  "estado_global": {
+    "cerrados": 49,
+    "total": 57,
+    "porcentaje": 86.0
+  },
+  "implementacion": [
+    "Barra de acciones de ayudas visible al completar carga",
+    "Contraste de aviso de producto y foto ausente de reporte"
+  ],
+  "pruebas": {
+    "nuevas": 34,
+    "cliente_aprobadas": 351,
+    "cliente_omitidas_optativas": 9,
+    "focales_por_demo": 55,
+    "analisis_tres_copias": "limpio",
+    "compilaciones": [
+      "Android debug demo",
+      "web release demo"
+    ],
+    "backend": "sin cambios; se reutilizan 468 pruebas anteriores"
+  },
+  "alcance": "Ocho destinos en tres configuraciones e insets; semántica, táctil y contraste de elementos visibles en 393x852; Tab y Espacio en cantidad de pedido. HTTP simulado; cero escrituras de negocio durante inspección.",
+  "limites": [
+    "No valida todo el contenido fuera de pantalla",
+    "No sustituye TalkBack ni teléfono físico",
+    "No certifica publicación"
+  ],
+  "archivos_sincronizados": [
+    {
+      "archivo": "lib/explore/help_management.dart",
+      "sha256": "b74ad3f0a8c40dfbdfb15babd87dadf62bb0d4803bfb05eaa00f6339d67ca9ac"
+    },
+    {
+      "archivo": "lib/explore/explore_screens.dart",
+      "sha256": "457277fe6a22bdeee6bf38da904d00fcc679a35c6030aa39dda0784cde57d863"
+    },
+    {
+      "archivo": "lib/rescue/report_photo.dart",
+      "sha256": "b13b3d29f9dbfb13f8b893013e094bb5b1ed5a1a84d3d5e4e67ee6892630961a"
+    },
+    {
+      "archivo": "test/remaining_forms_accessibility_test.dart",
+      "sha256": "6c2a09ca6db0fd46afccf2cce13be3e45383a8dd62a682b56808fec8ce758dd4"
+    },
+    {
+      "archivo": "test/help_management_test.dart",
+      "sha256": "81e5fbb28969c4e3e47dac4cbe05bfe6f7861270f7a79daca2409a697428b892"
+    }
+  ],
+  "commits": 0,
+  "publicado": false
+}

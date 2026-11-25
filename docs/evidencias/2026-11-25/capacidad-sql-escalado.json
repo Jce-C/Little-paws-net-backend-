@@ -1,0 +1,55 @@
+{
+  "fixture_only": true,
+  "baseline": [
+    {
+      "path": "/api/adopcion/catalogo/",
+      "sql_queries": 2,
+      "bytes": 249
+    },
+    {
+      "path": "/api/catalogo/productos/",
+      "sql_queries": 1,
+      "bytes": 215
+    },
+    {
+      "path": "/api/comunidad/publicaciones/",
+      "sql_queries": 13,
+      "bytes": 279
+    },
+    {
+      "path": "/api/mascotas/mias/?pagina=1&limite=3",
+      "sql_queries": 13,
+      "bytes": 33
+    }
+  ],
+  "scaled": [
+    {
+      "path": "/api/adopcion/catalogo/",
+      "sql_queries": 2,
+      "bytes": 4751
+    },
+    {
+      "path": "/api/catalogo/productos/",
+      "sql_queries": 1,
+      "bytes": 26928
+    },
+    {
+      "path": "/api/comunidad/publicaciones/",
+      "sql_queries": 13,
+      "bytes": 4449
+    },
+    {
+      "path": "/api/mascotas/mias/?pagina=1&limite=3",
+      "sql_queries": 13,
+      "bytes": 508
+    }
+  ],
+  "sizes": {
+    "available_pets": 1000,
+    "products": 500,
+    "community_posts": 250,
+    "actors": 8,
+    "owned_pets": 80
+  },
+  "instrumentation": "Django test client with CaptureQueriesContext; excludes network. No SQL texts or secrets."
+}

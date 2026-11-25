@@ -1,0 +1,42 @@
+{% extends 'seguridad/web/base.html' %}{% load i18n %}
+{% block contenido %}
+<header class="section-heading"><a data-internal class="table-action" href="{{ volver_fotos }}">← {{ volver_fotos_label }}</a>
+<h1>{% if modo_foto == 'retirar' %}{% translate 'Retirar fotografía' %}{% else %}{% translate 'Fotografía pública' %}{% endif %}</h1>
+<p><strong>{{ mascota_foto.nombre }}</strong> · {{ fundacion_foto }} · #{{ mascota_foto.pk }}</p></header>
+<div class="photo-layout">
+<section class="admin-sheet photo-editor" aria-labelledby="foto-titulo">
+<h2 id="foto-titulo">{% if modo_foto == 'retirar' %}{% translate 'Retirar del catálogo y la app' %}{% else %}{% translate 'Publicar o reemplazar fotografía' %}{% endif %}</h2>
+{% if form_foto.errors %}<div class="aviso error" data-form-error role="alert">{{ form_foto.non_field_errors }}<p>{% translate 'Revisa los campos señalados antes de continuar.' %}</p></div>{% endif %}
+{% if modo_foto == 'retirar' %}
+<p>{% translate 'La foto dejará de mostrarse al volver a consultar la ficha. No se puede borrar una copia que alguien ya haya descargado.' %}</p>
+<form method="post" data-dirty-form data-explicit-submit>{% csrf_token %}
+<label class="photo-consent" for="{{ form_foto.confirmar_retirada.id_for_label }}">{{ form_foto.confirmar_retirada }}<span>{{ form_foto.confirmar_retirada.label }}</span></label>{{ form_foto.confirmar_retirada.errors }}
+<div class="photo-action-row"><button class="boton primario" type="submit">{% translate 'Retirar fotografía' %}</button><a class="boton secundario" data-internal href="{% url 'panel:foto_mascota' mascota_foto.pk %}">{% translate 'Cancelar' %}</a></div>
+</form>
+{% elif puede_publicar_foto %}
+<form method="post" enctype="multipart/form-data" data-dirty-form data-explicit-submit data-photo-form
+ data-photo-format="{% translate 'Selecciona un archivo JPEG, PNG o WebP válido.' %}"
+ data-photo-size="{% translate 'La fotografía no puede superar los 5 MB.' %}"
+ data-photo-dimensions="{% translate 'Usa una imagen de hasta 16 megapíxeles y 6000 px por lado.' %}"
+ data-photo-ready="{% translate 'Vista previa local. Todavía no se ha publicado.' %}">
+{% csrf_token %}<div class="business-field">{{ form_foto.archivo.label_tag }}{{ form_foto.archivo }}{{ form_foto.archivo.errors }}<small id="foto-ayuda">{% translate 'JPEG, PNG o WebP · máximo 5 MB. Se optimiza a WebP y se eliminan los metadatos del original.' %}</small></div>
+<p class="photo-feedback" role="status" data-photo-feedback></p>
+<label class="photo-consent" for="{{ form_foto.adicional.id_for_label }}">{{ form_foto.adicional }}<span>{{ form_foto.adicional.label }}</span></label>{{ form_foto.adicional.errors }}
+<div class="photo-local-preview" hidden data-photo-local><img data-photo-preview hidden width="640" height="480" alt="{% translate 'Vista previa de la fotografía seleccionada' %}"><button type="button" class="table-action" data-photo-clear>{% translate 'Quitar selección' %}</button></div>
+<label class="photo-consent" for="{{ form_foto.confirmar_publicacion.id_for_label }}">{{ form_foto.confirmar_publicacion }}<span>{{ form_foto.confirmar_publicacion.label }}</span></label>{{ form_foto.confirmar_publicacion.errors }}
+<div class="photo-action-row"><button class="boton primario" type="submit">{% translate 'Publicar fotografía' %}</button><a class="boton secundario" data-internal href="{{ volver_fotos }}">{% translate 'Cancelar' %}</a><span data-dirty-status role="status">{% translate 'Sin cambios pendientes' %}</span></div>
+{% if form_foto.errors %}<p class="section-help">{% translate 'Vuelve a seleccionar el archivo antes de reenviar.' %}</p>{% endif %}
+</form>
+{% else %}<p>{% translate 'La ficha debe estar disponible para adopción antes de publicar una fotografía.' %}</p><a data-internal class="table-action" href="{{ volver_fotos }}">{{ volver_fotos_label }}</a>{% endif %}
+</section>
+<section class="admin-sheet photo-current" aria-labelledby="foto-publicada"><h2 id="foto-publicada">{% translate 'Publicación actual' %}</h2>
+{% if foto_actual %}<img class="photo-published" src="{{ foto_actual.url }}" width="{{ foto_actual.ancho }}" height="{{ foto_actual.alto }}" alt="{% blocktranslate with nombre=mascota_foto.nombre %}Fotografía pública de {{ nombre }}{% endblocktranslate %}"><p>{{ foto_actual.ancho }} × {{ foto_actual.alto }} px · {{ foto_actual.bytes|filesizeformat }}</p>
+{% elif tiene_publicacion %}<p>{% translate 'Hay una publicación registrada, pero no está visible en el catálogo actual.' %}</p>
+{% else %}<p>{% translate 'Todavía no hay una foto pública. Se muestra un marcador en la app.' %}</p>{% endif %}
+{% if tiene_publicacion and modo_foto != 'retirar' %}<a class="table-action" data-internal href="{% url 'panel:foto_mascota' mascota_foto.pk %}?modo=retirar">{% translate 'Retirar fotografía' %}</a>{% endif %}
+<p class="section-help">{% translate 'La imagen solo se publica con autorización. Los documentos privados del expediente permanecen separados.' %}</p>
+{% if galeria_fotos %}<h3>{% translate 'Galería de la mascota' %}</h3>
+{% for foto in galeria_fotos %}<figure><img class="photo-published" src="{{ foto.url }}" width="{{ foto.ancho }}" height="{{ foto.alto }}" loading="lazy" alt="{% translate 'Fotografía adicional de la mascota' %}"><figcaption><a class="table-action" data-internal href="{% url 'panel:foto_mascota' mascota_foto.pk %}?modo=retirar&amp;foto_id={{ foto.id }}">{% translate 'Retirar esta fotografía' %}</a></figcaption></figure>{% endfor %}
+{% endif %}
+</section></div>
+{% endblock %}

@@ -1,0 +1,26 @@
+[
+  {
+    "source": "codex-clipboard-c49f535b-6a7f-496b-b677-9e584df31675.png",
+    "target": "adoption-banner.webp",
+    "source_bytes": 458474,
+    "webp_bytes": 34020,
+    "size": [
+      736,
+      414
+    ],
+    "sha256": "51dd05ed12d46de60c547c5b2a489372cf201ed33b9f62a87a20869df2f8cbd3",
+    "commercial_license": "pending verification"
+  },
+  {
+    "source": "codex-clipboard-9dfbfc18-2166-49e6-9861-c01e9b6bb571.png",
+    "target": "rescue-banner.webp",
+    "source_bytes": 325937,
+    "webp_bytes": 21482,
+    "size": [
+      640,
+      340
+    ],
+    "sha256": "2a661575371d080ea69c368397f9305fa84df192487b52e08f8459bf1fd9bf5c",
+    "commercial_license": "pending verification"
+  }
+]
