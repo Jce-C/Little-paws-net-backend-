@@ -1,0 +1,185 @@
+from django.utils.translation import gettext_lazy as _t
+import time
+from functools import wraps
+from django.conf import settings
+from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
+from django.http import HttpResponseRedirect
+from django.shortcuts import redirect, render
+from django.urls import reverse
+from django.utils.http import url_has_allowed_host_and_scheme
+from django.views.decorators.cache import never_cache
+from django.views.decorators.csrf import csrf_protect
+from django.views.decorators.debug import sensitive_post_parameters
+from django.views.decorators.http import require_http_methods, require_POST
+from rest_framework.exceptions import PermissionDenied
+from seguridad.autorizacion import usuario_activo, puede, tiene_base
+from seguridad.servicios import auditar
+from .acceso import emitir, consumir, limitar, ip_cliente
+from .contexto import construir
+from .forms import LoginForm
+
+def retorno_seguro(request, destino):
+    return destino if destino and destino.startswith('/panel/') and url_has_allowed_host_and_scheme(destino, {request.get_host()}, require_https=request.is_secure()) and (not destino.startswith('//')) else reverse('panel:inicio')
+
+
+@require_http_methods(['GET'])
+def bienvenida(request):
+    # La landing no crea desafíos, sesiones ni consulta los módulos del panel.
+    from seguridad.models import ConfiguracionPanel
+    return render(request, 'seguridad/web/landing.html', {'config_landing':dict(ConfiguracionPanel.objects.values_list('clave','valor'))})
+
+@never_cache
+@sensitive_post_parameters('password', 'captcha')
+@csrf_protect
+@require_http_methods(['GET', 'POST'])
+def iniciar(request):
+    if request.user.is_authenticated and usuario_activo(request.user):
+        return redirect('panel:inicio')
+    ip = ip_cliente(request)
+    destino = request.POST.get('next', request.GET.get('next', ''))[:2048]
+    error, estado, correo = ('', 200, '')
+    if request.method == 'POST':
+        correo = request.POST.get('email', '')[:254].strip().casefold()
+        ip_ok = limitar('login-ip', ip, 25)
+        cuenta_ok = limitar('login-cuenta', correo, 8)
+        captcha_ok = consumir(request, request.POST.get('captcha_token'), request.POST.get('captcha', ''))
+        if not ip_ok or not cuenta_ok:
+            return limite(request)
+        form = LoginForm(request.POST)
+        if form.is_valid() and captcha_ok:
+            usuario = authenticate(request, username=form.cleaned_data['email'], password=form.cleaned_data['password'])
+            if usuario is not None and usuario_activo(usuario):
+                login(request, usuario)
+                request.session['lpn_web_inicio'] = time.time()
+                request.session.set_expiry(settings.LPN_WEB_SESSION_SECONDS)
+                auditar(usuario, 'sesion.web_iniciar', 'sesion')
+                return HttpResponseRedirect(retorno_seguro(request, destino))
+        auditar(None,'sesion.web_rechazada','sesion',resultado='RECHAZADA',motivo='Acceso no validado')
+        error = _t('No pudimos iniciar sesión. Revisa tu correo, contraseña y la nueva suma.')
+        estado = 400
+    if not limitar('captcha-ip', ip, 60):
+        return limite(request)
+    from seguridad.models import ConfiguracionPanel
+    opciones=dict(ConfiguracionPanel.objects.filter(clave__startswith='login_fondo_').values_list('clave','valor'))
+    def numero(clave,default,low,high):
+        try:return min(high,max(low,float(opciones.get(clave,default))))
+        except (ValueError,TypeError):return default
+    fondo={'opacidad':0 if opciones.get('login_fondo_visible')=='no' else numero('login_fondo_opacidad',1,.35,1),'velo':numero('login_fondo_velo',.12,0,.45),'posicion':opciones.get('login_fondo_posicion','center center')}
+    if fondo['posicion'] not in ('center center','center top','center bottom'):fondo['posicion']='center center'
+    desafio = emitir(request)
+    form = LoginForm(initial={'email': correo, 'captcha_token': desafio['token']})
+    return render(request, 'seguridad/web/login.html', {'fondo_login':fondo,'form': form, 'desafio': desafio, 'error': error, 'next': retorno_seguro(request, destino)}, status=estado)
+
+def limite(request):
+    respuesta = render(request, 'seguridad/web/error.html', {'titulo': _t('Hagamos una pausa'), 'detalle': _t('Se alcanzó el límite de intentos. Intenta nuevamente en 15 minutos.'), 'codigo': '429'}, status=429)
+    respuesta['Retry-After'] = '900'
+    return respuesta
+
+def protegido(vista):
+
+    @wraps(vista)
+    @never_cache
+    def envolver(request, *args, **kwargs):
+        if not request.user.is_authenticated or not usuario_activo(request.user):
+            if request.user.is_authenticated:
+                logout(request)
+            from urllib.parse import urlencode
+            return redirect(reverse('panel:login') + '?' + urlencode({'next': request.path}))
+        contexto = construir(request)
+        if not contexto['puede_panel']:
+            return render(request, 'seguridad/web/sin_acceso.html', contexto, status=403)
+        from .estado import datos_estado
+        contexto['estado_panel'] = datos_estado(request,contexto)
+        request.panel = contexto
+        try:
+            return vista(request, *args, **kwargs)
+        except PermissionDenied:
+            return render(request, 'seguridad/web/error.html', {'titulo': _t('Este módulo no está disponible'), 'detalle': _t('Tu cuenta no tiene permiso en este ámbito. Puedes volver al inicio para ver tus accesos actuales.'), 'codigo': '403'}, status=403)
+    return envolver
+
+@protegido
+@require_http_methods(['GET'])
+def inicio(request):
+    from .dashboard import inicio as dashboard_inicio
+    return dashboard_inicio(request)
+
+@csrf_protect
+@require_POST
+def salir(request):
+    if request.user.is_authenticated:
+        auditar(request.user, 'sesion.web_cerrar', 'sesion')
+    logout(request)
+    return redirect('panel:login')
+
+@never_cache
+@sensitive_post_parameters('old_password', 'new_password1', 'new_password2')
+@csrf_protect
+@require_http_methods(['GET', 'POST'])
+def cambiar_clave(request):
+    if not request.user.is_authenticated or not usuario_activo(request.user):
+        return redirect('panel:login')
+    if request.method == 'POST' and (not limitar('cambio-clave', request.user.pk, 8)):
+        return limite(request)
+    form = PasswordChangeForm(request.user, request.POST if request.method == 'POST' else None)
+    if request.method == 'POST' and form.is_valid():
+        usuario = form.save(commit=False)
+        usuario.debe_cambiar_clave = False
+        usuario.save(update_fields=['password', 'debe_cambiar_clave'])
+        update_session_auth_hash(request, usuario)
+        auditar(usuario, 'sesion.cambiar_clave', 'usuarios', usuario.pk)
+        return redirect('panel:inicio')
+    return render(request, 'seguridad/web/cambiar_clave.html', {'form': form}, status=400 if request.method == 'POST' else 200)
+
+@csrf_protect
+@protegido
+@require_POST
+def seleccionar(request):
+    try:
+        identificador = int(request.POST.get('entidad_id', ''))
+    except ValueError:
+        raise PermissionDenied()
+    if identificador not in {e['id'] for e in request.panel['organizaciones']}:
+        raise PermissionDenied()
+    request.session['lpn_entidad'] = identificador
+    return redirect('panel:inicio')
+
+@protegido
+@require_http_methods(['GET'])
+def modulo(request, codigo):
+    if codigo=='usuarios':
+        return redirect('panel:usuarios')
+    from .negocio import AREAS
+    if codigo in AREAS:
+        return redirect('panel:area',codigo=codigo)
+    if codigo=='configuracion':
+        return redirect('panel:configuracion')
+    if codigo=='auditoria':
+        return redirect('panel:auditoria')
+    if codigo in ('roles','recursos','permisos'):
+        return redirect(reverse('panel:seguridad')+'?tab='+codigo)
+    m = next((m for m in request.panel['modulos'] if m['codigo'] == codigo), None)
+    if m is None:
+        raise PermissionDenied()
+    entidad_id = request.panel['entidad_id']
+    endpoints = {'usuarios': '/api/seguridad/usuarios/', 'roles': '/api/seguridad/roles/', 'recursos': '/api/seguridad/recursos/', 'permisos': '/api/seguridad/permisos/', 'auditoria': '/api/seguridad/auditoria/', 'equipo': f'/api/seguridad/entidades/{entidad_id}/miembros/', 'cuentas': f'/api/seguridad/operaciones/entidades/{entidad_id}/propuestas-cuenta/', 'publicidad': f'/api/seguridad/operaciones/entidades/{entidad_id}/anuncios/', 'revision-publicidad': '/api/seguridad/operaciones/publicidad-pendiente/', 'reclamaciones': '/api/seguridad/operaciones/reclamaciones/', 'catalogo': f'/api/seguridad/operaciones/entidades/{entidad_id}/productos/'}
+    recurso = {'verificaciones': 'verificacion', 'adopciones': 'adopcion', 'aportes': 'aporte', 'pedidos': 'pedido'}.get(codigo)
+    if recurso:
+        endpoints[codigo] = f'/api/seguridad/colas/{recurso}/' + (f'?entidad_id={entidad_id}' if recurso != 'verificacion' else '')
+    datos = None
+    if codigo == 'rescates':
+        from rescue.models import CasoRescate
+        datos = list(CasoRescate.objects.filter(fundacion_id=entidad_id).order_by('-pk').values('id_caso', 'estado_caso__nombre', 'fecha_aceptacion')[:100])
+    elif codigo == 'fondos':
+        from seguridad.models import AsignacionFondo
+        datos = [{'id_fondo': a.fondo_id, 'nombre': a.fondo.nombre} for a in AsignacionFondo.objects.filter(usuario=request.user, fondo__entidad_id=entidad_id, fecha_revocacion__isnull=True).select_related('fondo') if puede(request.user, 'fondo.ver', objeto_id=a.fondo_id)]
+    elif codigo == 'expedientes':
+        from animals.models import AutorizacionExpediente
+        from django.utils import timezone
+        datos = [{'id_mascota': a.mascota_id, 'nombre': a.mascota.nombre, 'autorizacion_hasta': a.fecha_expiracion} for a in AutorizacionExpediente.objects.filter(veterinario__usuario_profesional=request.user, fecha_revocacion__isnull=True, fecha_expiracion__gt=timezone.now()).select_related('mascota')[:100] if puede(request.user, 'expediente.escribir', objeto_id=a.mascota_id)]
+    contexto = {**request.panel, 'actual': m, 'endpoint': endpoints.get(codigo, ''), 'recurso_cola': recurso or '', 'datos_iniciales': datos, 'puede_crear': codigo in ('usuarios', 'roles', 'recursos') and puede(request.user, f'{codigo}.crear'), 'puede_editar': codigo in ('usuarios', 'roles', 'recursos', 'permisos') and puede(request.user, f'{codigo}.editar'), 'puede_asignar_roles': codigo == 'usuarios' and puede(request.user, 'roles.asignar')}
+    return render(request, 'seguridad/web/modulo.html', contexto)
+
+def csrf_error(request, reason=''):
+    return render(request, 'seguridad/web/error.html', {'titulo': _t('Tu formulario necesita actualizarse'), 'detalle': _t('Vuelve a abrir la página e intenta nuevamente. No se realizó la operación.'), 'codigo': '403'}, status=403)

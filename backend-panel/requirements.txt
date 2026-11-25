@@ -1,0 +1,9 @@
+Django==5.2.18
+djangorestframework==3.18.3
+djangorestframework-simplejwt==5.5.1
+cryptography==50.0.2
+mysqlclient==2.3.0
+python-dotenv==1.2.4
+uvicorn==0.54.0
+
+Pillow==13.0.0

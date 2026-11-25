@@ -1,0 +1,2 @@
+# Herramienta de mantenimiento; no se instala en el servidor de producción.
+polib==1.2.0

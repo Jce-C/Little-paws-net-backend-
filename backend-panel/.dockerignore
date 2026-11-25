@@ -1,0 +1,14 @@
+.env
+.env.*
+!.env.example
+.venv
+__pycache__
+**/__pycache__
+*.pyc
+.private-data
+staticfiles
+.git
+*.log
+*.sql
+*.sql.gz
+*.zip
