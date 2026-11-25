@@ -1,0 +1,1 @@
+Recursos extraídos de los SVG proporcionados por el usuario el22-11-2026. Se conserva por petición expresa la fotografía welcome-pets con su marca de agua. No se elimina la marca ni se genera una imagen nueva. WebP/alpha optimizados. El logo blanco conserva los huecos del logotipo existente mediante fill-rule evenodd.

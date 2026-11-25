@@ -1,0 +1,76 @@
+{
+  "fecha": "2026-11-25",
+  "guia": 92,
+  "status": "Base local validada para revisión e integración; no publicación comercial",
+  "tests": {
+    "backend": 476,
+    "client": 370,
+    "client_optional_skipped": 9,
+    "tools": 7,
+    "focal_per_demo": 18
+  },
+  "checks": {
+    "django": "sin incidencias",
+    "makemigrations_check": "sin cambios",
+    "analyze_three_copies": "limpio",
+    "android_debug": "compilado",
+    "web_release": "compilado; advertencia previa CupertinoIcons pendiente",
+    "github_actions": "workflow ampliado, todavía sin ejecución remota"
+  },
+  "store_http": {
+    "fixture_only": true,
+    "available_products": 500,
+    "legacy_rows": 100,
+    "page_size": 20,
+    "pages": 25,
+    "unique_products_retrieved": 500,
+    "late_product_search_passed": true,
+    "legacy_response_bytes": 26928,
+    "first_page_response_bytes": 5385,
+    "first_page_local_ms": 36.12,
+    "first_response_byte_reduction_percent": 80.0,
+    "business_writes_by_verifier": 0,
+    "credentials_included": false
+  },
+  "shared_files": [
+    {
+      "path": "lib/main.dart",
+      "sha256": "934147667ee4e86dac8a9cebdd0f2fbbf05bfe0d5ee057f82c7ec2f9314c7f38"
+    },
+    {
+      "path": "lib/core/api_client.dart",
+      "sha256": "6c3c6dfa6f867f430dcf0bdd9755a773be9f5cd627bc1936aeb2bdd6f1bedd1b"
+    },
+    {
+      "path": "lib/explore/product_catalog_screen.dart",
+      "sha256": "df6353a57849f63a626d502a0f8757abebe56dd87dfa70794e98c9e971018603"
+    },
+    {
+      "path": "lib/explore/explore_screens.dart",
+      "sha256": "778bfe160598a79dff48af6cb1ffba47ccabb87b7be3840b68a60550f658ab5b"
+    },
+    {
+      "path": "test/product_pagination_test.dart",
+      "sha256": "b2538d79348c64d5dcab733dcfb67161e7b1d8b38878f17e781bffb4da1b14fc"
+    },
+    {
+      "path": "test/unconfigured_app_test.dart",
+      "sha256": "ad6c3584beed753e5a0fd3155a9063fbcf1894eb8b60a42d8d8689b640d02ae6"
+    }
+  ],
+  "changes": [
+    "Tienda paginada, búsqueda/categoría, recuperación y compatibilidad",
+    "Arranque sin API configurada no conecta con Railway",
+    "CI del backend ejecuta todas las apps y herramientas",
+    "Documentación de base, integración y despliegue corregida"
+  ],
+  "open_acceptance": {
+    "closed": 49,
+    "total": 57,
+    "percent": 86.0,
+    "scope": "Lista histórica, no porcentaje de esfuerzo restante ni producto publicable"
+  },
+  "commits_created": 0,
+  "published": false,
+  "paid_services_created": false
+}

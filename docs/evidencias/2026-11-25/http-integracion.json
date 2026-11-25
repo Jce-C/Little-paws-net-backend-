@@ -1,0 +1,12 @@
+{
+  "solo_loopback_QA": true,
+  "comunidad_publicar_comentar_reaccion_unica_retirar": true,
+  "pedido_propietario_y_sin_cobro": true,
+  "dos_sesiones_abiertas_con_SSE": true,
+  "conceder_ver_revocar_sin_login_nuevo": true,
+  "menu_renombrado_y_retirado": true,
+  "concesion_evento_ambas_ms": 937.12,
+  "revocacion_evento_ambas_ms": 849.76,
+  "post_id": 1,
+  "pedido_id": 1
+}

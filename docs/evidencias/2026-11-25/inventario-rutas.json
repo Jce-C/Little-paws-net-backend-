@@ -1,0 +1,236 @@
+[
+  {
+    "widget": "Home",
+    "tipo": "pantalla-o-contenedor",
+    "source": "lib/main.dart",
+    "line": 118
+  },
+  {
+    "widget": "CatalogScreen",
+    "tipo": "pantalla-o-contenedor",
+    "source": "lib/adoption/adoption_screens.dart",
+    "line": 25
+  },
+  {
+    "widget": "PetScreen",
+    "tipo": "pantalla-o-contenedor",
+    "source": "lib/adoption/adoption_screens.dart",
+    "line": 332
+  },
+  {
+    "widget": "RequestDialog",
+    "tipo": "pantalla-o-contenedor",
+    "source": "lib/adoption/adoption_screens.dart",
+    "line": 508
+  },
+  {
+    "widget": "RequestsScreen",
+    "tipo": "pantalla-o-contenedor",
+    "source": "lib/adoption/adoption_screens.dart",
+    "line": 807
+  },
+  {
+    "widget": "AdoptionQuestionnaireScreen",
+    "tipo": "pantalla-o-contenedor",
+    "source": "lib/adoption/questionnaire_screen.dart",
+    "line": 233
+  },
+  {
+    "widget": "RequestDetailScreen",
+    "tipo": "pantalla-o-contenedor",
+    "source": "lib/adoption/request_detail_screen.dart",
+    "line": 13
+  },
+  {
+    "widget": "AccountScreen",
+    "tipo": "pantalla-o-contenedor",
+    "source": "lib/auth/account_screen.dart",
+    "line": 17
+  },
+  {
+    "widget": "LoginScreen",
+    "tipo": "pantalla-o-contenedor",
+    "source": "lib/auth/account_screen.dart",
+    "line": 72
+  },
+  {
+    "widget": "ProfileScreen",
+    "tipo": "pantalla-o-contenedor",
+    "source": "lib/auth/profile_screen.dart",
+    "line": 11
+  },
+  {
+    "widget": "AvatarScreen",
+    "tipo": "pantalla-o-contenedor",
+    "source": "lib/auth/public_avatar.dart",
+    "line": 83
+  },
+  {
+    "widget": "WelcomeScreen",
+    "tipo": "pantalla-o-contenedor",
+    "source": "lib/design/welcome_screen.dart",
+    "line": 8
+  },
+  {
+    "widget": "CommunityScreen",
+    "tipo": "pantalla-o-contenedor",
+    "source": "lib/explore/community_screen.dart",
+    "line": 14
+  },
+  {
+    "widget": "ExploreScreen",
+    "tipo": "pantalla-o-contenedor",
+    "source": "lib/explore/explore_screens.dart",
+    "line": 26
+  },
+  {
+    "widget": "HelpScreen",
+    "tipo": "pantalla-o-contenedor",
+    "source": "lib/explore/explore_screens.dart",
+    "line": 121
+  },
+  {
+    "widget": "PublicListScreen",
+    "tipo": "pantalla-o-contenedor",
+    "source": "lib/explore/explore_screens.dart",
+    "line": 216
+  },
+  {
+    "widget": "ProductScreen",
+    "tipo": "pantalla-o-contenedor",
+    "source": "lib/explore/explore_screens.dart",
+    "line": 656
+  },
+  {
+    "widget": "OrderScreen",
+    "tipo": "pantalla-o-contenedor",
+    "source": "lib/explore/explore_screens.dart",
+    "line": 721
+  },
+  {
+    "widget": "ContributionScreen",
+    "tipo": "pantalla-o-contenedor",
+    "source": "lib/explore/explore_screens.dart",
+    "line": 925
+  },
+  {
+    "widget": "ManageHelpScreen",
+    "tipo": "pantalla-o-contenedor",
+    "source": "lib/explore/help_management.dart",
+    "line": 95
+  },
+  {
+    "widget": "OrganizationHelpScreen",
+    "tipo": "pantalla-o-contenedor",
+    "source": "lib/explore/help_management.dart",
+    "line": 193
+  },
+  {
+    "widget": "PublicMessageScreen",
+    "tipo": "pantalla-o-contenedor",
+    "source": "lib/explore/message_composer.dart",
+    "line": 11
+  },
+  {
+    "widget": "OrganizationDetailScreen",
+    "tipo": "pantalla-o-contenedor",
+    "source": "lib/explore/organization_public_info.dart",
+    "line": 123
+  },
+  {
+    "widget": "NotificationsScreen",
+    "tipo": "pantalla-o-contenedor",
+    "source": "lib/notifications/notifications_screen.dart",
+    "line": 12
+  },
+  {
+    "widget": "OwnedPetsScreen",
+    "tipo": "pantalla-o-contenedor",
+    "source": "lib/pets/owned_pets_screens.dart",
+    "line": 12
+  },
+  {
+    "widget": "PetMedicalRecordScreen",
+    "tipo": "pantalla-o-contenedor",
+    "source": "lib/pets/owned_pets_screens.dart",
+    "line": 259
+  },
+  {
+    "widget": "PersonalPetScreen",
+    "tipo": "pantalla-o-contenedor",
+    "source": "lib/pets/personal_pet_screen.dart",
+    "line": 26
+  },
+  {
+    "widget": "PersonalPetDetailsScreen",
+    "tipo": "pantalla-o-contenedor",
+    "source": "lib/pets/personal_pet_screen.dart",
+    "line": 358
+  },
+  {
+    "widget": "PetQrScreen",
+    "tipo": "pantalla-o-contenedor",
+    "source": "lib/pets/pet_qr_screen.dart",
+    "line": 12
+  },
+  {
+    "widget": "AnonymousReportScreen",
+    "tipo": "pantalla-o-contenedor",
+    "source": "lib/rescue/anonymous_report_screen.dart",
+    "line": 12
+  },
+  {
+    "widget": "MySponsorshipsScreen",
+    "tipo": "pantalla-o-contenedor",
+    "source": "lib/rescue/my_sponsorships_screen.dart",
+    "line": 11
+  },
+  {
+    "widget": "RescueScreen",
+    "tipo": "pantalla-o-contenedor",
+    "source": "lib/rescue/rescue_screens.dart",
+    "line": 41
+  },
+  {
+    "widget": "CommunityReportsScreen",
+    "tipo": "pantalla-o-contenedor",
+    "source": "lib/rescue/rescue_screens.dart",
+    "line": 202
+  },
+  {
+    "widget": "PublicReportsPageControls",
+    "tipo": "componente",
+    "source": "lib/rescue/rescue_screens.dart",
+    "line": 252
+  },
+  {
+    "widget": "ReportDetailScreen",
+    "tipo": "pantalla-o-contenedor",
+    "source": "lib/rescue/rescue_screens.dart",
+    "line": 318
+  },
+  {
+    "widget": "MyReportsScreen",
+    "tipo": "pantalla-o-contenedor",
+    "source": "lib/rescue/rescue_screens.dart",
+    "line": 452
+  },
+  {
+    "widget": "ReportFormScreen",
+    "tipo": "pantalla-o-contenedor",
+    "source": "lib/rescue/rescue_screens.dart",
+    "line": 542
+  },
+  {
+    "widget": "ReportReceiptScreen",
+    "tipo": "pantalla-o-contenedor",
+    "source": "lib/rescue/rescue_screens.dart",
+    "line": 1326
+  },
+  {
+    "widget": "SponsorshipScreen",
+    "tipo": "pantalla-o-contenedor",
+    "source": "lib/rescue/sponsorship_screen.dart",
+    "line": 13
+  }
+]

@@ -1,0 +1,79 @@
+{
+  "fecha": "2026-11-25",
+  "bloque": "Q01/Q02 teclado y foco parcial",
+  "estado_global": {
+    "cerrados": 49,
+    "total": 57,
+    "porcentaje": 86.0
+  },
+  "pruebas": {
+    "cliente_aprobadas": 317,
+    "cliente_optativas_omitidas": 9,
+    "focales_por_demo": 28,
+    "nuevas": 9,
+    "analisis_tres_copias": "sin incidencias",
+    "android_debug": "compilado",
+    "web_release": "compilado; advertencia previa de CupertinoIcons pendiente"
+  },
+  "archivos_sincronizados": [
+    {
+      "archivo": "lib/design/form_surfaces.dart",
+      "sha256": "c2ba228821e01228a30678d1a0e0ae9d722d71006d6f05937ec3141e17bc4c24"
+    },
+    {
+      "archivo": "lib/explore/message_composer.dart",
+      "sha256": "7dbcf264065eefdbf10fbb01bbc923ff4f4378c68325145c603a02533bd30335"
+    },
+    {
+      "archivo": "lib/explore/help_program.dart",
+      "sha256": "83207af599a1b4ecfc89bfd78deaada2f948fa491adda972f41a08aa22841aba"
+    },
+    {
+      "archivo": "lib/explore/help_management.dart",
+      "sha256": "49938592babddcd5be34bb34a7555646b1a62a4e4209a2cf17887e68661e6734"
+    },
+    {
+      "archivo": "lib/explore/explore_screens.dart",
+      "sha256": "8605959de464d34c35c9f7c7e498568a15d86da4e4361c98642d7b9b9127e8eb"
+    },
+    {
+      "archivo": "lib/auth/public_avatar.dart",
+      "sha256": "c326b2f6f13b04f303ab5fc1b38a83c5a0ab2274cbd999279c4ca504fa096927"
+    },
+    {
+      "archivo": "lib/pets/personal_pet_screen.dart",
+      "sha256": "3b953c9c71eb4ab1fb6f3cf8130bc24b208567c416353ee2c63b1294498ba158"
+    },
+    {
+      "archivo": "lib/rescue/sponsorship_screen.dart",
+      "sha256": "0687a23d8594491bd64e225ce7373c699216885ddd710a1ace14670393847d9b"
+    },
+    {
+      "archivo": "lib/rescue/rescue_screens.dart",
+      "sha256": "5f0342428be619d20ac1a710d2b0fe77d65019a55bb93f127721168b30fbaab6"
+    },
+    {
+      "archivo": "test/keyboard_accessibility_test.dart",
+      "sha256": "b893cbebac1810a305e9f1ada0e0499738702a75194a1315810344fcebd785c4"
+    }
+  ],
+  "validacion_nativa": "Emulador Android 5560 aislado, backend ficticio, red deshabilitada; no dispositivo físico ni TalkBack",
+  "capturas_finales": [
+    "emulador-teclado-mensaje.png",
+    "emulador-horizontal-final.png",
+    "emulador-horizontal-sin-teclado.png"
+  ],
+  "resultado_nativo": "IME visible, botón sobre teclado en vertical; horizontal extremo sin overflow; acciones restauradas y borrador conservado al cerrar IME",
+  "commits": 0,
+  "publicado": false,
+  "pendientes": [
+    "S04",
+    "S05",
+    "S08",
+    "S12",
+    "Q01",
+    "Q02",
+    "Q03",
+    "Q10"
+  ]
+}

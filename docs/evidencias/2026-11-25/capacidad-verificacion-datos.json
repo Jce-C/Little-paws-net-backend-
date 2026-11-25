@@ -1,0 +1,18 @@
+{
+  "counts_after_workload": {
+    "community_posts": 302,
+    "orders": 52
+  },
+  "expected_business_writes": 104,
+  "schema_storage_bytes_snapshot": 6602752,
+  "mysql_version": [
+    8,
+    0,
+    46
+  ],
+  "python_version": "3.14.7",
+  "os": "Windows 11",
+  "logical_cpus": 8,
+  "network": "loopback only",
+  "credentials_included": false
+}

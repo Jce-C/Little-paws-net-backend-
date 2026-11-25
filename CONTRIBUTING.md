@@ -1,20 +1,35 @@
-# Contribuir a Little Paws Net
+# Colaborar en Little Paws Net
 
-Las contribuciones deben mantener la coherencia entre modelos, migraciones, validación de entrada, permisos y respuestas de la API. Los cambios de reglas de negocio requieren pruebas que cubran tanto el caso permitido como el rechazado.
+La integración actual se revisa en el PR #24, desde `feature/presentacion-integrada` hacia `main`. Después de integrarla, crear ramas `feature/<tema>` para mejoras y `fix/<tema>` para correcciones desde `main` actualizado. Cada integrante revisa y registra su propio trabajo. Conservar los commits individuales al integrar esta entrega.
 
-## Flujo de trabajo
+Usar mensajes como `feat(movil): consultar el estado de adopción`, `fix(panel): manejar un recurso inexistente` o `docs: actualizar las instrucciones de instalación`. Un PR debe enlazar su issue, explicar el resultado y dejar instrucciones de prueba. Revisar los cambios y las pruebas antes de integrar. Tras la integración, actualizar el registro de cambios y crear el tag sobre el commit que corresponde a la versión.
 
-1. Crear una rama a partir de `main` para una funcionalidad o corrección concreta.
-2. Incluir en el mismo cambio las migraciones generadas por Django, si se modifica un modelo.
-3. Revisar el diff y ejecutar las comprobaciones desde `backend/`:
+## Cambios del panel
 
-   ```powershell
-   python manage.py check
-   python manage.py makemigrations --check --dry-run
-   python manage.py test --settings=config.test_settings
-   ```
+Trabajar en `backend-panel/`. Mantener modelos, migraciones, servicios de dominio, permisos y API coherentes. Ocultar botones no sustituye la autorización del servidor. Las reglas de seguridad requieren pruebas de operación permitida y denegada.
 
-4. Hacer commits descriptivos y abrir un pull request que explique el alcance, las pruebas y cualquier migración o limitación pendiente.
-5. Antes de integrar, comprobar el comportamiento en MySQL cuando el cambio dependa de funciones específicas de ese motor, como tipos espaciales o claves foráneas compuestas.
+Las pruebas usan MySQL **aislado**, nunca Railway. Configurar `LPN_TEST_MYSQL_HOST=127.0.0.1`, un puerto distinto de `MYSQL_PORT`, usuario y contraseña en variables locales `LPN_TEST_MYSQL_PORT`, `LPN_TEST_MYSQL_USER`, `LPN_TEST_MYSQL_PASSWORD`; además una `DJANGO_SECRET_KEY` local de prueba. El usuario de pruebas debe poder crear y destruir la base sintética. Después, desde `backend-panel`:
 
-No incluir contraseñas privadas, tokens, claves de producción ni datos personales reales. La única excepción es `backend/.env`, preparado expresamente para una base de evaluación desechable y separada de la API publicada; permite cambios de datos únicamente allí y no debe reutilizarse en otros entornos. Las pruebas deben usar información ficticia. Las traducciones deben conservar estables las rutas, claves JSON y reglas de autorización; véase [IDIOMAS.md](backend/IDIOMAS.md).
+```powershell
+python manage.py check --settings=config.settings_test_mysql
+python manage.py makemigrations --check --dry-run --settings=config.settings_test_mysql
+python manage.py test --settings=config.settings_test_mysql --noinput
+```
+
+El workflow `.github/workflows/panel.yml` reproduce estas comprobaciones en Linux con MySQL 8.4. No usa secretos de producción.
+
+## Diseño
+
+El panel utiliza `backend-panel/seguridad/templates` y `backend-panel/seguridad/static`; la app tiene sus componentes y recursos en `frontend/mobile`. Revisar la interfaz realmente conectada al backend, no una demo visual en memoria. Conservar las licencias de fuentes e iconos y los diagramas originales de `DIAGRAMAS/`.
+
+## App móvil
+
+Trabajar en `frontend/mobile/`. Ejecutar `flutter analyze` y `flutter test --no-pub`. Los ensayos que crean o resuelven solicitudes deben usar la base de pruebas local indicada en la [guía de la app](frontend/mobile/README.md).
+
+## Datos y despliegue
+
+No incluir ningún `.env`, contraseña, token, respaldo SQL ni datos personales. No hay excepciones para bases de evaluación. Borrar una credencial de Git no la revoca: rotarla y comprobar servicios dependientes. No reescribir la historia ni usar force push sin coordinación explícita.
+
+No cambiar `backend/`, sus migraciones, el Dockerfile raíz o las bases anteriores como parte de una corrección del panel. La consolidación de ambas versiones requiere un plan de migración propio.
+
+Ver [actualización del equipo](docs/entrega/actualizar-equipo.md) y [trazabilidad de Semana 15](docs/entrega/semana-15-evolucion.md).

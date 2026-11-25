@@ -1,0 +1,59 @@
+{
+  "fecha": "2026-11-25",
+  "guia": 90,
+  "estado_global": {
+    "cerrados": 49,
+    "total": 57,
+    "porcentaje": 86.0
+  },
+  "entorno": {
+    "avd": "Pixel_6a_2 read-only",
+    "android": "15/API 35",
+    "dispositivo": "emulator-5560",
+    "variante": "net.littlepaws.little_paws_net.visualdemo",
+    "red": "Wi-Fi y datos deshabilitados; HTTP simulado"
+  },
+  "pruebas": {
+    "cliente_aprobadas": 363,
+    "cliente_optativas_omitidas": 9,
+    "nuevas": 4,
+    "focales_por_demo": 29,
+    "analisis_tres_copias": "limpio",
+    "android_debug": "compilado",
+    "web_release": "compilado con advertencia previa CupertinoIcons",
+    "backend": "sin cambios, se reutilizan 468 pruebas anteriores"
+  },
+  "nativo_verificado": [
+    "Siguiente enfoca contraseña",
+    "Nombre corregido elimina su error sin otro envío",
+    "Borrador preservado al ampliar texto, continuar edición y rotar",
+    "Confirmación ampliada con ambas acciones visibles"
+  ],
+  "limites": [
+    "TalkBack instalado, aceptación auditiva pendiente",
+    "Teléfono físico pendiente",
+    "Extremo horizontal con IME y banda demo deja poco espacio; cerrar IME restaura acciones",
+    "No es aceptación de todas las pantallas ni autorización para publicar"
+  ],
+  "archivos_sincronizados": [
+    {
+      "archivo": "lib/auth/account_screen.dart",
+      "sha256": "216fc95ca0f5b9a424048b93c1a170bcd3a6ffc362382e90d3d0e740a68dff03"
+    },
+    {
+      "archivo": "lib/pets/personal_pet_screen.dart",
+      "sha256": "c87de3adf4ae07247fb453273fc48f9940c9953f2aeb736a519ee02a3b4666a1"
+    },
+    {
+      "archivo": "test/keyboard_accessibility_test.dart",
+      "sha256": "79094ab49b7b0ed8d2c45853500ab1a38662a81a3fa013978bea045bc86d1367"
+    },
+    {
+      "archivo": "test/field_labels_validation_test.dart",
+      "sha256": "952d159359dd56680c163aa5dc52677bced7675ca591f49ed3cc5b630fa54040"
+    }
+  ],
+  "apk_sha256": "df657d7038c1b38189b9fe011039564daf5a371401635794acdf9ed00ac11d31",
+  "commits": 0,
+  "publicado": false
+}

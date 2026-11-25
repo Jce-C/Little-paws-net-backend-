@@ -1,0 +1,312 @@
+{
+  "solo_QA_local": true,
+  "memoria": "Pico de asignaciones Python por petición, no RSS ni memoria Android/browser. Los tiempos instrumentados incluyen overhead de trazado.",
+  "rutas": [
+    {
+      "ruta": "/panel/login/",
+      "recorrido": "login",
+      "muestras": [
+        {
+          "sql": 11,
+          "ms_con_instrumentacion": 20.16,
+          "python_peak_bytes": 1204324,
+          "bytes": 231731
+        },
+        {
+          "sql": 11,
+          "ms_con_instrumentacion": 16.78,
+          "python_peak_bytes": 1199661,
+          "bytes": 231731
+        },
+        {
+          "sql": 11,
+          "ms_con_instrumentacion": 15.4,
+          "python_peak_bytes": 1197856,
+          "bytes": 231731
+        },
+        {
+          "sql": 11,
+          "ms_con_instrumentacion": 17.86,
+          "python_peak_bytes": 1197215,
+          "bytes": 231731
+        },
+        {
+          "sql": 11,
+          "ms_con_instrumentacion": 17.35,
+          "python_peak_bytes": 1193523,
+          "bytes": 231731
+        }
+      ]
+    },
+    {
+      "ruta": "/api/adopcion/catalogo/",
+      "recorrido": "adopcion",
+      "muestras": [
+        {
+          "sql": 2,
+          "ms_con_instrumentacion": 20.35,
+          "python_peak_bytes": 165385,
+          "bytes": 251
+        },
+        {
+          "sql": 2,
+          "ms_con_instrumentacion": 19.85,
+          "python_peak_bytes": 147070,
+          "bytes": 251
+        },
+        {
+          "sql": 2,
+          "ms_con_instrumentacion": 19.95,
+          "python_peak_bytes": 146380,
+          "bytes": 251
+        },
+        {
+          "sql": 2,
+          "ms_con_instrumentacion": 17.1,
+          "python_peak_bytes": 145226,
+          "bytes": 251
+        },
+        {
+          "sql": 2,
+          "ms_con_instrumentacion": 14.92,
+          "python_peak_bytes": 146357,
+          "bytes": 251
+        }
+      ]
+    },
+    {
+      "ruta": "/api/comunidad/publicaciones/",
+      "recorrido": "comunidad",
+      "muestras": [
+        {
+          "sql": 1,
+          "ms_con_instrumentacion": 5.38,
+          "python_peak_bytes": 56015,
+          "bytes": 72
+        },
+        {
+          "sql": 1,
+          "ms_con_instrumentacion": 4.9,
+          "python_peak_bytes": 54038,
+          "bytes": 72
+        },
+        {
+          "sql": 1,
+          "ms_con_instrumentacion": 5.99,
+          "python_peak_bytes": 56525,
+          "bytes": 72
+        },
+        {
+          "sql": 1,
+          "ms_con_instrumentacion": 4.3,
+          "python_peak_bytes": 55393,
+          "bytes": 72
+        },
+        {
+          "sql": 1,
+          "ms_con_instrumentacion": 6.21,
+          "python_peak_bytes": 55066,
+          "bytes": 72
+        }
+      ]
+    },
+    {
+      "ruta": "/api/red/organizaciones/",
+      "recorrido": "directorio",
+      "muestras": [
+        {
+          "sql": 3,
+          "ms_con_instrumentacion": 10.95,
+          "python_peak_bytes": 81136,
+          "bytes": 695
+        },
+        {
+          "sql": 3,
+          "ms_con_instrumentacion": 11.05,
+          "python_peak_bytes": 78785,
+          "bytes": 695
+        },
+        {
+          "sql": 3,
+          "ms_con_instrumentacion": 13.85,
+          "python_peak_bytes": 70239,
+          "bytes": 695
+        },
+        {
+          "sql": 3,
+          "ms_con_instrumentacion": 11.01,
+          "python_peak_bytes": 76566,
+          "bytes": 695
+        },
+        {
+          "sql": 3,
+          "ms_con_instrumentacion": 10.93,
+          "python_peak_bytes": 76253,
+          "bytes": 695
+        }
+      ]
+    },
+    {
+      "ruta": "/api/catalogo/productos/",
+      "recorrido": "tienda",
+      "muestras": [
+        {
+          "sql": 1,
+          "ms_con_instrumentacion": 5.92,
+          "python_peak_bytes": 72040,
+          "bytes": 216
+        },
+        {
+          "sql": 1,
+          "ms_con_instrumentacion": 6.49,
+          "python_peak_bytes": 72400,
+          "bytes": 216
+        },
+        {
+          "sql": 1,
+          "ms_con_instrumentacion": 7.82,
+          "python_peak_bytes": 72159,
+          "bytes": 216
+        },
+        {
+          "sql": 1,
+          "ms_con_instrumentacion": 6.69,
+          "python_peak_bytes": 71838,
+          "bytes": 216
+        },
+        {
+          "sql": 1,
+          "ms_con_instrumentacion": 6.77,
+          "python_peak_bytes": 71557,
+          "bytes": 216
+        }
+      ]
+    },
+    {
+      "ruta": "/api/mascotas/mias/?pagina=1&limite=3",
+      "recorrido": "mis-mascotas",
+      "muestras": [
+        {
+          "sql": 13,
+          "ms_con_instrumentacion": 19.92,
+          "python_peak_bytes": 181244,
+          "bytes": 33
+        },
+        {
+          "sql": 13,
+          "ms_con_instrumentacion": 19.82,
+          "python_peak_bytes": 175937,
+          "bytes": 33
+        },
+        {
+          "sql": 13,
+          "ms_con_instrumentacion": 22.68,
+          "python_peak_bytes": 175763,
+          "bytes": 33
+        },
+        {
+          "sql": 13,
+          "ms_con_instrumentacion": 22.67,
+          "python_peak_bytes": 176074,
+          "bytes": 33
+        },
+        {
+          "sql": 13,
+          "ms_con_instrumentacion": 21.5,
+          "python_peak_bytes": 172593,
+          "bytes": 33
+        }
+      ]
+    }
+  ],
+  "catalogo_sql_1_producto": 1,
+  "catalogo_sql_21_productos": 1,
+  "sin_N_mas_1_catalogo": true,
+  "imagenes_bytes_total": 737398,
+  "imagenes": [
+    {
+      "asset": "adopt-category.webp",
+      "bytes": 13380
+    },
+    {
+      "asset": "adoption-banner.webp",
+      "bytes": 34020
+    },
+    {
+      "asset": "brand-header.svg",
+      "bytes": 2221
+    },
+    {
+      "asset": "brand-navigation.svg",
+      "bytes": 2205
+    },
+    {
+      "asset": "brand-organic.svg",
+      "bytes": 758
+    },
+    {
+      "asset": "brand.svg",
+      "bytes": 4500
+    },
+    {
+      "asset": "history-dot.png",
+      "bytes": 3430
+    },
+    {
+      "asset": "history-dot.svg",
+      "bytes": 966
+    },
+    {
+      "asset": "history-paw.png",
+      "bytes": 67052
+    },
+    {
+      "asset": "home-pets.webp",
+      "bytes": 38284
+    },
+    {
+      "asset": "login-brand.svg",
+      "bytes": 4500
+    },
+    {
+      "asset": "pet-age.png",
+      "bytes": 47766
+    },
+    {
+      "asset": "pet-size.png",
+      "bytes": 28255
+    },
+    {
+      "asset": "profile-avatar.png",
+      "bytes": 78602
+    },
+    {
+      "asset": "request-banner.webp",
+      "bytes": 68520
+    },
+    {
+      "asset": "rescue-banner.webp",
+      "bytes": 21482
+    },
+    {
+      "asset": "rescue-category.webp",
+      "bytes": 184942
+    },
+    {
+      "asset": "welcome-brand.svg",
+      "bytes": 4515
+    },
+    {
+      "asset": "access/brand-access.svg",
+      "bytes": 630
+    },
+    {
+      "asset": "access/login-pets.webp",
+      "bytes": 97842
+    },
+    {
+      "asset": "access/welcome-pets.webp",
+      "bytes": 33528
+    }
+  ]
+}

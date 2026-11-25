@@ -1,0 +1,480 @@
+{
+  "contexto": "HTTP loopback ASGI/MySQL QA sint\u00e9tico, sin prueba de carga",
+  "peticiones": [
+    {
+      "method": "POST",
+      "path": "/api/auth/token/",
+      "status": 200,
+      "bytes": 489,
+      "ms": 256.45
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/token/",
+      "status": 200,
+      "bytes": 489,
+      "ms": 25.65
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/token/",
+      "status": 200,
+      "bytes": 489,
+      "ms": 30.02
+    },
+    {
+      "method": "POST",
+      "path": "/api/comunidad/publicaciones/",
+      "status": 201,
+      "bytes": 8,
+      "ms": 51.79
+    },
+    {
+      "method": "POST",
+      "path": "/api/comunidad/publicaciones/1/reaccion/",
+      "status": 200,
+      "bytes": 25,
+      "ms": 30.88
+    },
+    {
+      "method": "POST",
+      "path": "/api/comunidad/publicaciones/1/reaccion/",
+      "status": 200,
+      "bytes": 25,
+      "ms": 42.26
+    },
+    {
+      "method": "POST",
+      "path": "/api/comunidad/publicaciones/1/comentarios/",
+      "status": 201,
+      "bytes": 8,
+      "ms": 52.01
+    },
+    {
+      "method": "GET",
+      "path": "/api/comunidad/publicaciones/",
+      "status": 200,
+      "bytes": 290,
+      "ms": 23.49
+    },
+    {
+      "method": "POST",
+      "path": "/api/comunidad/publicaciones/1/retirar/",
+      "status": 403,
+      "bytes": 66,
+      "ms": 45.08
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/comunidad/publicaciones/1/reaccion/",
+      "status": 200,
+      "bytes": 26,
+      "ms": 52.46
+    },
+    {
+      "method": "POST",
+      "path": "/api/comunidad/publicaciones/1/retirar/",
+      "status": 200,
+      "bytes": 15,
+      "ms": 26.27
+    },
+    {
+      "method": "GET",
+      "path": "/api/comunidad/publicaciones/",
+      "status": 200,
+      "bytes": 72,
+      "ms": 15.28
+    },
+    {
+      "method": "POST",
+      "path": "/api/pedidos/",
+      "status": 201,
+      "bytes": 185,
+      "ms": 37.73
+    },
+    {
+      "method": "GET",
+      "path": "/api/pedidos/1/",
+      "status": 200,
+      "bytes": 185,
+      "ms": 34.22
+    },
+    {
+      "method": "GET",
+      "path": "/api/pedidos/1/",
+      "status": 404,
+      "bytes": 45,
+      "ms": 46.22
+    },
+    {
+      "method": "GET",
+      "path": "/api/seguridad/usuarios/",
+      "status": 403,
+      "bytes": 66,
+      "ms": 33.9
+    },
+    {
+      "method": "GET",
+      "path": "/api/seguridad/usuarios/",
+      "status": 403,
+      "bytes": 66,
+      "ms": 46.24
+    },
+    {
+      "method": "POST",
+      "path": "/api/seguridad/roles/8/permisos/",
+      "status": 200,
+      "bytes": 276,
+      "ms": 69.4
+    },
+    {
+      "method": "GET",
+      "path": "/panel/estado/",
+      "status": 200,
+      "bytes": 7914,
+      "ms": 80.36
+    },
+    {
+      "method": "GET",
+      "path": "/api/seguridad/usuarios/",
+      "status": 200,
+      "bytes": 768,
+      "ms": 39.21
+    },
+    {
+      "method": "GET",
+      "path": "/api/seguridad/usuarios/",
+      "status": 200,
+      "bytes": 768,
+      "ms": 43.77
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/seguridad/recursos/1/",
+      "status": 200,
+      "bytes": 96,
+      "ms": 53.03
+    },
+    {
+      "method": "GET",
+      "path": "/panel/estado/",
+      "status": 200,
+      "bytes": 7965,
+      "ms": 22.29
+    },
+    {
+      "method": "POST",
+      "path": "/api/seguridad/roles/8/permisos/",
+      "status": 200,
+      "bytes": 261,
+      "ms": 64.08
+    },
+    {
+      "method": "GET",
+      "path": "/panel/estado/",
+      "status": 200,
+      "bytes": 7313,
+      "ms": 40.11
+    },
+    {
+      "method": "GET",
+      "path": "/api/seguridad/usuarios/",
+      "status": 403,
+      "bytes": 66,
+      "ms": 20.68
+    },
+    {
+      "method": "GET",
+      "path": "/api/seguridad/usuarios/",
+      "status": 403,
+      "bytes": 66,
+      "ms": 21.96
+    },
+    {
+      "method": "POST",
+      "path": "/api/seguridad/roles/8/permisos/",
+      "status": 200,
+      "bytes": 261,
+      "ms": 48.9
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/seguridad/recursos/1/",
+      "status": 200,
+      "bytes": 79,
+      "ms": 46.73
+    },
+    {
+      "method": "GET",
+      "path": "/panel/login/",
+      "status": 200,
+      "bytes": 231731,
+      "ms": 105.94
+    },
+    {
+      "method": "GET",
+      "path": "/panel/login/",
+      "status": 200,
+      "bytes": 231731,
+      "ms": 39.04
+    },
+    {
+      "method": "GET",
+      "path": "/panel/login/",
+      "status": 200,
+      "bytes": 231731,
+      "ms": 47.3
+    },
+    {
+      "method": "GET",
+      "path": "/panel/login/",
+      "status": 200,
+      "bytes": 231731,
+      "ms": 22.89
+    },
+    {
+      "method": "GET",
+      "path": "/panel/login/",
+      "status": 200,
+      "bytes": 231731,
+      "ms": 43.36
+    },
+    {
+      "method": "GET",
+      "path": "/api/adopcion/mascotas/?pagina=1",
+      "status": 200,
+      "bytes": 91,
+      "ms": 43.57
+    },
+    {
+      "method": "GET",
+      "path": "/api/adopcion/mascotas/?pagina=1",
+      "status": 200,
+      "bytes": 91,
+      "ms": 16.83
+    },
+    {
+      "method": "GET",
+      "path": "/api/adopcion/mascotas/?pagina=1",
+      "status": 200,
+      "bytes": 91,
+      "ms": 23.78
+    },
+    {
+      "method": "GET",
+      "path": "/api/adopcion/mascotas/?pagina=1",
+      "status": 200,
+      "bytes": 91,
+      "ms": 20.53
+    },
+    {
+      "method": "GET",
+      "path": "/api/adopcion/mascotas/?pagina=1",
+      "status": 200,
+      "bytes": 91,
+      "ms": 40.17
+    },
+    {
+      "method": "GET",
+      "path": "/api/reportes/publicos/",
+      "status": 200,
+      "bytes": 33,
+      "ms": 16.68
+    },
+    {
+      "method": "GET",
+      "path": "/api/reportes/publicos/",
+      "status": 200,
+      "bytes": 33,
+      "ms": 18.85
+    },
+    {
+      "method": "GET",
+      "path": "/api/reportes/publicos/",
+      "status": 200,
+      "bytes": 33,
+      "ms": 14.66
+    },
+    {
+      "method": "GET",
+      "path": "/api/reportes/publicos/",
+      "status": 200,
+      "bytes": 33,
+      "ms": 34.51
+    },
+    {
+      "method": "GET",
+      "path": "/api/reportes/publicos/",
+      "status": 200,
+      "bytes": 33,
+      "ms": 30.91
+    },
+    {
+      "method": "GET",
+      "path": "/api/red/organizaciones/",
+      "status": 200,
+      "bytes": 695,
+      "ms": 15.8
+    },
+    {
+      "method": "GET",
+      "path": "/api/red/organizaciones/",
+      "status": 200,
+      "bytes": 695,
+      "ms": 33.77
+    },
+    {
+      "method": "GET",
+      "path": "/api/red/organizaciones/",
+      "status": 200,
+      "bytes": 695,
+      "ms": 14.82
+    },
+    {
+      "method": "GET",
+      "path": "/api/red/organizaciones/",
+      "status": 200,
+      "bytes": 695,
+      "ms": 17.61
+    },
+    {
+      "method": "GET",
+      "path": "/api/red/organizaciones/",
+      "status": 200,
+      "bytes": 695,
+      "ms": 35.91
+    },
+    {
+      "method": "GET",
+      "path": "/api/catalogo/productos/",
+      "status": 200,
+      "bytes": 216,
+      "ms": 12.5
+    },
+    {
+      "method": "GET",
+      "path": "/api/catalogo/productos/",
+      "status": 200,
+      "bytes": 216,
+      "ms": 21.93
+    },
+    {
+      "method": "GET",
+      "path": "/api/catalogo/productos/",
+      "status": 200,
+      "bytes": 216,
+      "ms": 31.58
+    },
+    {
+      "method": "GET",
+      "path": "/api/catalogo/productos/",
+      "status": 200,
+      "bytes": 216,
+      "ms": 12.06
+    },
+    {
+      "method": "GET",
+      "path": "/api/catalogo/productos/",
+      "status": 200,
+      "bytes": 216,
+      "ms": 33.41
+    },
+    {
+      "method": "GET",
+      "path": "/api/adopcion/catalogo/",
+      "status": 200,
+      "bytes": 251,
+      "ms": 32.3
+    },
+    {
+      "method": "GET",
+      "path": "/api/adopcion/catalogo/",
+      "status": 200,
+      "bytes": 251,
+      "ms": 29.0
+    },
+    {
+      "method": "GET",
+      "path": "/api/adopcion/catalogo/",
+      "status": 200,
+      "bytes": 251,
+      "ms": 15.11
+    },
+    {
+      "method": "GET",
+      "path": "/api/adopcion/catalogo/",
+      "status": 200,
+      "bytes": 251,
+      "ms": 31.89
+    },
+    {
+      "method": "GET",
+      "path": "/api/adopcion/catalogo/",
+      "status": 200,
+      "bytes": 251,
+      "ms": 15.34
+    }
+  ],
+  "lecturas": {
+    "/api/adopcion/mascotas/?pagina=1": {
+      "n": 5,
+      "median_ms": 23.78,
+      "max_ms": 43.57,
+      "max_bytes": 91
+    },
+    "/api/catalogo/productos/": {
+      "n": 5,
+      "median_ms": 21.93,
+      "max_ms": 33.41,
+      "max_bytes": 216
+    },
+    "/api/comunidad/publicaciones/": {
+      "n": 2,
+      "median_ms": 19.38,
+      "max_ms": 23.49,
+      "max_bytes": 290
+    },
+    "/api/pedidos/1/": {
+      "n": 2,
+      "median_ms": 40.22,
+      "max_ms": 46.22,
+      "max_bytes": 185
+    },
+    "/api/red/organizaciones/": {
+      "n": 5,
+      "median_ms": 17.61,
+      "max_ms": 35.91,
+      "max_bytes": 695
+    },
+    "/api/reportes/publicos/": {
+      "n": 5,
+      "median_ms": 18.85,
+      "max_ms": 34.51,
+      "max_bytes": 33
+    },
+    "/api/seguridad/usuarios/": {
+      "n": 6,
+      "median_ms": 36.55,
+      "max_ms": 46.24,
+      "max_bytes": 768
+    },
+    "/panel/estado/": {
+      "n": 3,
+      "median_ms": 40.11,
+      "max_ms": 80.36,
+      "max_bytes": 7965
+    },
+    "/panel/login/": {
+      "n": 5,
+      "median_ms": 43.36,
+      "max_ms": 105.94,
+      "max_bytes": 231731
+    },
+    "/api/adopcion/catalogo/": {
+      "n": 5,
+      "median_ms": 29.0,
+      "max_ms": 32.3,
+      "max_bytes": 251
+    }
+  }
+}

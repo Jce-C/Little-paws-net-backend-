@@ -1,0 +1,26 @@
+/* Tarjetas crema con relieve cálido, inspirado en la referencia móvil. */
+.lpn-icon{display:inline-block;width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;vertical-align:middle;flex-shrink:0}
+.nav-icono{display:inline-flex;align-items:center;justify-content:center}
+.nav-icono .lpn-icon{width:20px;height:20px}
+.resumen,.modulo-card{background:#fff8e5;border:1px solid #fffdf5;border-radius:24px;box-shadow:0 3px 6px #70532c14,0 10px 20px -8px #70532c47,inset 0 1px 0 #fff}
+.modulo-card{transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease}
+.modulo-card:hover{background:#fffaf0;transform:translateY(-3px);box-shadow:0 8px 22px -8px #70532c66;border-color:var(--lpn-primary)}
+.resumen-simbolo,.modulo-icono{border-radius:15px;box-shadow:inset 0 1px 0 #ffffff8a,0 3px 6px #70532c12}
+.pill{background:var(--lpn-sage-soft);color:var(--lpn-primary);border-color:var(--lpn-primary)}
+.tabla-panel{box-shadow:0 4px 16px -6px #70532c2b}
+.nav-item:active{background:var(--lpn-sage-soft)}
+.nota-permisos{border-color:var(--lpn-stone)}
+.preview-tools{background:var(--lpn-primary-hover)}
+/* Los estados no cambian de significado con el perfil. */
+.estado-tag{background:#e2e9da;color:#354b3b}
+@media(prefers-reduced-motion:reduce){.modulo-card:hover{transform:none}}
+
+/* Marca completa y espacio de trabajo fluido, también en las plantillas Django. */
+.marca-copy{min-width:0;display:block}
+.marca-nombre{display:block;font-family:var(--lpn-brand);font-size:20px;line-height:1.35;letter-spacing:-.45px;white-space:nowrap}
+.marca .marca-sub{display:block;margin-top:5px;font-size:7px;line-height:1.6;letter-spacing:1.15px;white-space:nowrap}
+.sidebar>.marca{gap:10px;padding-left:8px}
+.sidebar .marca-icono{flex:0 0 36px;width:36px;height:42px}
+.contenido{width:100%;max-width:1640px;margin-inline:auto;padding:clamp(24px,2.5vw,48px)}
+@media(max-width:1024px){.sidebar{transform:translateX(-110%);width:256px;box-shadow:10px 0 40px #24211e12}.sidebar.abierta{transform:translateX(0)}.panel-cuerpo{margin-left:0}.menu-movil{display:block;min-width:44px;min-height:44px;border:1px solid var(--lpn-input);border-radius:50%;background:var(--lpn-paper);color:var(--lpn-primary);font-size:20px}.topbar{padding-inline:24px;gap:16px}.contenido{padding:28px 24px}}
+@media(max-width:600px){.contenido{padding:24px 18px}.resumen-grid,.modulos-grid{grid-template-columns:minmax(0,1fr)}.resumen:last-child{grid-column:auto}.topbar{padding-inline:18px;gap:12px}}

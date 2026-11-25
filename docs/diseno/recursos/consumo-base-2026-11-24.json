@@ -1,0 +1,49 @@
+{
+  "image_count": 21,
+  "image_bytes": 869620,
+  "webp_count": 8,
+  "png_count": 5,
+  "fonts_bytes": 1106996,
+  "largest_images": [
+    {
+      "path": "frontend/mobile/assets/rescue-category.webp",
+      "bytes": 184942
+    },
+    {
+      "path": "frontend/mobile/assets/adoption-banner.webp",
+      "bytes": 102376
+    },
+    {
+      "path": "frontend/mobile/assets/access/login-pets.webp",
+      "bytes": 97842
+    },
+    {
+      "path": "frontend/mobile/assets/rescue-banner.webp",
+      "bytes": 85348
+    },
+    {
+      "path": "frontend/mobile/assets/profile-avatar.png",
+      "bytes": 78602
+    },
+    {
+      "path": "frontend/mobile/assets/request-banner.webp",
+      "bytes": 68520
+    },
+    {
+      "path": "frontend/mobile/assets/history-paw.png",
+      "bytes": 67052
+    },
+    {
+      "path": "frontend/mobile/assets/pet-age.png",
+      "bytes": 47766
+    },
+    {
+      "path": "frontend/mobile/assets/home-pets.webp",
+      "bytes": 38284
+    },
+    {
+      "path": "frontend/mobile/assets/access/welcome-pets.webp",
+      "bytes": 33528
+    }
+  ]
+}

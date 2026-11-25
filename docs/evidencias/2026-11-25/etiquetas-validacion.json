@@ -1,0 +1,74 @@
+{
+  "fecha": "2026-11-25",
+  "guia": 89,
+  "estado_global": {
+    "cerrados": 49,
+    "total": 57,
+    "porcentaje": 86.0
+  },
+  "cambios": [
+    "Nombre accesible sin rótulo duplicado",
+    "Validación con foco y desplazamiento al primer error",
+    "Campos de formularios acotados conservados al desplazarse para que sigan validándose"
+  ],
+  "pruebas": {
+    "nuevas": 8,
+    "cliente_aprobadas": 359,
+    "cliente_optativas_omitidas": 9,
+    "focales_por_demo": 63,
+    "analisis_tres_copias": "limpio",
+    "android_debug": "compilado",
+    "web_release": "compilado; advertencia previa de CupertinoIcons pendiente",
+    "backend": "sin cambios; evidencia previa 468 pruebas"
+  },
+  "archivos_sincronizados": [
+    {
+      "archivo": "lib/design/form_surfaces.dart",
+      "sha256": "d94d2d5d7e3f6e2b067c5eaa9dac89e4f683d569cdd9229a809c281bb84ebe9b"
+    },
+    {
+      "archivo": "lib/pets/personal_pet_screen.dart",
+      "sha256": "02758c4f7775999f82fa64e8d504486cba4f2277139c0d4c08c6e655ac27b633"
+    },
+    {
+      "archivo": "lib/adoption/questionnaire_screen.dart",
+      "sha256": "47e47b9f55e7e4728eb9009c0bd2f701b2885116190c42c77d1020bca356d7ba"
+    },
+    {
+      "archivo": "lib/explore/help_program.dart",
+      "sha256": "c07bc17a5e55f70624e9aceff7623b6b6f3d3dc00c72602c8b2d3b40a09aa146"
+    },
+    {
+      "archivo": "lib/rescue/rescue_screens.dart",
+      "sha256": "08f892cd9a12ad9fa4c2c9f517599f161168ad345866c8fc3dfc1bd94e83e2da"
+    },
+    {
+      "archivo": "lib/auth/account_screen.dart",
+      "sha256": "d23cf03c839ac2e53b76d28ec6148e96b07924a9409fdf36506b85b79d0bd691"
+    },
+    {
+      "archivo": "lib/auth/profile_screen.dart",
+      "sha256": "47a60649167e3a9d13ecc10d46a49aa7931a1f21c967ace048d62a6eef1d369c"
+    },
+    {
+      "archivo": "lib/rescue/anonymous_report_screen.dart",
+      "sha256": "6d9e19c57bf8ea7b0f094b528a6320a4f86b3c1bcab3be20950ccbf427807615"
+    },
+    {
+      "archivo": "lib/explore/community_screen.dart",
+      "sha256": "e44078b00d3c789ce0148ef899b068a160efde19540486c09a85f699f68247e2"
+    },
+    {
+      "archivo": "test/field_labels_validation_test.dart",
+      "sha256": "1948e0bbe6602f1ed00fb425f78642b99e0c1770a90c2525ff35c62a9f7c7dac"
+    }
+  ],
+  "entorno": "HTTP simulado, datos sintéticos; sin registros reales. No se lanzó un emulador en este bloque.",
+  "limitaciones": [
+    "Aceptación nativa del recorrido de error y teclado pendiente",
+    "TalkBack y dispositivo físico pendientes",
+    "No certifica publicación ni conformidad integral"
+  ],
+  "commits": 0,
+  "publicado": false
+}

@@ -1,0 +1,18 @@
+/* One vertical scroll owner per surface; actions remain outside modal scrolling. */
+.panel .matrix-scroll,.panel .assignment-list,.panel .rbac-picker,.panel .role-permissions{max-height:none;overflow-y:visible}
+.panel .record-actions{max-height:none;overflow:visible;margin:0;gap:6px}
+.panel .assignment-save-row{position:sticky;bottom:8px;z-index:5;background:var(--lpn-paper);padding:8px;border:1px solid var(--lpn-stone);border-radius:12px}
+.panel-modal[open]{display:grid!important;grid-template-rows:auto minmax(0,1fr) auto;height:auto;max-height:calc(100dvh - 24px);overflow:hidden}
+.panel-modal .modal-body{min-height:0;max-height:calc(100dvh - 180px);overflow:auto;overscroll-behavior:contain;scrollbar-gutter:stable}
+.panel-modal .assignment-list,.panel-modal .matrix-scroll,.panel-modal .rbac-picker,.panel-modal .role-permissions{max-height:none!important;overflow-y:visible}
+.panel-modal .assignment-save-row{position:static;padding:0;border:0}
+.panel-modal .modal-actions{background:var(--lpn-paper);border-top:1px solid var(--lpn-stone);padding:10px 16px;z-index:8}
+.panel-modal .modal-actions[hidden]{display:none}
+.panel-modal .modal-actions .matrix-save{position:static!important;margin:0!important;border:0!important;padding:0!important;max-width:100%;width:100%;box-shadow:none;display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap}
+.panel-modal .business-form{display:block!important}.panel-modal .business-field{margin:0 0 16px}
+.panel .matrix-save{scroll-margin-bottom:90px}.panel :is(input,select,textarea,button,a):focus-visible{outline:2px solid var(--lpn-primary);outline-offset:3px}
+.searchable-choice{position:relative;min-width:0}.searchable-choice>input{width:100%;min-height:40px}.choice-options{position:absolute;z-index:30;top:100%;left:0;right:0;max-height:220px;overflow:auto;background:var(--lpn-paper);border:1px solid var(--lpn-input);border-radius:8px;box-shadow:0 8px 20px #0002;margin-top:4px;padding:4px}.choice-options[hidden]{display:none}.choice-options [role=option]{padding:8px 10px;cursor:pointer;font-size:13px}.choice-options [role=option]:hover,.choice-options [aria-selected=true]{background:color-mix(in srgb,var(--lpn-primary) 14%,var(--lpn-paper))}.choice-options p{padding:8px;margin:0;font-size:12px}.pet-views{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0 18px}.pet-views a{font-size:13px;border:1px solid var(--lpn-stone);border-radius:8px;padding:9px 12px;text-decoration:none;color:var(--lpn-ink)}.pet-views a[aria-current]{background:var(--lpn-primary);color:var(--lpn-paper);font-weight:600}.panel .business-field small{display:block;margin-top:6px;max-width:65ch;line-height:1.5;color:var(--lpn-muted)}.panel .business-field .errorlist{padding-left:18px;margin-top:6px;font-size:13px}
+@media(max-width:600px){.panel-modal{width:calc(100vw - 16px)!important}.panel-modal .modal-body{padding:14px;max-height:calc(100dvh - 180px)}.panel-modal .modal-actions{padding:10px}.modal-actions .matrix-save .boton{flex:1;min-width:0;white-space:normal}.panel .assignment-save-row{bottom:0}.pet-views a{flex:1;text-align:center}.panel .business-field{min-width:0}}
+@media(prefers-reduced-motion:no-preference){.panel .boton,.pet-views a{transition:background-color .15s,color .15s,box-shadow .15s}.panel .boton:active{transform:translateY(1px)}}
+.business-field{scroll-margin-bottom:110px}
+.pet-views a[aria-current]{color:#fffdf7}

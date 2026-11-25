@@ -1,0 +1,13 @@
+{% load static i18n %}
+  <section class="login-card" aria-labelledby="login-title">
+   <div class="login-brand" aria-label="Little Paws Net">Little Paws Net</div><h1 id="login-title">{% translate "Bienvenido a tu espacio" %}</h1><p class="login-subtitle">{% translate "Gracias por estar del lado de quienes cuidan." %}</p>
+   {% if error %}<p id="form-feedback" class="feedback" role="alert">{{ error }}</p>{% endif %}
+   <form id="login-form" method="post" action="{% url 'panel:login' %}" novalidate>{% csrf_token %}<input type="hidden" name="next" value="{{ next }}">{{ form.captcha_token }}
+    <label for="id_email">{% translate "Correo electrónico" %}</label>{{ form.email }}
+    <div class="label-row"><label for="id_password">{% translate "Contraseña" %}</label><button class="text-button" type="button" data-access-help>{% translate "¿La olvidaste?" %}</button></div>
+    <div class="password-wrap">{{ form.password }}<button id="show-password" data-show="{% translate 'Mostrar contraseña' %}" data-hide="{% translate 'Ocultar contraseña' %}" type="button" aria-label="{% translate 'Mostrar contraseña' %}" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 24 24"><use href="#eye"></use></svg></button></div>
+    <div class="label-row"><label for="id_captcha">{% translate "¿Cuánto es" %} <b>{{ desafio.suma }}</b>?</label><a class="text-button" href="{% url 'panel:login' %}?next={{ next|urlencode }}#ingreso" aria-label="{% translate 'Obtener otra suma' %}">{% translate "Otra suma ↻" %}</a></div>{{ form.captcha }}<small class="captcha-help">{% translate "Completa la suma para continuar. Válida por 5 minutos." %}</small>
+    <button class="primary" id="submit-login" type="submit">{% translate "Iniciar sesión" %} </button>
+   </form>
+   <p class="access-help">{% translate "¿Necesitas acceso? Consulta al responsable de tu organización." %}</p>
+  </section>

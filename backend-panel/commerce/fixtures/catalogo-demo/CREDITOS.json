@@ -1,0 +1,14 @@
+{
+  "archivo": "alimento-demo.webp",
+  "autor": "Barking Royalty",
+  "fuente": "https://www.pexels.com/photo/animal-feed-in-bowl-12928245/",
+  "licencia": "Pexels License",
+  "licencia_url": "https://www.pexels.com/license/",
+  "fecha_verificacion": "2026-11-22",
+  "uso": "Solo catálogo ficticio de demostración y QA; no representa inventario real.",
+  "cambios": "Recorte cuadrado inferior, 640px, WebP; EXIF eliminado.",
+  "ancho": 640,
+  "alto": 640,
+  "bytes": 19322,
+  "sha256": "a0f38b649d293693e0a8c27d55f73af13892273a6efd57a3a246cb9facbee2ea"
+}

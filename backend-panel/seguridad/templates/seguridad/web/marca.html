@@ -1,0 +1,4 @@
+{% load static i18n panel_i18n %}<a class="marca" href="{% url 'panel:inicio' %}" aria-label="{% translate 'Little Paws Net, inicio' %}">
+  <span class="marca-icono"><img src="{% static 'seguridad/logo.svg' %}" alt="" width="44" height="48"></span>
+  <span class="marca-copy"><span class="marca-nombre">Little Paws Net</span><span class="marca-sub" data-nav-copy="nav_submarca">{{ titulos_nav.nav_submarca|default:"PANEL DE GESTIÓN"|ui }}</span></span>
+</a>

@@ -1,0 +1,319 @@
+{
+  "local_qa_only": true,
+  "debug": false,
+  "production_capacity_certified": false,
+  "unexpected_status_count": 0,
+  "dataset": {
+    "available_pets": 1000,
+    "products": 500,
+    "community_posts_at_start": 250,
+    "actors": 8,
+    "owned_pets": 80
+  },
+  "configuration": {
+    "server": "single-process Uvicorn/ASGI",
+    "database": "MySQL isolated loopback",
+    "password_hasher": "pbkdf2_sha256",
+    "password_login_samples": 3,
+    "connection_max_age": 0
+  },
+  "authentication": {
+    "requests": 3,
+    "p50_ms": 155.01,
+    "p95_ms": 155.5,
+    "p99_ms": 155.5,
+    "max_ms": 155.5,
+    "bytes_total": 1467,
+    "statuses": {
+      "200": 3
+    }
+  },
+  "stages": [
+    {
+      "clients": 1,
+      "journeys": 4,
+      "unexpected_status_count": 0,
+      "duration_seconds": 1.066,
+      "requests_per_second": 22.51,
+      "sample": {
+        "requests": 24,
+        "p50_ms": 34.84,
+        "p95_ms": 116.17,
+        "p99_ms": 126.32,
+        "max_ms": 126.32,
+        "bytes_total": 147278,
+        "statuses": {
+          "200": 16,
+          "201": 8
+        }
+      },
+      "routes": {
+        "GET /api/adopcion/catalogo/": {
+          "requests": 4,
+          "p50_ms": 107.49,
+          "p95_ms": 126.32,
+          "p99_ms": 126.32,
+          "max_ms": 126.32,
+          "bytes_total": 19020,
+          "statuses": {
+            "200": 4
+          }
+        },
+        "GET /api/catalogo/productos/": {
+          "requests": 4,
+          "p50_ms": 23.28,
+          "p95_ms": 34.18,
+          "p99_ms": 34.18,
+          "max_ms": 34.18,
+          "bytes_total": 107712,
+          "statuses": {
+            "200": 4
+          }
+        },
+        "GET /api/comunidad/publicaciones/": {
+          "requests": 4,
+          "p50_ms": 34.22,
+          "p95_ms": 43.99,
+          "p99_ms": 43.99,
+          "max_ms": 43.99,
+          "bytes_total": 17730,
+          "statuses": {
+            "200": 4
+          }
+        },
+        "GET /api/mascotas/mias/?pagina=1&limite=3": {
+          "requests": 4,
+          "p50_ms": 32.25,
+          "p95_ms": 45.85,
+          "p99_ms": 45.85,
+          "max_ms": 45.85,
+          "bytes_total": 2032,
+          "statuses": {
+            "200": 4
+          }
+        },
+        "POST /api/comunidad/publicaciones/": {
+          "requests": 4,
+          "p50_ms": 30.4,
+          "p95_ms": 43.95,
+          "p99_ms": 43.95,
+          "max_ms": 43.95,
+          "bytes_total": 40,
+          "statuses": {
+            "201": 4
+          }
+        },
+        "POST /api/pedidos/": {
+          "requests": 4,
+          "p50_ms": 42.02,
+          "p95_ms": 48.67,
+          "p99_ms": 48.67,
+          "max_ms": 48.67,
+          "bytes_total": 744,
+          "statuses": {
+            "201": 4
+          }
+        }
+      },
+      "server_before": {
+        "working_set_bytes": 108445696,
+        "private_bytes": 92303360
+      },
+      "server_after": {
+        "working_set_bytes": 109219840,
+        "private_bytes": 92827648
+      }
+    },
+    {
+      "clients": 4,
+      "journeys": 16,
+      "unexpected_status_count": 0,
+      "duration_seconds": 1.398,
+      "requests_per_second": 68.67,
+      "sample": {
+        "requests": 96,
+        "p50_ms": 55.89,
+        "p95_ms": 75.21,
+        "p99_ms": 80.51,
+        "max_ms": 80.51,
+        "bytes_total": 587737,
+        "statuses": {
+          "200": 64,
+          "201": 32
+        }
+      },
+      "routes": {
+        "GET /api/adopcion/catalogo/": {
+          "requests": 16,
+          "p50_ms": 63.74,
+          "p95_ms": 75.59,
+          "p99_ms": 75.59,
+          "max_ms": 75.59,
+          "bytes_total": 76080,
+          "statuses": {
+            "200": 16
+          }
+        },
+        "GET /api/catalogo/productos/": {
+          "requests": 16,
+          "p50_ms": 41.5,
+          "p95_ms": 69.7,
+          "p99_ms": 69.7,
+          "max_ms": 69.7,
+          "bytes_total": 430848,
+          "statuses": {
+            "200": 16
+          }
+        },
+        "GET /api/comunidad/publicaciones/": {
+          "requests": 16,
+          "p50_ms": 56.47,
+          "p95_ms": 76.96,
+          "p99_ms": 76.96,
+          "max_ms": 76.96,
+          "bytes_total": 69534,
+          "statuses": {
+            "200": 16
+          }
+        },
+        "GET /api/mascotas/mias/?pagina=1&limite=3": {
+          "requests": 16,
+          "p50_ms": 53.15,
+          "p95_ms": 70.52,
+          "p99_ms": 70.52,
+          "max_ms": 70.52,
+          "bytes_total": 8128,
+          "statuses": {
+            "200": 16
+          }
+        },
+        "POST /api/comunidad/publicaciones/": {
+          "requests": 16,
+          "p50_ms": 55.64,
+          "p95_ms": 75.52,
+          "p99_ms": 75.52,
+          "max_ms": 75.52,
+          "bytes_total": 160,
+          "statuses": {
+            "201": 16
+          }
+        },
+        "POST /api/pedidos/": {
+          "requests": 16,
+          "p50_ms": 55.72,
+          "p95_ms": 80.51,
+          "p99_ms": 80.51,
+          "max_ms": 80.51,
+          "bytes_total": 2987,
+          "statuses": {
+            "201": 16
+          }
+        }
+      },
+      "server_before": {
+        "working_set_bytes": 109219840,
+        "private_bytes": 92827648
+      },
+      "server_after": {
+        "working_set_bytes": 111517696,
+        "private_bytes": 95776768
+      }
+    },
+    {
+      "clients": 8,
+      "journeys": 32,
+      "unexpected_status_count": 0,
+      "duration_seconds": 2.5,
+      "requests_per_second": 76.81,
+      "sample": {
+        "requests": 192,
+        "p50_ms": 101.47,
+        "p95_ms": 129.77,
+        "p99_ms": 137.6,
+        "max_ms": 138.27,
+        "bytes_total": 1172305,
+        "statuses": {
+          "200": 128,
+          "201": 64
+        }
+      },
+      "routes": {
+        "GET /api/adopcion/catalogo/": {
+          "requests": 32,
+          "p50_ms": 100.01,
+          "p95_ms": 124.57,
+          "p99_ms": 133.56,
+          "max_ms": 133.56,
+          "bytes_total": 152160,
+          "statuses": {
+            "200": 32
+          }
+        },
+        "GET /api/catalogo/productos/": {
+          "requests": 32,
+          "p50_ms": 76.74,
+          "p95_ms": 125.8,
+          "p99_ms": 126.97,
+          "max_ms": 126.97,
+          "bytes_total": 861696,
+          "statuses": {
+            "200": 32
+          }
+        },
+        "GET /api/comunidad/publicaciones/": {
+          "requests": 32,
+          "p50_ms": 103.68,
+          "p95_ms": 135.47,
+          "p99_ms": 137.6,
+          "max_ms": 137.6,
+          "bytes_total": 135889,
+          "statuses": {
+            "200": 32
+          }
+        },
+        "GET /api/mascotas/mias/?pagina=1&limite=3": {
+          "requests": 32,
+          "p50_ms": 102.54,
+          "p95_ms": 127.66,
+          "p99_ms": 138.27,
+          "max_ms": 138.27,
+          "bytes_total": 16256,
+          "statuses": {
+            "200": 32
+          }
+        },
+        "POST /api/comunidad/publicaciones/": {
+          "requests": 32,
+          "p50_ms": 109.96,
+          "p95_ms": 130.34,
+          "p99_ms": 136.33,
+          "max_ms": 136.33,
+          "bytes_total": 320,
+          "statuses": {
+            "201": 32
+          }
+        },
+        "POST /api/pedidos/": {
+          "requests": 32,
+          "p50_ms": 104.43,
+          "p95_ms": 129.77,
+          "p99_ms": 136.97,
+          "max_ms": 136.97,
+          "bytes_total": 5984,
+          "statuses": {
+            "201": 32
+          }
+        }
+      },
+      "server_before": {
+        "working_set_bytes": 111583232,
+        "private_bytes": 95776768
+      },
+      "server_after": {
+        "working_set_bytes": 114868224,
+        "private_bytes": 99102720
+      }
+    }
+  ],
+  "limits": "Loopback, single ASGI process, bounded synthetic journeys. Excludes TLS, WAN, real devices and sustained load. Working set/private bytes are server process snapshots, not Android memory or sampled per-stage peaks."
+}

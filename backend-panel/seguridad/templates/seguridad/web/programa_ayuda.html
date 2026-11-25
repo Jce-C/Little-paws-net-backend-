@@ -1,0 +1,15 @@
+{% extends 'seguridad/web/base.html' %}{% load i18n %}
+{% block contenido %}
+<header class="section-heading"><a class="table-action" data-internal href="{{ volver_programa }}">{% translate 'Volver a organizaciones' %}</a><h1>{% translate 'Actividades y canales oficiales' %}</h1><p>{{ fundacion_ayuda.entidad.nombre }}</p></header>
+<section class="admin-sheet">
+<h2 id="programa-titulo">{% translate 'Cómo colaborar con la organización' %}</h2>
+<p id="programa-ayuda" class="section-help">{% translate 'Define tareas concretas, horarios y requisitos. Publica solo enlaces autorizados por la organización. La plataforma no cobra, verifica la propiedad de los enlaces ni confirma pagos. Desmarca la publicación y guarda para retirar todo.' %}</p>
+<form action="{% url 'panel:programa_ayuda' fundacion_ayuda.pk %}" method="post" class="business-form" aria-labelledby="programa-titulo" aria-describedby="programa-ayuda" data-dirty-form data-explicit-submit>{% csrf_token %}
+{{ estado_programa.non_field_errors }}{{ estado_programa.version }}
+{% for titulo, grupo in grupos_programa %}<section><h3>{{ titulo }}</h3>{{ grupo.management_form }}{{ grupo.non_form_errors }}
+{% for subform in grupo %}<details {% if subform.initial or subform.errors %}open{% endif %}><summary>{{ titulo }} · {{ forloop.counter }}{% if subform.initial.titulo %} — {{ subform.initial.titulo }}{% endif %}</summary>
+<fieldset><legend>{% translate 'Información pública opcional' %}</legend>
+{% for field in subform %}{% if field.name == 'DELETE' %}<div class="photo-consent">{{ field }}{{ field.label_tag }}</div>{% else %}<div class="business-field">{{ field.label_tag }}{{ field }}{{ field.errors }}</div>{% endif %}{% endfor %}</fieldset></details>{% endfor %}</section>{% endfor %}
+{% for field in estado_programa.visible_fields %}<div class="photo-consent">{{ field }}{{ field.label_tag }}</div>{{ field.errors }}{% endfor %}
+<div class="matrix-save"><a class="boton secundario" data-internal href="{{ volver_programa }}">{% translate 'Cancelar' %}</a><span data-dirty-status role="status"></span><button class="boton primario" type="submit">{% translate 'Guardar convocatoria pública' %}</button></div>
+</form></section>{% endblock %}
