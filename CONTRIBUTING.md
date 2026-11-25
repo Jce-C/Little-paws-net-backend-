@@ -1,6 +1,6 @@
 # Colaborar en Little Paws Net
 
-La base del panel está en `entrega-panel`. Para la próxima entrega, el equipo revisará esa base en un PR hacia `main`. Después, crear ramas `feature/<tema>` para mejoras y `fix/<tema>` para correcciones desde la base acordada. Cada integrante revisa y registra su propio trabajo.
+La integración actual se revisa en el PR #24, desde `feature/presentacion-integrada` hacia `main`. Después de integrarla, crear ramas `feature/<tema>` para mejoras y `fix/<tema>` para correcciones desde `main` actualizado. Cada integrante revisa y registra su propio trabajo. Conservar los commits individuales al integrar esta entrega.
 
 Usar mensajes como `feat(movil): consultar el estado de adopción`, `fix(panel): manejar un recurso inexistente` o `docs: actualizar las instrucciones de instalación`. Un PR debe enlazar su issue, explicar el resultado y dejar instrucciones de prueba. Revisar los cambios y las pruebas antes de integrar. Tras la integración, actualizar el registro de cambios y crear el tag sobre el commit que corresponde a la versión.
 
@@ -13,18 +13,18 @@ Las pruebas usan MySQL **aislado**, nunca Railway. Configurar `LPN_TEST_MYSQL_HO
 ```powershell
 python manage.py check --settings=config.settings_test_mysql
 python manage.py makemigrations --check --dry-run --settings=config.settings_test_mysql
-python manage.py test seguridad accounts.tests config.tests --settings=config.settings_test_mysql --noinput
+python manage.py test --settings=config.settings_test_mysql --noinput
 ```
 
 El workflow `.github/workflows/panel.yml` reproduce estas comprobaciones en Linux con MySQL 8.4. No usa secretos de producción.
 
 ## Diseño
 
-Las fuentes visuales viven en `frontend/panel-design`; el resultado real se sirve desde `backend-panel/seguridad/static`. La demo de `demos/` es independiente y ficticia. Mantener ambos al corregir estilos compartidos; no cargar archivos de la demo como autenticación real. Conservar licencias de fuentes e iconos.
+El panel utiliza `backend-panel/seguridad/templates` y `backend-panel/seguridad/static`; la app tiene sus componentes y recursos en `frontend/mobile`. Revisar la interfaz realmente conectada al backend, no una demo visual en memoria. Conservar las licencias de fuentes e iconos y los diagramas originales de `DIAGRAMAS/`.
 
 ## App móvil
 
-Trabajar en `frontend/mobile/`. Ejecutar `flutter analyze` y `flutter test test/widget_test.dart`. Los ensayos que crean o resuelven solicitudes deben usar la base de pruebas local indicada en la [guía de la app](frontend/mobile/README.md).
+Trabajar en `frontend/mobile/`. Ejecutar `flutter analyze` y `flutter test --no-pub`. Los ensayos que crean o resuelven solicitudes deben usar la base de pruebas local indicada en la [guía de la app](frontend/mobile/README.md).
 
 ## Datos y despliegue
 
