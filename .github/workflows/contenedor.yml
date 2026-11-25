@@ -41,6 +41,18 @@ jobs:
             little-paws-panel:ci
       - name: Verificar arranque, permisos y HTTP
         run: python3 scripts/verificar_contenedor.py
+      - name: Verificar la misma imagen con configuración Northflank
+        run: |
+          docker rm --force lpn-panel-ci
+          docker run --detach --name lpn-panel-ci \
+            --publish 127.0.0.1:18000:8000 \
+            --memory 512m --cpus 0.5 \
+            --env DJANGO_SETTINGS_MODULE=config.settings_northflank \
+            --env DJANGO_SECRET_KEY=isolated-container-acceptance-only-2026-not-for-production-9a8b7c6d5e \
+            --env DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1 \
+            --env LPN_PRIVATE_ROOT=/tmp/lpn-private \
+            little-paws-panel:ci
+          python3 scripts/verificar_contenedor.py
       - name: Mostrar diagnóstico si falla
         if: failure()
         run: docker logs --tail 100 lpn-panel-ci
