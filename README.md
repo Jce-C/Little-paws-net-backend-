@@ -4,7 +4,7 @@ Plataforma de protección animal que conecta a ciudadanos con organizaciones. Re
 
 ## Estado de esta entrega
 
-La integración está publicada en la rama `feature/presentacion-integrada`, en el [Pull Request #24](https://github.com/Jce-C/Little-paws-net-backend-/pull/24). Está pendiente de integración en `main`; publicar código en GitHub no configura por sí solo un alojamiento.
+La integración del [Pull Request #24](https://github.com/Jce-C/Little-paws-net-backend-/pull/24) ya está incorporada en `main`, conservando los commits del equipo. Publicar código en GitHub no configura por sí solo un alojamiento.
 
 La base técnica se verificó con **479 pruebas Django en MySQL aislado**, pruebas del cliente y aceptación real en Android Emulator y navegador. El recorrido comprobado incluye solicitud de adopción desde Android, resolución desde el panel y consulta del resultado en la app. También se comprobó conceder y revocar permisos, y renombrar un recurso con otra sesión abierta.
 
